@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"carlosdjy.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="[[Wasserstein GAN.pdf]] 整体结构Wasserstein GAN (WGAN) 是一种生成对抗网络（GAN）的改进，通过引入Wasserstein距离作为目标函数来解决一些常见的 GAN 训练问题，例如梯度消失和模式崩溃。   原理WGAN 的核心思想是利用Wasserstein距离（又称Earth-Mover距离）来衡量真实数据分布和生成数据分布之间的差异。与原始 GAN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://carlosdjy.github.io/2023/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CNN/GANs/WGAN/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[[Wasserstein GAN.pdf]] 整体结构Wasserstein GAN (WGAN) 是一种生成对抗网络（GAN）的改进，通过引入Wasserstein距离作为目标函数来解决一些常见的 GAN 训练问题，例如梯度消失和模式崩溃。   原理WGAN 的核心思想是利用Wasserstein距离（又称Earth-Mover距离）来衡量真实数据分布和生成数据分布之间的差异。与原始 GAN">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-06-16T13:28:02.539Z">
+<meta property="article:modified_time" content="2023-04-06T07:46:20.819Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://carlosdjy.github.io/2023/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CNN/GANs/WGAN/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://carlosdjy.github.io/2023/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CNN/GANs/WGAN/","path":"2023/06/16/机器学习/CNN/GANs/WGAN/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">整体结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">目标函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Lipschitz-%E7%BA%A6%E6%9D%9F"><span class="nav-number">1.3.</span> <span class="nav-text">Lipschitz 约束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E6%9E%84"><span class="nav-number">1.4.</span> <span class="nav-text">结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%99%A8%EF%BC%88G%EF%BC%89"><span class="nav-number">1.4.1.</span> <span class="nav-text">生成器（G）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A4%E5%88%AB%E5%99%A8%EF%BC%88D%EF%BC%89"><span class="nav-number">1.4.2.</span> <span class="nav-text">判别器（D）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E7%AE%97%E6%B3%95"><span class="nav-number">1.5.</span> <span class="nav-text">训练算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF"><span class="nav-number">1.6.</span> <span class="nav-text">优势</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9B%B4%E7%A8%B3%E5%AE%9A%E7%9A%84%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="nav-number">1.6.1.</span> <span class="nav-text">更稳定的训练过程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%87%8F%E8%BD%BB%E6%A8%A1%E5%BC%8F%E5%B4%A9%E6%BA%83%E7%8E%B0%E8%B1%A1"><span class="nav-number">1.6.2.</span> <span class="nav-text">减轻模式崩溃现象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%89%E6%84%8F%E4%B9%89%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%80%BC"><span class="nav-number">1.6.3.</span> <span class="nav-text">有意义的损失值</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E8%B6%B3"><span class="nav-number">1.7.</span> <span class="nav-text">不足</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9D%83%E9%87%8D%E5%89%AA%E8%BE%91%E9%99%90%E5%88%B6"><span class="nav-number">1.7.1.</span> <span class="nav-text">权重剪辑限制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E9%80%9F%E5%BA%A6"><span class="nav-number">1.7.2.</span> <span class="nav-text">训练速度</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E6%8A%A5%E5%91%8A"><span class="nav-number">2.</span> <span class="nav-text">论文报告</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">问题定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%98%AF%E5%90%A6%E6%98%AF%E6%96%B0%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.</span> <span class="nav-text">是否是新问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%91%E5%AD%A6%E5%81%87%E8%AE%BE"><span class="nav-number">2.3.</span> <span class="nav-text">科学假设</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6"><span class="nav-number">2.4.</span> <span class="nav-text">相关研究</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E5%85%B3%E9%94%AE"><span class="nav-number">2.5.</span> <span class="nav-text">解决方案关键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="nav-number">2.6.</span> <span class="nav-text">神经网络结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">2.7.</span> <span class="nav-text">损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A4%E5%88%AB%E5%99%A8%EF%BC%88D%EF%BC%89-1"><span class="nav-number">2.7.1.</span> <span class="nav-text">判别器（D）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%99%A8%EF%BC%88G%EF%BC%89-1"><span class="nav-number">2.7.2.</span> <span class="nav-text">生成器（G）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.8.</span> <span class="nav-text">实验设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E9%87%8F%E8%AF%84%E4%BC%B0%E6%95%B0%E6%8D%AE%E9%9B%86%E5%92%8C%E5%BC%80%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="nav-number">2.9.</span> <span class="nav-text">定量评估数据集和开源代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C%E4%B8%8E%E5%81%87%E8%AE%BE%E9%AA%8C%E8%AF%81"><span class="nav-number">2.10.</span> <span class="nav-text">实验结果与假设验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E7%9A%84%E5%85%B7%E4%BD%93%E8%B4%A1%E7%8C%AE"><span class="nav-number">2.11.</span> <span class="nav-text">论文的具体贡献</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Wasserstein%E8%B7%9D%E7%A6%BB%E5%BC%95%E5%85%A5GAN%E8%AE%AD%E7%BB%83"><span class="nav-number">2.11.1.</span> <span class="nav-text">Wasserstein距离引入GAN训练</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%94%B9%E8%BF%9B%E8%AE%AD%E7%BB%83%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="nav-number">2.11.2.</span> <span class="nav-text">改进训练稳定性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B6%88%E9%99%A4%E6%A8%A1%E5%BC%8F%E5%B4%A9%E6%BA%83%E9%97%AE%E9%A2%98"><span class="nav-number">2.11.3.</span> <span class="nav-text">消除模式崩溃问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8F%90%E4%BE%9B%E6%9C%89%E6%84%8F%E4%B9%89%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%BA%A6%E9%87%8F"><span class="nav-number">2.11.4.</span> <span class="nav-text">提供有意义的损失度量</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WGAN%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="nav-number">2.12.</span> <span class="nav-text">WGAN的缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E9%80%9F%E5%BA%A6%E8%BE%83%E6%85%A2"><span class="nav-number">2.12.1.</span> <span class="nav-text">训练速度较慢</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9D%83%E9%87%8D%E5%89%AA%E8%A3%81"><span class="nav-number">2.12.2.</span> <span class="nav-text">权重剪裁</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8B%E4%B8%80%E6%AD%A5%E5%8F%AF%E4%BB%A5%E7%BB%A7%E7%BB%AD%E6%B7%B1%E5%85%A5%E7%9A%84%E5%B7%A5%E4%BD%9C"><span class="nav-number">2.13.</span> <span class="nav-text">下一步可以继续深入的工作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%94%B9%E8%BF%9B%E6%9D%83%E9%87%8D%E5%89%AA%E8%A3%81"><span class="nav-number">2.13.1.</span> <span class="nav-text">改进权重剪裁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8E%A2%E7%B4%A2%E4%B8%8D%E5%90%8C%E7%9A%84%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="nav-number">2.13.2.</span> <span class="nav-text">探索不同的距离度量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%93%E5%90%88%E5%85%B6%E4%BB%96GAN%E6%94%B9%E8%BF%9B%E6%8A%80%E6%9C%AF"><span class="nav-number">2.13.3.</span> <span class="nav-text">结合其他GAN改进技术</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E4%BA%8E%E5%85%B6%E4%BB%96%E9%A2%86%E5%9F%9F"><span class="nav-number">2.13.4.</span> <span class="nav-text">应用于其他领域</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CNN/GANs/WGAN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-06-16 21:28:02" itemprop="dateCreated datePublished" datetime="2023-06-16T21:28:02+08:00">2023-06-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-04-06 15:46:20" itemprop="dateModified" datetime="2023-04-06T15:46:20+08:00">2023-04-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>[[Wasserstein GAN.pdf]]</p>
+<h3 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h3><p>Wasserstein GAN (WGAN) 是一种生成对抗网络（GAN）的改进，通过引入Wasserstein距离作为目标函数来解决一些常见的 GAN 训练问题，例如梯度消失和模式崩溃。  </p>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>WGAN 的核心思想是利用Wasserstein距离（又称Earth-Mover距离）来衡量真实数据分布和生成数据分布之间的差异。与原始 GAN 中的 Jensen-Shannon 散度相比，Wasserstein 距离在度量两个分布之间的差异时具有更好的数学性质。  </p>
+<h4 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h4><p>原始 GAN 的目标函数为：  $$<br>\min_G \max_D V(D, G) &#x3D; \mathbb{E}<em>{x \sim P_r}[log D(x)] + \mathbb{E}</em>{z \sim P_z}[log(1 - D(G(z)))]<br>$$WGAN 的目标函数为：  $$<br>\min_G \max_{D \in \mathcal{D}} \mathbb{E}<em>{x \sim P_r}[D(x)] - \mathbb{E}</em>{z \sim P_z}[D(G(z))]<br>$$其中 $\mathcal{D}$ 是具有 K-Lipschitz 连续性质的判别器函数空间。  </p>
+<h4 id="Lipschitz-约束"><a href="#Lipschitz-约束" class="headerlink" title="Lipschitz 约束"></a>Lipschitz 约束</h4><p>为了确保判别器 $D$ 满足 K-Lipschitz 连续性条件，WGAN 使用权重剪辑（Weight Clipping）的方法。在每次更新判别器参数后，将其权重限制在预定的区间内：   $$<br>W \leftarrow \text{clip}(W, -c, c)<br>$$其中 $c$ 是一个超参数，控制权重剪辑的范围。  </p>
+<h4 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h4><p>WGAN 的结构与传统 GAN 类似，包括生成器（G）和判别器（D）。生成器从随机噪声 $z$ 中产生数据，判别器则用于区分生成数据和真实数据。  </p>
+<h5 id="生成器（G）"><a href="#生成器（G）" class="headerlink" title="生成器（G）"></a>生成器（G）</h5><p>负责生成逼近真实数据分布的数据样本。  </p>
+<h5 id="判别器（D）"><a href="#判别器（D）" class="headerlink" title="判别器（D）"></a>判别器（D）</h5><p>负责区分生成数据与真实数据。<br>与传统 GAN 中的判别器不同，WGAN 的判别器不再输出概率，而是输出一个实数值。  </p>
+<h4 id="训练算法"><a href="#训练算法" class="headerlink" title="训练算法"></a>训练算法</h4><p>WGAN 的训练过程与传统 GAN 类似，但具有一些关键差异：<br>1. 使用Wasserstein距离作为目标函数。<br>2. 在每次更新判别器参数后对其进行权重剪辑。<br>3. 更改判别器的输出，使其不再输出概率值。<br>训练过程可以概括为以下步骤：<br>1. 从真实数据集中采样一批样本 $x \sim P_r$。<br>2. 从噪声分布中采样一批随机噪声 $z \sim P_z$。<br>3. 使用生成器 G 生成一批数据样本 $G(z)$。<br>4. 使用判别器 D 计算真实数据样本和生成数据样本的分数。<br>5. 使用 WGAN 的目标函数更新判别器 D 的参数。<br>6. 对判别器 D 的权重进行剪辑，以满足 K-Lipschitz 连续性条件。<br>7. 使用 WGAN 的目标函数更新生成器 G 的参数。<br>8. 重复以上步骤直到满足停止条件。  </p>
+<h4 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h4><p>WGAN 相对于传统 GAN 具有以下优势：  </p>
+<h5 id="更稳定的训练过程"><a href="#更稳定的训练过程" class="headerlink" title="更稳定的训练过程"></a>更稳定的训练过程</h5><p>Wasserstein 距离具有更好的数学性质，有助于减轻梯度消失问题，使训练过程更加稳定。  </p>
+<h5 id="减轻模式崩溃现象"><a href="#减轻模式崩溃现象" class="headerlink" title="减轻模式崩溃现象"></a>减轻模式崩溃现象</h5><p>WGAN 能够生成更多样化的数据样本，减轻模式崩溃现象。  </p>
+<h5 id="有意义的损失值"><a href="#有意义的损失值" class="headerlink" title="有意义的损失值"></a>有意义的损失值</h5><p>WGAN 的目标函数提供了一个有意义的损失值，可以用来衡量生成数据分布与真实数据分布之间的距离，有助于模型的调试与优化。</p>
+<h4 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h4><p>WGAN 仍然存在一些不足之处：  </p>
+<h5 id="权重剪辑限制"><a href="#权重剪辑限制" class="headerlink" title="权重剪辑限制"></a>权重剪辑限制</h5><p>权重剪辑方法可能会导致过于保守的更新，降低模型的表达能力。  </p>
+<h5 id="训练速度"><a href="#训练速度" class="headerlink" title="训练速度"></a>训练速度</h5><p>相较于传统 GAN，WGAN 的训练速度可能较慢。</p>
+<h3 id="论文报告"><a href="#论文报告" class="headerlink" title="论文报告"></a>论文报告</h3><h4 id="问题定义"><a href="#问题定义" class="headerlink" title="问题定义"></a>问题定义</h4><p>论文试图解决的问题是生成对抗网络（GANs）的训练不稳定性和模式崩溃问题。这两个问题在训练GANs时经常出现，导致生成器生成的样本质量较低和多样性不足。  </p>
+<h4 id="是否是新问题"><a href="#是否是新问题" class="headerlink" title="是否是新问题"></a>是否是新问题</h4><p>这并不是一个新问题，自从GANs被提出以来，训练稳定性和模式崩溃问题一直是该领域的关注焦点。  </p>
+<h4 id="科学假设"><a href="#科学假设" class="headerlink" title="科学假设"></a>科学假设</h4><p>论文的科学假设是：通过使用Wasserstein距离作为目标函数，可以提高GANs的训练稳定性并减少模式崩溃。  </p>
+<h4 id="相关研究"><a href="#相关研究" class="headerlink" title="相关研究"></a>相关研究</h4><p>[[Generative Adversarial Nets]]<br>相关研究可以归类为：生成对抗网络（GANs）、最优传输理论和其他尝试解决训练稳定性问题的方法。例如：最小二乘GAN（LSGAN）、改进的GAN（Improved GAN）等。  </p>
+<h4 id="解决方案关键"><a href="#解决方案关键" class="headerlink" title="解决方案关键"></a>解决方案关键</h4><p>论文的解决方案关键在于：<br>1. 将原始GAN损失函数替换为基于Wasserstein距离的损失函数。<br>2. 使用一种称为“权重截断”的方法来满足Wasserstein GAN中K-Lipschitz连续性的要求。  </p>
+<h4 id="神经网络结构"><a href="#神经网络结构" class="headerlink" title="神经网络结构"></a>神经网络结构</h4><p>论文中采用了普通的生成器（G）和判别器（D）网络结构。这些结构是可自定义的，可以根据特定任务进行修改。  </p>
+<h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>论文中给出的损失函数为：  </p>
+<h5 id="判别器（D）-1"><a href="#判别器（D）-1" class="headerlink" title="判别器（D）"></a>判别器（D）</h5><p>$$<br>L(D) &#x3D; \mathbb{E}<em>{x \sim P_r}[D(x)] - \mathbb{E}</em>{z \sim P_z}[D(G(z))]<br>$$</p>
+<h5 id="生成器（G）-1"><a href="#生成器（G）-1" class="headerlink" title="生成器（G）"></a>生成器（G）</h5><p>$$<br>L(G) &#x3D; -\mathbb{E}_{z \sim P_z}[D(G(z))]<br>$$</p>
+<h4 id="实验设计"><a href="#实验设计" class="headerlink" title="实验设计"></a>实验设计</h4><p>论文中进行了以下实验：<br>1. 比较Wasserstein GAN与其他方法（如原始GAN、LSGAN等）的训练稳定性。<br>2. 在图像生成任务中评估Wasserstein GAN的性能。<br>3. 比较Wasserstein GAN与其他方法在不同网络结构、损失函数和正则化技术下的鲁棒性。  </p>
+<h4 id="定量评估数据集和开源代码"><a href="#定量评估数据集和开源代码" class="headerlink" title="定量评估数据集和开源代码"></a>定量评估数据集和开源代码</h4><p>论文使用了CIFAR-10、LSUN和CelebA等数据集进行定量评估。<br>代码已经开源，可在GitHub上找到。  </p>
+<h4 id="实验结果与假设验证"><a href="#实验结果与假设验证" class="headerlink" title="实验结果与假设验证"></a>实验结果与假设验证</h4><p>Wasserstein GAN能够改善训练稳定性并减少模式崩溃现象。</p>
+<h4 id="论文的具体贡献"><a href="#论文的具体贡献" class="headerlink" title="论文的具体贡献"></a>论文的具体贡献</h4><h5 id="Wasserstein距离引入GAN训练"><a href="#Wasserstein距离引入GAN训练" class="headerlink" title="Wasserstein距离引入GAN训练"></a>Wasserstein距离引入GAN训练</h5><p>WGAN提出了使用Wasserstein距离（又称Earth Mover距离）作为损失函数，以解决传统GANs中的训练不稳定和模式崩溃问题。  </p>
+<h5 id="改进训练稳定性"><a href="#改进训练稳定性" class="headerlink" title="改进训练稳定性"></a>改进训练稳定性</h5><p>与KL散度和JS散度相比，Wasserstein距离有更好的梯度特性，可以提供更稳定的训练过程。  </p>
+<h5 id="消除模式崩溃问题"><a href="#消除模式崩溃问题" class="headerlink" title="消除模式崩溃问题"></a>消除模式崩溃问题</h5><p>WGAN有效地解决了模式崩溃问题，生成器可以生成更丰富、多样的样本。  </p>
+<h5 id="提供有意义的损失度量"><a href="#提供有意义的损失度量" class="headerlink" title="提供有意义的损失度量"></a>提供有意义的损失度量</h5><p>WGAN损失函数与生成样本质量之间的关系更加清晰，有助于模型调试和优化。  </p>
+<h4 id="WGAN的缺点"><a href="#WGAN的缺点" class="headerlink" title="WGAN的缺点"></a>WGAN的缺点</h4><h5 id="训练速度较慢"><a href="#训练速度较慢" class="headerlink" title="训练速度较慢"></a>训练速度较慢</h5><p>WGAN相较于传统GAN训练速度较慢。<br>需要在每次迭代时更新判别器（在WGAN中称为critic）多次。  </p>
+<h5 id="权重剪裁"><a href="#权重剪裁" class="headerlink" title="权重剪裁"></a>权重剪裁</h5><p>WGAN需要对critic的权重进行剪裁以满足Lipschitz约束，这可能导致优化过程受限。  </p>
+<h4 id="下一步可以继续深入的工作"><a href="#下一步可以继续深入的工作" class="headerlink" title="下一步可以继续深入的工作"></a>下一步可以继续深入的工作</h4><h5 id="改进权重剪裁"><a href="#改进权重剪裁" class="headerlink" title="改进权重剪裁"></a>改进权重剪裁</h5><p>研究替代权重剪裁的方法，例如Wasserstein GAN-Gradient Penalty (WGAN-GP) 采用梯度惩罚项满足Lipschitz约束。  </p>
+<h5 id="探索不同的距离度量"><a href="#探索不同的距离度量" class="headerlink" title="探索不同的距离度量"></a>探索不同的距离度量</h5><p>研究其他距离度量如Cramer距离，以改进训练稳定性和生成样本质量。  </p>
+<h5 id="结合其他GAN改进技术"><a href="#结合其他GAN改进技术" class="headerlink" title="结合其他GAN改进技术"></a>结合其他GAN改进技术</h5><p>将WGAN与其他GAN改进技术结合，如Spectral Normalization和Self-Attention。  </p>
+<h5 id="应用于其他领域"><a href="#应用于其他领域" class="headerlink" title="应用于其他领域"></a>应用于其他领域</h5><p>将WGAN应用于其他领域，如图像分割、强化学习和自然语言处理。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CNN/GANs/Style%20GAN/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CNN/GANs/%E5%AF%B9%E6%8A%97%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%9B%AE%E5%BD%95/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

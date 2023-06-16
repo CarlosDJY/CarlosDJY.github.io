@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"carlosdjy.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="[[StarGAN Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation.pdf]] 论文报告StarGAN Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation本文将介绍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://carlosdjy.github.io/2023/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CNN/GANs/Star%20GAN/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[[StarGAN Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation.pdf]] 论文报告StarGAN Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation本文将介绍">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-06-16T13:28:02.520Z">
+<meta property="article:modified_time" content="2023-04-06T07:47:59.922Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://carlosdjy.github.io/2023/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CNN/GANs/Star%20GAN/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://carlosdjy.github.io/2023/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CNN/GANs/Star%20GAN/","path":"2023/06/16/机器学习/CNN/GANs/Star GAN/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E6%8A%A5%E5%91%8A"><span class="nav-number">1.</span> <span class="nav-text">论文报告</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E8%AF%95%E5%9B%BE%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">论文试图解决什么问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%99%E6%98%AF%E5%90%A6%E6%98%AF%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.</span> <span class="nav-text">这是否是一个新的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E8%A6%81%E9%AA%8C%E8%AF%81%E4%BB%80%E4%B9%88%E7%A7%91%E5%AD%A6%E5%81%87%E8%AE%BE"><span class="nav-number">1.3.</span> <span class="nav-text">论文要验证什么科学假设</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E5%93%AA%E4%BA%9B%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%BD%92%E7%B1%BB"><span class="nav-number">1.4.</span> <span class="nav-text">有哪些相关研究，如何归类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E4%B8%AD%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E7%9A%84%E5%85%B3%E9%94%AE"><span class="nav-number">1.5.</span> <span class="nav-text">论文中解决方案的关键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E9%87%87%E7%94%A8%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="nav-number">1.6.</span> <span class="nav-text">论文采用的神经网络结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E4%B8%AD%E7%BB%99%E5%87%BA%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">1.7.</span> <span class="nav-text">论文中给出的损失函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E4%B8%AD%E5%AE%9E%E9%AA%8C%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.8.</span> <span class="nav-text">论文中实验的设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E9%87%8F%E8%AF%84%E4%BC%B0%E7%9A%84%E6%95%B0%E6%8D%AE%E9%9B%86%EF%BC%8C%E4%BB%A3%E7%A0%81%E6%98%AF%E5%90%A6%E5%BC%80%E6%BA%90"><span class="nav-number">1.9.</span> <span class="nav-text">定量评估的数据集，代码是否开源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E5%8F%8A%E7%BB%93%E6%9E%9C%E6%98%AF%E5%90%A6%E6%94%AF%E6%8C%81%E9%9C%80%E9%AA%8C%E8%AF%81%E7%9A%84%E5%81%87%E8%AE%BE"><span class="nav-number">1.10.</span> <span class="nav-text">实验及结果是否支持需验证的假设</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%99%E7%AF%87%E8%AE%BA%E6%96%87%E7%9A%84%E5%85%B7%E4%BD%93%E8%B4%A1%E7%8C%AE"><span class="nav-number">1.11.</span> <span class="nav-text">这篇论文的具体贡献</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E6%96%87%E6%8F%90%E5%87%BA%E7%9A%84%E6%96%B9%E6%B3%95%E6%9C%89%E5%93%AA%E4%BA%9B%E7%BC%BA%E7%82%B9"><span class="nav-number">1.12.</span> <span class="nav-text">本文提出的方法有哪些缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8B%E4%B8%80%E6%AD%A5%E5%8F%AF%E4%BB%A5%E7%BB%A7%E7%BB%AD%E6%B7%B1%E5%85%A5%E7%9A%84%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.13.</span> <span class="nav-text">下一步可以继续深入的工作</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CNN/GANs/Star%20GAN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-06-16 21:28:02" itemprop="dateCreated datePublished" datetime="2023-06-16T21:28:02+08:00">2023-06-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-04-06 15:47:59" itemprop="dateModified" datetime="2023-04-06T15:47:59+08:00">2023-04-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>[[StarGAN Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation.pdf]]</p>
+<h3 id="论文报告"><a href="#论文报告" class="headerlink" title="论文报告"></a>论文报告</h3><p>StarGAN Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation<br>本文将介绍论文“StarGAN：跨域图像转换的统一生成对抗网络”，这是在2018年CVPR上提出的一项新型的生成对抗网络，旨在实现跨域图像转换的多对多映射。该研究的主要贡献是提出了一种基于单个生成器和鉴别器的单一模型，可以完成多个任务，同时在多个数据集上达到了最新的状态-of-the-art表现。  </p>
+<h4 id="论文试图解决什么问题"><a href="#论文试图解决什么问题" class="headerlink" title="论文试图解决什么问题"></a>论文试图解决什么问题</h4><p>本文的研究试图解决图像转换领域中跨域问题，即如何从一个域中的图像生成到另一个域的图像。在这个过程中，由于两个域之间的特征差异，原始图像的细节可能会丢失或模糊，从而导致生成的图像质量差。<br>因此，这个问题需要一种能够保留更多细节的跨域图像转换方法。与传统的图像转换方法不同，本文旨在实现一个多对多映射，可以将一对图像转换为多个不同的域。  </p>
+<h4 id="这是否是一个新的问题"><a href="#这是否是一个新的问题" class="headerlink" title="这是否是一个新的问题"></a>这是否是一个新的问题</h4><p>在图像转换领域，本文的跨域多对多映射目标是一种相对较新的问题。此前的一些方法已经尝试实现单一映射或双向映射，但仍存在一些限制，例如输入图像必须相似或必须在两个相邻域之间转换。相较之下，本文提出的StarGAN模型没有此类限制，可以更自由地转换图像从一个域到另一个域。  </p>
+<h4 id="论文要验证什么科学假设"><a href="#论文要验证什么科学假设" class="headerlink" title="论文要验证什么科学假设"></a>论文要验证什么科学假设</h4><p>本研究的科学假设是：我们可以通过将单个鉴别器引入到跨域图像转换的生成对抗网络中，从而在一个网络中实现多个域之间的图像转换。  </p>
+<h4 id="有哪些相关研究，如何归类"><a href="#有哪些相关研究，如何归类" class="headerlink" title="有哪些相关研究，如何归类"></a>有哪些相关研究，如何归类</h4><p>[[CGAN]]<br>[[Cycle GAN]]<br>本文所提出的跨域图像转换问题已经受到广泛的研究关注。以前的方法包括cycleGAN，UNIT等，这些方法都是以不同的方式实现图像转换。可以将先前的方法归类为单向或双向转换。<br>在单向转换中，它只能在两个相邻的域之间转换，而在多个域之间转换时需要训练多个独立的生成器和鉴别器。而双向转换则限制了域之间的相似性，这导致了一些问题，例如在像素级别上反向转换并不具有对称性。  </p>
+<h4 id="论文中解决方案的关键"><a href="#论文中解决方案的关键" class="headerlink" title="论文中解决方案的关键"></a>论文中解决方案的关键</h4><p>StarGAN模型是一种能够实现多对多映射的生成对抗网络的框架，具有以下关键点：<br>1. 采用单个生成器和鉴别器，将所有域的图像输入到同一个生成器中。<br>2. 在鉴别器中包含一个多标签分类器来确定图像所属的域。<br>3. 使用条件GAN（cGAN）以及循环一致性损失来实现图像转换和相应的重构建模。  </p>
+<h4 id="论文采用的神经网络结构"><a href="#论文采用的神经网络结构" class="headerlink" title="论文采用的神经网络结构"></a>论文采用的神经网络结构</h4><p>StarGAN模型的核心是条件生成器和鉴别器。生成器由编码器和解码器组成，编码器将输入图像转换为潜在向量，在解码器中，该潜在向量被转换回输出图像。生成器的输出经过鉴别器筛选，通过鉴别器中的多标签分类器来确定图像所属的域。  </p>
+<h4 id="论文中给出的损失函数"><a href="#论文中给出的损失函数" class="headerlink" title="论文中给出的损失函数"></a>论文中给出的损失函数</h4><p>StarGAN模型采用了三种不同类型的损失函数来进行训练和优化，分别是：<br>1. 生成器损失：包括条件对抗损失（cGAN）和重构损失，其中重构损失可以在生成器中添加自编码器结构来指导重构的图像恢复到原始图像。<br>2. 鉴别器损失：由鉴别器损失和分类器损失组成，其中鉴别器损失用于提高转换图像的真实性，分类器损失用于实现多标签分类任务。<br>3. 周期一致性损失：用来指导图像在转换过程中的重构损失，以保证图像的像素级一致性，并加强对应的域间的对称性。  </p>
+<h4 id="论文中实验的设计"><a href="#论文中实验的设计" class="headerlink" title="论文中实验的设计"></a>论文中实验的设计</h4><p>本文使用了两个公共数据集进行实验验证：CelebA和RaFD。同时，本文将与其他最新的跨域图像转换方法进行比较来评估其效果。<br>为了进一步评估模型的鲁棒性和泛化能力，本文通过添加一些遮挡物，模糊等复杂场景，对模型进行了测试。  </p>
+<h4 id="定量评估的数据集，代码是否开源"><a href="#定量评估的数据集，代码是否开源" class="headerlink" title="定量评估的数据集，代码是否开源"></a>定量评估的数据集，代码是否开源</h4><p>本文使用的CelebA和RaFD数据集是公共数据集，可以从网络上下载。<br>与此同时，本文在GitHub上提供了开源代码，包括训练代码和源代码。  </p>
+<h4 id="实验及结果是否支持需验证的假设"><a href="#实验及结果是否支持需验证的假设" class="headerlink" title="实验及结果是否支持需验证的假设"></a>实验及结果是否支持需验证的假设</h4><p>本文的实验结果证明了所提出的StarGAN模型在多个数据集上表现出更好的性能，其转换质量和多样性均优于其他跨域图像转换方法。<br>同时，本文还推出一些优秀的深度网络潜在表征，证明其可以很好地捕捉不同的语义信息。  </p>
+<h4 id="这篇论文的具体贡献"><a href="#这篇论文的具体贡献" class="headerlink" title="这篇论文的具体贡献"></a>这篇论文的具体贡献</h4><p>本研究的主要贡献如下：<br>1. 提出一种新型的单一模型，可完成多个跨域图像转换任务，使图像转换更自由，多样化。<br>2. 提出了一种全新的多标签分类器，能够识别并转换不同的域。<br>3. 证明StarGAN模型在多个数据集上超越了现有的有监督和无监督跨域图像转换方法，并且具有更好的转换质量和多样性。<br>4. 完美解决了图像转换中的一些实际问题，例如处理不同分辨率的图像和模糊问题等。  </p>
+<h4 id="本文提出的方法有哪些缺点"><a href="#本文提出的方法有哪些缺点" class="headerlink" title="本文提出的方法有哪些缺点"></a>本文提出的方法有哪些缺点</h4><p>1. 精度问题：StarGAN模型不够准确，有时难以转换图像中的某些细节。<br>2. 常数项问题：使用条件生成器时，一些常数项可能会在不同的域间传递，导致样式失真。<br>3. 训练复杂度问题：由于多对多转换目标，训练时间可能会较长，并且需要较大的训练数据量以实现较好的效果。  </p>
+<h4 id="下一步可以继续深入的工作"><a href="#下一步可以继续深入的工作" class="headerlink" title="下一步可以继续深入的工作"></a>下一步可以继续深入的工作</h4><p>在本领域中，未来可以进行的一些改进包括：<br>1. 提高精度和稳健性问题。可以考虑采用更精细的条件生成器设计来解决细节问题，同时使用更广泛的数据集进行训练，提高模型的鲁棒性和泛化能力。<br>2. 更好的数据对齐。本文中使用的CelebA和RaFD数据集已经计入相应代码库，但仍然不完美，优化数据信息以提高模型训练效果。<br>3. 可解释性问题。在模型中应用可解释性算法，以便帮助用户理解工具在转换图像时的具体流程。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CNN/GANs/pix2pix/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/06/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CNN/GANs/Style%20GAN/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
