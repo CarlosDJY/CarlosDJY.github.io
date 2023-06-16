@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carlosdjy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="获取数据参考图数据处理管道[[4. 图数据处理管道]] 1234import dgldataset &#x3D; dgl.data.CiteseerGraphDataset()graph &#x3D; dataset[0] 节点分类任务模型构建[[2. 消息传递机制]][[3. 构建GNN模块]] 1234567891011121314151617181920212223242526272829# 构建一个2层的GN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5. 训练图神经网络">
+<meta property="og:url" content="https://carlosdjy.github.io/2023/06/17/DGL%E7%AC%94%E8%AE%B0/5.%20%E8%AE%AD%E7%BB%83%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="巧克力の博客">
+<meta property="og:description" content="获取数据参考图数据处理管道[[4. 图数据处理管道]] 1234import dgldataset &#x3D; dgl.data.CiteseerGraphDataset()graph &#x3D; dataset[0] 节点分类任务模型构建[[2. 消息传递机制]][[3. 构建GNN模块]] 1234567891011121314151617181920212223242526272829# 构建一个2层的GN">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-16T19:43:43.948Z">
+<meta property="article:modified_time" content="2023-06-16T19:46:53.257Z">
+<meta property="article:author" content="CarlosDJY">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://carlosdjy.github.io/2023/06/17/DGL%E7%AC%94%E8%AE%B0/5.%20%E8%AE%AD%E7%BB%83%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>5. 训练图神经网络 | 巧克力の博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">巧克力の博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一场思想与心灵之旅</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/06/17/DGL%E7%AC%94%E8%AE%B0/5.%20%E8%AE%AD%E7%BB%83%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="CarlosDJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="巧克力の博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          5. 训练图神经网络
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-06-17 03:43:43 / 修改时间：03:46:53" itemprop="dateCreated datePublished" datetime="2023-06-17T03:43:43+08:00">2023-06-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h3><h4 id="参考图数据处理管道"><a href="#参考图数据处理管道" class="headerlink" title="参考图数据处理管道"></a>参考图数据处理管道</h4><p>[[4. 图数据处理管道]]</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> dgl</span><br><span class="line"></span><br><span class="line">dataset = dgl.data.CiteseerGraphDataset()</span><br><span class="line">graph = dataset[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="节点分类任务"><a href="#节点分类任务" class="headerlink" title="节点分类任务"></a>节点分类任务</h3><h4 id="模型构建"><a href="#模型构建" class="headerlink" title="模型构建"></a>模型构建</h4><p>[[2. 消息传递机制]]<br>[[3. 构建GNN模块]]</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 构建一个2层的GNN模型</span></span><br><span class="line"><span class="keyword">import</span> dgl.nn <span class="keyword">as</span> dglnn</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SAGE</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_feats, hid_feats, out_feats</span>):</span><br><span class="line">    </span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="comment"># 实例化SAGEConve</span></span><br><span class="line">        <span class="comment"># in_feats是输入特征的维度, out_feats是输出特征的维度</span></span><br><span class="line">        <span class="comment"># aggregator_type是聚合函数的类型</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 一个隐藏层一个输出层</span></span><br><span class="line">        self.conv1 = dglnn.SAGEConv(</span><br><span class="line">            in_feats=in_feats, out_feats=hid_feats, aggregator_type=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.conv2 = dglnn.SAGEConv(</span><br><span class="line">            in_feats=hid_feats, out_feats=out_feats, aggregator_type=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, graph, inputs</span>):</span><br><span class="line">	    </span><br><span class="line">        <span class="comment"># 输入是节点的特征</span></span><br><span class="line">        h = self.conv1(graph, inputs)</span><br><span class="line">        <span class="comment"># 经过 ReLU 激活</span></span><br><span class="line">        h = F.relu(h)</span><br><span class="line">        <span class="comment"># 再经过一个卷积层</span></span><br><span class="line">        h = self.conv2(graph, h)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> h</span><br></pre></td></tr></table></figure>
+<h4 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h4><h5 id="数据集分割"><a href="#数据集分割" class="headerlink" title="数据集分割"></a>数据集分割</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">node_features = graph.ndata[<span class="string">&#x27;feat&#x27;</span>]</span><br><span class="line">node_labels = graph.ndata[<span class="string">&#x27;label&#x27;</span>]</span><br><span class="line"></span><br><span class="line">train_mask = graph.ndata[<span class="string">&#x27;train_mask&#x27;</span>]</span><br><span class="line">valid_mask = graph.ndata[<span class="string">&#x27;val_mask&#x27;</span>]</span><br><span class="line">test_mask = graph.ndata[<span class="string">&#x27;test_mask&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 特征数量和标签</span></span><br><span class="line">n_features = node_features.shape[<span class="number">1</span>]</span><br><span class="line">n_labels = <span class="built_in">int</span>(node_labels.<span class="built_in">max</span>().item() + <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h5 id="准确性评估"><a href="#准确性评估" class="headerlink" title="准确性评估"></a>准确性评估</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate</span>(<span class="params">model, graph, features, labels, mask</span>):</span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 不使用梯度下降</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">	    </span><br><span class="line">	    <span class="comment"># 经过 model 的原始输出</span></span><br><span class="line">        logits = model(graph, features)</span><br><span class="line">        <span class="comment"># 保留 validation set 的输出值</span></span><br><span class="line">        logits = logits[mask]</span><br><span class="line">        labels = labels[mask]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 找出每个 logits 样本的最大值的索引</span></span><br><span class="line">        _, indices = torch.<span class="built_in">max</span>(logits, dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 计算正确的 prediction 的占比</span></span><br><span class="line">        correct = torch.<span class="built_in">sum</span>(indices == labels)</span><br><span class="line">        <span class="keyword">return</span> correct.item() * <span class="number">1.0</span> / <span class="built_in">len</span>(labels)</span><br></pre></td></tr></table></figure>
+<h5 id="梯度下降训练"><a href="#梯度下降训练" class="headerlink" title="梯度下降训练"></a>梯度下降训练</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">model = SAGE(in_feats=n_features, hid_feats=<span class="number">100</span>, out_feats=n_labels)</span><br><span class="line">opt = torch.optim.Adam(model.parameters())</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    model.train()</span><br><span class="line">    <span class="comment"># 使用所有节点(全图)进行前向传播计算</span></span><br><span class="line">    logits = model(graph, node_features)</span><br><span class="line">    <span class="comment"># 计算损失值</span></span><br><span class="line">    loss = F.cross_entropy(logits[train_mask], node_labels[train_mask])</span><br><span class="line">    <span class="comment"># 计算验证集的准确度</span></span><br><span class="line">    acc = evaluate(model, graph, node_features, node_labels, valid_mask)</span><br><span class="line">    <span class="comment"># 进行反向传播计算</span></span><br><span class="line">    opt.zero_grad()</span><br><span class="line">    loss.backward()</span><br><span class="line">    opt.step()</span><br><span class="line">    <span class="built_in">print</span>(loss.item())</span><br></pre></td></tr></table></figure>
+<h4 id="异构图上的训练"><a href="#异构图上的训练" class="headerlink" title="异构图上的训练"></a>异构图上的训练</h4><h5 id="模型构建-1"><a href="#模型构建-1" class="headerlink" title="模型构建"></a>模型构建</h5><p>对每种边类型进行单独的图卷积计算<br>将每种边类型上的消息聚合结果再相加<br>作为所有节点类型的最终结果</p>
+<h6 id="实现上与同构图基本一致"><a href="#实现上与同构图基本一致" class="headerlink" title="实现上与同构图基本一致"></a>实现上与同构图基本一致</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Define a Heterograph Conv model</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RGCN</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_feats, hid_feats, out_feats, rel_names</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="comment"># 实例化HeteroGraphConv</span></span><br><span class="line">        <span class="comment"># in_feats是输入特征的维度, out_feats是输出特征的维度</span></span><br><span class="line">        <span class="comment"># aggregate是聚合函数的类型</span></span><br><span class="line">        self.conv1 = dglnn.HeteroGraphConv(&#123;</span><br><span class="line">            rel: dglnn.GraphConv(in_feats, hid_feats)</span><br><span class="line">            <span class="keyword">for</span> rel <span class="keyword">in</span> rel_names&#125;, aggregate=<span class="string">&#x27;sum&#x27;</span>)</span><br><span class="line">        self.conv2 = dglnn.HeteroGraphConv(&#123;</span><br><span class="line">            rel: dglnn.GraphConv(hid_feats, out_feats)</span><br><span class="line">            <span class="keyword">for</span> rel <span class="keyword">in</span> rel_names&#125;, aggregate=<span class="string">&#x27;sum&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, graph, inputs</span>):</span><br><span class="line">        <span class="comment"># 输入是节点的特征字典</span></span><br><span class="line">        h = self.conv1(graph, inputs)</span><br><span class="line">        h = &#123;k: F.relu(v) <span class="keyword">for</span> k, v <span class="keyword">in</span> h.items()&#125;</span><br><span class="line">        h = self.conv2(graph, h)</span><br><span class="line">        <span class="keyword">return</span> h</span><br></pre></td></tr></table></figure>
+<h5 id="数据集获取"><a href="#数据集获取" class="headerlink" title="数据集获取"></a>数据集获取</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">model = RGCN(n_hetero_features, <span class="number">20</span>, n_user_classes, hetero_graph.etypes)</span><br><span class="line">user_feats = hetero_graph.nodes[<span class="string">&#x27;user&#x27;</span>].data[<span class="string">&#x27;feature&#x27;</span>]</span><br><span class="line">item_feats = hetero_graph.nodes[<span class="string">&#x27;item&#x27;</span>].data[<span class="string">&#x27;feature&#x27;</span>]</span><br><span class="line">labels = hetero_graph.nodes[<span class="string">&#x27;user&#x27;</span>].data[<span class="string">&#x27;label&#x27;</span>]</span><br><span class="line">train_mask = hetero_graph.nodes[<span class="string">&#x27;user&#x27;</span>].data[<span class="string">&#x27;train_mask&#x27;</span>]</span><br><span class="line"></span><br><span class="line">node_features = &#123;<span class="string">&#x27;user&#x27;</span>: user_feats, <span class="string">&#x27;item&#x27;</span>: item_feats&#125;</span><br><span class="line">h_dict = model(hetero_graph, &#123;<span class="string">&#x27;user&#x27;</span>: user_feats, <span class="string">&#x27;item&#x27;</span>: item_feats&#125;)</span><br><span class="line">h_user = h_dict[<span class="string">&#x27;user&#x27;</span>]</span><br><span class="line">h_item = h_dict[<span class="string">&#x27;item&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<h5 id="梯度下降训练-1"><a href="#梯度下降训练-1" class="headerlink" title="梯度下降训练"></a>梯度下降训练</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">opt = torch.optim.Adam(model.parameters())</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    model.train()</span><br><span class="line">    <span class="comment"># 使用所有节点的特征进行前向传播计算，并提取输出的user节点嵌入</span></span><br><span class="line">    logits = model(hetero_graph, node_features)[<span class="string">&#x27;user&#x27;</span>]</span><br><span class="line">    <span class="comment"># 计算损失值</span></span><br><span class="line">    loss = F.cross_entropy(logits[train_mask], labels[train_mask])</span><br><span class="line">    <span class="comment"># 计算验证集的准确度。在本例中省略。</span></span><br><span class="line">    <span class="comment"># 进行反向传播计算</span></span><br><span class="line">    opt.zero_grad()</span><br><span class="line">    loss.backward()</span><br><span class="line">    opt.step()</span><br><span class="line">    <span class="built_in">print</span>(loss.item())</span><br></pre></td></tr></table></figure>
+<h3 id="边的分类"><a href="#边的分类" class="headerlink" title="边的分类"></a>边的分类</h3><h4 id="模型构建-2"><a href="#模型构建-2" class="headerlink" title="模型构建"></a>模型构建</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> dgl.function <span class="keyword">as</span> fn</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DotProductPredictor</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, graph, h</span>):</span><br><span class="line">        <span class="comment"># h是从5.1节的GNN模型中计算出的节点表示</span></span><br><span class="line">        <span class="keyword">with</span> graph.local_scope():</span><br><span class="line">            graph.ndata[<span class="string">&#x27;h&#x27;</span>] = h</span><br><span class="line">            graph.apply_edges(fn.u_dot_v(<span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;score&#x27;</span>))</span><br><span class="line">            <span class="keyword">return</span> graph.edata[<span class="string">&#x27;score&#x27;</span>]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 异构图：</span></span><br><span class="line">            <span class="comment"># forward(self, graph, h, etype):</span></span><br><span class="line">            <span class="comment"># ...</span></span><br><span class="line">            <span class="comment"># graph.apply_edges(fn.u_dot_v(&#x27;h&#x27;, &#x27;h&#x27;, &#x27;score&#x27;), etype=etype)</span></span><br><span class="line">            <span class="comment"># return graph.edges[etype].data[&#x27;score&#x27;]</span></span><br></pre></td></tr></table></figure>
+<p>也可以使用 MLP：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MLPPredictor</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_features, out_classes</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.W = nn.Linear(in_features * <span class="number">2</span>, out_classes)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">apply_edges</span>(<span class="params">self, edges</span>):</span><br><span class="line">        h_u = edges.src[<span class="string">&#x27;h&#x27;</span>]</span><br><span class="line">        h_v = edges.dst[<span class="string">&#x27;h&#x27;</span>]</span><br><span class="line">        <span class="comment"># 输入src 和 dst，经过 MLP 输出</span></span><br><span class="line">        score = self.W(torch.cat([h_u, h_v], <span class="number">1</span>))</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&#x27;score&#x27;</span>: score&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, graph, h</span>):</span><br><span class="line">        <span class="comment"># h是从5.1节的GNN模型中计算出的节点表示</span></span><br><span class="line">        <span class="keyword">with</span> graph.local_scope():</span><br><span class="line">            graph.ndata[<span class="string">&#x27;h&#x27;</span>] = h</span><br><span class="line">            graph.apply_edges(self.apply_edges)</span><br><span class="line">            <span class="keyword">return</span> graph.edata[<span class="string">&#x27;score&#x27;</span>]</span><br><span class="line">    <span class="comment"># 异构图：改动同上</span></span><br></pre></td></tr></table></figure>
+<h4 id="预测部分"><a href="#预测部分" class="headerlink" title="预测部分"></a>预测部分</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Model</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_features, hidden_features, out_features, rel_names</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.sage = RGCN(in_features, hidden_features, out_features, rel_names)</span><br><span class="line">        self.pred = HeteroMLPPredictor(out_features, <span class="built_in">len</span>(rel_names))</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, g, x, dec_graph</span>):</span><br><span class="line">        h = self.sage(g, x)</span><br><span class="line">        <span class="keyword">return</span> self.pred(dec_graph, h)</span><br></pre></td></tr></table></figure>
+<p>其中 <code>HeteroMLPPredictor</code> 模块定义如下：<br>（其实还是一个多层感知机）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">HeteroMLPPredictor</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_dims, n_classes</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.W = nn.Linear(in_dims * <span class="number">2</span>, n_classes)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">apply_edges</span>(<span class="params">self, edges</span>):</span><br><span class="line">        x = torch.cat([edges.src[<span class="string">&#x27;h&#x27;</span>], edges.dst[<span class="string">&#x27;h&#x27;</span>]], <span class="number">1</span>)</span><br><span class="line">        y = self.W(x)</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&#x27;score&#x27;</span>: y&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, graph, h</span>):</span><br><span class="line">        <span class="comment"># h是从5.1节中对异构图的每种类型的边所计算的节点表示</span></span><br><span class="line">        <span class="keyword">with</span> graph.local_scope():</span><br><span class="line">            graph.ndata[<span class="string">&#x27;h&#x27;</span>] = h   <span class="comment">#一次性为所有节点类型的 &#x27;h&#x27;赋值</span></span><br><span class="line">            graph.apply_edges(self.apply_edges)</span><br><span class="line">            <span class="keyword">return</span> graph.edata[<span class="string">&#x27;score&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="链接预测"><a href="#链接预测" class="headerlink" title="链接预测"></a>链接预测</h3><h4 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h4><p>使用所需预测的节点对 $u$, $v$ 的节点表示 $\boldsymbol{h}<em>u^{(L)}, \boldsymbol{h}<em>v^{(L)}$，计算存在连接的可能性得分$y</em>{u,v}$。<br>$$y</em>{u,v} &#x3D; \phi(\boldsymbol{h}_u^{(L)}, \boldsymbol{h}_v^{(L)})$$<br>训练方法：比对两个相连接节点之间的得分与任意一对节点之间的得分的差异。 例如，给定一条连接 $u$ 和 $v$ 的边，一个好的模型希望 $u$ 和 $v$ 之间的得分要高于 $u$ 和从一个任意的噪声分布 $v’∼Pn(v)$ 中所采样的节点 $v’$ 之间的得分。 这样的方法称作负采样。</p>
+<h4 id="负样本设计"><a href="#负样本设计" class="headerlink" title="负样本设计"></a>负样本设计</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">construct_negative_graph</span>(<span class="params">graph, k</span>):</span><br><span class="line">    src, dst = graph.edges()</span><br><span class="line"></span><br><span class="line">    neg_src = src.repeat_interleave(k)</span><br><span class="line">    neg_dst = torch.randint(<span class="number">0</span>, graph.num_nodes(), (<span class="built_in">len</span>(src) * k,))</span><br><span class="line">    <span class="keyword">return</span> dgl.graph((neg_src, neg_dst), num_nodes=graph.num_nodes())</span><br></pre></td></tr></table></figure>
+<h4 id="模型训练-1"><a href="#模型训练-1" class="headerlink" title="模型训练"></a>模型训练</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">compute_loss</span>(<span class="params">pos_score, neg_score</span>):</span><br><span class="line">    <span class="comment"># 间隔损失</span></span><br><span class="line">    n_edges = pos_score.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">1</span> - pos_score.unsqueeze(<span class="number">1</span>) + neg_score.view(n_edges, -<span class="number">1</span>)).clamp(<span class="built_in">min</span>=<span class="number">0</span>).mean()</span><br><span class="line"></span><br><span class="line">node_features = graph.ndata[<span class="string">&#x27;feat&#x27;</span>]</span><br><span class="line">n_features = node_features.shape[<span class="number">1</span>]</span><br><span class="line">k = <span class="number">5</span></span><br><span class="line">model = Model(n_features, <span class="number">100</span>, <span class="number">100</span>)</span><br><span class="line">opt = torch.optim.Adam(model.parameters())</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    negative_graph = construct_negative_graph(graph, k)</span><br><span class="line">    pos_score, neg_score = model(graph, negative_graph, node_features)</span><br><span class="line">    loss = compute_loss(pos_score, neg_score)</span><br><span class="line">    opt.zero_grad()</span><br><span class="line">    loss.backward()</span><br><span class="line">    opt.step()</span><br><span class="line">    <span class="built_in">print</span>(loss.item())</span><br></pre></td></tr></table></figure>
+<h5 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h5><p>计算每一组样本对应的损失值<br>使用<code>(1 - pos_score.unsqueeze(1) + neg_score.view(n_edges, -1))</code>进行计算。<br>其中 <code>unsqueeze</code> 方法用于在tensor中增加一个维度，将 <code>pos_score</code> 变成 <code>(n_edges, 1)</code> 的形式，方便和 <code>neg_score</code> 计算损失。<br><code>view</code> 方法用于变换tensor形状把 <code>neg_score</code> 的形状变成 <code>(n_edges, n_neg)</code> 的形状。<br>然后使用 <code>clamp</code> 方法将每个样本对应的损失限制在0和正无穷之间。<br>使用 <code>mean</code> 方法计算所有样本对的平均损失值，作为整个模型的损失值。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">compute_loss</span>(<span class="params">pos_score, neg_score</span>):</span><br><span class="line">    <span class="comment"># 间隔损失</span></span><br><span class="line">    n_edges = pos_score.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">1</span> - pos_score.unsqueeze(<span class="number">1</span>) + neg_score.view(n_edges, -<span class="number">1</span>)).clamp(<span class="built_in">min</span>=<span class="number">0</span>).mean()</span><br></pre></td></tr></table></figure>
+<h4 id="异构图链接预测"><a href="#异构图链接预测" class="headerlink" title="异构图链接预测"></a>异构图链接预测</h4><p>需要指定在那种边上进行链接预测</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 链接预测模型</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Model</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_features, hidden_features, out_features, rel_names</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.sage = RGCN(in_features, hidden_features, out_features, rel_names)</span><br><span class="line">        self.pred = HeteroDotProductPredictor()</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, g, neg_g, x, etype</span>):</span><br><span class="line">        h = self.sage(g, x)</span><br><span class="line">        <span class="keyword">return</span> self.pred(g, h, etype), self.pred(neg_g, h, etype)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对比边分类模型</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, g, x, etype</span>):</span><br><span class="line">        h = self.sage(g, x)</span><br><span class="line">        <span class="keyword">return</span> self.pred(g, h, etype)</span><br></pre></td></tr></table></figure>
+<h3 id="整图分类"><a href="#整图分类" class="headerlink" title="整图分类"></a>整图分类</h3><h4 id="图的训练"><a href="#图的训练" class="headerlink" title="图的训练"></a>图的训练</h4><p>类似小批量训练：<br>使用DGL，用户可将一系列的图建立成一个图批次。一个图批次可以被看作是一张大图，图中的每个连通子图对应一张原始小图。<br>需要注意，DGL里对图进行变换的函数会去掉图上的批次信息。用户可以通过 <code>dgl.DGLGraph.set_batch_num_nodes()</code> 和 <code>dgl.DGLGraph.set_batch_num_edges()</code> 两个函数在变换后的图上重新加入批次信息。</p>
+<h4 id="图的读出"><a href="#图的读出" class="headerlink" title="图的读出"></a>图的读出</h4><p>$$h_g &#x3D; \frac{1}{|\mathcal{V}|}\sum_{v\in \mathcal{V}}h_v$$<br>其中，$h_g$ 是图 $g$ 的表征， $\mathcal V$ 是图 $g$ 中节点的集合， $h_v$ 是节点 $v$ 的特征。<br><code>dgl.readout_nodes()</code> 就实现了上述的平均值读出计算。<br>后续接一个多层感知机获得分类输出。</p>
+<h5 id="使用-DataLoader-遍历数据"><a href="#使用-DataLoader-遍历数据" class="headerlink" title="使用 DataLoader 遍历数据"></a>使用 DataLoader 遍历数据</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> dgl.dataloading <span class="keyword">import</span> GraphDataLoader</span><br><span class="line">dataloader = GraphDataLoader(</span><br><span class="line">    dataset,</span><br><span class="line">    batch_size=<span class="number">1024</span>,</span><br><span class="line">    drop_last=<span class="literal">False</span>,</span><br><span class="line">    shuffle=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<h5 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这仅是个例子，特征尺寸是7</span></span><br><span class="line">model = Classifier(<span class="number">7</span>, <span class="number">20</span>, <span class="number">5</span>)</span><br><span class="line">opt = torch.optim.Adam(model.parameters())</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">20</span>):</span><br><span class="line">    <span class="keyword">for</span> batched_graph, labels <span class="keyword">in</span> dataloader:</span><br><span class="line">        feats = batched_graph.ndata[<span class="string">&#x27;attr&#x27;</span>]</span><br><span class="line">        logits = model(batched_graph, feats)</span><br><span class="line">        loss = F.cross_entropy(logits, labels)</span><br><span class="line">        opt.zero_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        opt.step()</span><br></pre></td></tr></table></figure>
+<h4 id="异构图上的训练-1"><a href="#异构图上的训练-1" class="headerlink" title="异构图上的训练"></a>异构图上的训练</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RGCN</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_feats, hid_feats, out_feats, rel_names</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.conv1 = dglnn.HeteroGraphConv(&#123;</span><br><span class="line">            rel: dglnn.GraphConv(in_feats, hid_feats)</span><br><span class="line">            <span class="keyword">for</span> rel <span class="keyword">in</span> rel_names&#125;, aggregate=<span class="string">&#x27;sum&#x27;</span>)</span><br><span class="line">        self.conv2 = dglnn.HeteroGraphConv(&#123;</span><br><span class="line">            rel: dglnn.GraphConv(hid_feats, out_feats)</span><br><span class="line">            <span class="keyword">for</span> rel <span class="keyword">in</span> rel_names&#125;, aggregate=<span class="string">&#x27;sum&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, graph, inputs</span>):</span><br><span class="line">        <span class="comment"># inputs是节点的特征</span></span><br><span class="line">        h = self.conv1(graph, inputs)</span><br><span class="line">        h = &#123;k: F.relu(v) <span class="keyword">for</span> k, v <span class="keyword">in</span> h.items()&#125;</span><br><span class="line">        h = self.conv2(graph, h)</span><br><span class="line">        <span class="keyword">return</span> h</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HeteroClassifier</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_dim, hidden_dim, n_classes, rel_names</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.rgcn = RGCN(in_dim, hidden_dim, hidden_dim, rel_names)</span><br><span class="line">        self.classify = nn.Linear(hidden_dim, n_classes)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, g</span>):</span><br><span class="line">        h = g.ndata[<span class="string">&#x27;feat&#x27;</span>]</span><br><span class="line">        h = self.rgcn(g, h)</span><br><span class="line">        <span class="keyword">with</span> g.local_scope():</span><br><span class="line">            g.ndata[<span class="string">&#x27;h&#x27;</span>] = h</span><br><span class="line">            <span class="comment"># 通过平均读出值来计算单图的表征</span></span><br><span class="line">            hg = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> ntype <span class="keyword">in</span> g.ntypes:</span><br><span class="line">                hg = hg + dgl.mean_nodes(g, <span class="string">&#x27;h&#x27;</span>, ntype=ntype)</span><br><span class="line">            <span class="keyword">return</span> self.classify(hg)</span><br></pre></td></tr></table></figure>
+<h5 id="RGCN-模块"><a href="#RGCN-模块" class="headerlink" title="RGCN 模块"></a>RGCN 模块</h5><p>RGCN 是一个 <code>nn.Module</code> 子类，其作用是在异构图上执行图卷积操作。<br>它有两个 <code>dglnn.HeteroGraphConv</code> 层，每个层都针对关系类型 <code>rel_names</code> 创建 <code>dglnn.GraphConv</code> 实例。<br><code>forward()</code> 方法首先使用第一个图卷积层处理输入图和节点特征，然后应用ReLU激活函数。接下来，它将处理后的特征传递给第二个图卷积层以获取最终输出。</p>
+<h5 id="异构图-Classifier-模块"><a href="#异构图-Classifier-模块" class="headerlink" title="异构图 Classifier 模块"></a>异构图 Classifier 模块</h5><p><code>HeteroClassifier</code> 是 <code>nn.Module</code> 子类，用于在异构图上执行节点分类。它包含一个RGCN层来处理图的特征，并使用线性层 <code>nn.Linear</code> 执行分类。 <code>aggregate</code> 参数指定了不同节点的消息汇聚方式，这里的 <code>sum</code> 表示使用求和的方式。<br><code>HeteroClassifier</code> 的 <code>forward()</code> 方法首先从图中提取节点特征并将其传递给RGCN层。<br>在图的本地作用域 <code>g.local_scope()</code> 内，将RGCN层的输出赋给图中的节点特征。<br>然后，通过求取节点特征 <code>h</code> 的平均值计算每个节点类型的图表示，最后将这些表示传递给线性分类器以获取分类结果。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/17/DGL%E7%AC%94%E8%AE%B0/4.%20%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E7%AE%A1%E9%81%93/" rel="prev" title="4. 图数据处理管道">
+      <i class="fa fa-chevron-left"></i> 4. 图数据处理管道
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/17/DGL%E7%AC%94%E8%AE%B0/6.%20%E9%9A%8F%E6%9C%BA%E6%89%B9%E6%AC%A1%E8%AE%AD%E7%BB%83/" rel="next" title="6. 随机批次训练">
+      6. 随机批次训练 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="nav-number">1.</span> <span class="nav-text">获取数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E7%AE%A1%E9%81%93"><span class="nav-number">1.1.</span> <span class="nav-text">参考图数据处理管道</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E5%88%86%E7%B1%BB%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.</span> <span class="nav-text">节点分类任务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA"><span class="nav-number">2.1.</span> <span class="nav-text">模型构建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="nav-number">2.2.</span> <span class="nav-text">模型训练</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%86%E5%89%B2"><span class="nav-number">2.2.1.</span> <span class="nav-text">数据集分割</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%87%86%E7%A1%AE%E6%80%A7%E8%AF%84%E4%BC%B0"><span class="nav-number">2.2.2.</span> <span class="nav-text">准确性评估</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E8%AE%AD%E7%BB%83"><span class="nav-number">2.2.3.</span> <span class="nav-text">梯度下降训练</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%9E%84%E5%9B%BE%E4%B8%8A%E7%9A%84%E8%AE%AD%E7%BB%83"><span class="nav-number">2.3.</span> <span class="nav-text">异构图上的训练</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA-1"><span class="nav-number">2.3.1.</span> <span class="nav-text">模型构建</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%8A%E4%B8%8E%E5%90%8C%E6%9E%84%E5%9B%BE%E5%9F%BA%E6%9C%AC%E4%B8%80%E8%87%B4"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">实现上与同构图基本一致</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E8%8E%B7%E5%8F%96"><span class="nav-number">2.3.2.</span> <span class="nav-text">数据集获取</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E8%AE%AD%E7%BB%83-1"><span class="nav-number">2.3.3.</span> <span class="nav-text">梯度下降训练</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%B9%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">3.</span> <span class="nav-text">边的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA-2"><span class="nav-number">3.1.</span> <span class="nav-text">模型构建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%84%E6%B5%8B%E9%83%A8%E5%88%86"><span class="nav-number">3.2.</span> <span class="nav-text">预测部分</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%E9%A2%84%E6%B5%8B"><span class="nav-number">4.</span> <span class="nav-text">链接预测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-number">4.1.</span> <span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B4%9F%E6%A0%B7%E6%9C%AC%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.2.</span> <span class="nav-text">负样本设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83-1"><span class="nav-number">4.3.</span> <span class="nav-text">模型训练</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">4.3.1.</span> <span class="nav-text">损失函数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%9E%84%E5%9B%BE%E9%93%BE%E6%8E%A5%E9%A2%84%E6%B5%8B"><span class="nav-number">4.4.</span> <span class="nav-text">异构图链接预测</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%9B%BE%E5%88%86%E7%B1%BB"><span class="nav-number">5.</span> <span class="nav-text">整图分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E8%AE%AD%E7%BB%83"><span class="nav-number">5.1.</span> <span class="nav-text">图的训练</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E8%AF%BB%E5%87%BA"><span class="nav-number">5.2.</span> <span class="nav-text">图的读出</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-DataLoader-%E9%81%8D%E5%8E%86%E6%95%B0%E6%8D%AE"><span class="nav-number">5.2.1.</span> <span class="nav-text">使用 DataLoader 遍历数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="nav-number">5.2.2.</span> <span class="nav-text">训练过程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%9E%84%E5%9B%BE%E4%B8%8A%E7%9A%84%E8%AE%AD%E7%BB%83-1"><span class="nav-number">5.3.</span> <span class="nav-text">异构图上的训练</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RGCN-%E6%A8%A1%E5%9D%97"><span class="nav-number">5.3.1.</span> <span class="nav-text">RGCN 模块</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BC%82%E6%9E%84%E5%9B%BE-Classifier-%E6%A8%A1%E5%9D%97"><span class="nav-number">5.3.2.</span> <span class="nav-text">异构图 Classifier 模块</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">CarlosDJY</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CarlosDJY</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
