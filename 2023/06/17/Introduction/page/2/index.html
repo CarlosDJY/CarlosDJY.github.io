@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"carlosdjy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"carlosdjy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta property="og:type" content="website">
@@ -116,12 +116,12 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">2</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">13</span></a>
 
   </li>
   </ul>
@@ -151,10 +151,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/05/18/AI%20%E7%A4%BE%E4%BC%9A%E5%AD%A6%E4%B8%8E%E5%BF%83%E7%90%86%E5%AD%A6/AI%20%E7%9A%84%E8%87%AA%E6%88%91%E6%84%8F%E8%AF%86/">
+    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/03/25/DGL%E7%AC%94%E8%AE%B0/3.%20%E6%9E%84%E5%BB%BAGNN%E6%A8%A1%E5%9D%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="CarlosDJY">
       <meta itemprop="description" content="">
     </span>
@@ -165,7 +165,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/05/18/AI%20%E7%A4%BE%E4%BC%9A%E5%AD%A6%E4%B8%8E%E5%BF%83%E7%90%86%E5%AD%A6/AI%20%E7%9A%84%E8%87%AA%E6%88%91%E6%84%8F%E8%AF%86/" class="post-title-link" itemprop="url">AI 的自我意识</a>
+            <a href="/2023/03/25/DGL%E7%AC%94%E8%AE%B0/3.%20%E6%9E%84%E5%BB%BAGNN%E6%A8%A1%E5%9D%97/" class="post-title-link" itemprop="url">3. 构建GNN模块</a>
         </h2>
 
         <div class="post-meta">
@@ -175,132 +175,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-05-18 15:30:07" itemprop="dateCreated datePublished" datetime="2023-05-18T15:30:07+08:00">2023-05-18</time>
+              <time title="创建时间：2023-03-25 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-25T00:00:00+08:00">2023-03-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-17 04:12:57" itemprop="dateModified" datetime="2023-06-17T04:12:57+08:00">2023-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AI%E7%A4%BE%E4%BC%9A%E5%AD%A6%E4%B8%8E%E5%BF%83%E7%90%86%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">AI社会学与心理学</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="HumanitieX-心灵哲学导论"><a href="#HumanitieX-心灵哲学导论" class="headerlink" title="HumanitieX 心灵哲学导论"></a>HumanitieX 心灵哲学导论</h2><p><strong>AI 是否拥有意识？换句话说，我们有可能在机器上检测出意识的存在吗？</strong></p>
-<p>去年年底，一位来自谷歌 AI 伦理部门的工程师在一份 21 页的报告中提出：大模型 LaMDA 已经拥有了独立的人格，报告的最后，他建议谷歌建立一套评估 AI 是否拥有意识的理论框架。而在近期 GPT 模型的广泛使用，AI　的「暗黑人格」引发人们对于 AI 伦理的担忧，并爆发出我们是否需要限制 AI 发展的讨论。</p>
-<p>有关意识的讨论在各类科幻题材中并不鲜见。比如，<strong>诸如「数字生命」「意识上传」「脑机接口」等</strong>有趣概念，反应出将意识进行上传、下载和传输等的丰富想象。</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/Picb0jl7T0ZZCvGVUof6ERdrKreaf77QYXpdD5vO26PKEZQWln3eYaWnFHibD1UQxWqxCpvkf0D8ibwUUuPCdiawkw/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
-<p>年初上映的《流浪地球 2》里脑机接口的实验受试者和拿着「数字生命备份卡」的试验员</p>
-<p>图源：《流浪地球 2》</p>
-<p>现实世界里，研究意识诞生之基底——脑科学的前沿发现也为我们提供了意识问题的科学佐证，一些激进的侵入式脑机接口实验也取得了突破性进展：</p>
-<p>早在 2021 年 4 月，马斯克旗下的公司 Neuralink 就曾展示过一段嵌入无线脑机接口（BCI）的猴子成功通过意念控制鼠标打游戏的视频。</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/Picb0jl7T0ZZCvGVUof6ERdrKreaf77QYewkol1U00QqFhXVIWWYg7ka3R7sUyLsY8GRP8ODQ2X5CPN4NeFqic7w/640?wx_fmt=gif&wxfrom=5&wx_lazy=1" alt="图片"></p>
-<p>一边吃着香蕉奶昔，一边玩着「Mind Pong」的实验猴</p>
-<p>图源：techcrunch. Com</p>
-<p>视频中的猴子大脑里有着两片无线脑机接口（BCI），一旁的工作人员则通过计算机实时接收和解码其脑子里产生的电信号，并在屏幕上显示出相关动作。</p>
-<p>尽管这一实验由于动物伦理问题已被叫停。但在技术实现之前，心智存在的问题在当下的探讨仍不失其要。</p>
-<p><strong>人类独一无二的心智，能否以符号的形式在计算机之中复现？计算机中的人工智能，有是否拥有独立的自我意识与人格？那动物呢？它们的心智又和我们有何差别？</strong>这些话题在心灵哲学中已得到了广泛讨论。</p>
-<p>对于<em>心灵</em>的哲学探讨有着漫长的历史，而心灵哲学真正作为一门独立的分支被分化出来则是当代各学科对于心理现象研究的共同产物。</p>
-<p>*这里的<em>心灵</em>指的是一系列认知能力组成的总体。</p>
-<p>在心灵哲学<strong>经典的「他心问题」中</strong>，主要聚焦于其他人是否与我们拥有相似的心灵的证明：在日常生活中，我们只能观察到他人的外部行为，那么如何知道他人也和我们一样拥有心智，或者他们只是 NPC ？</p>
-<p>维特根斯坦主张<strong>从「私人语言」（private language argument）的角度为「他心问题」提供证明</strong>：我们的内心体验通过共同语言得到表达和理解，因而语言并非个人私有，所以他人也拥有心智。</p>
-<p><strong>那么如果换成动物呢？我们如何推知在人和动物之间心智或灵魂上的区别？</strong></p>
-<p>美国哲学家托马斯·内格尔（Thomas Nagel）在《成为蝙蝠是什么感觉？》中曾用蝙蝠的例子向我们解释：</p>
-<p>蝙蝠通过声呐或回声来感知世界，但由于这样的感受方式与我们通过视觉、味觉等感官的感受方式有很大的出入，我们无法真正地与蝙蝠感同身受。</p>
-<p>也就是说，即使科学家们知道当蝙蝠在接收到一段超声波时脑中所出现的特定的神经冲动，<strong>我们或许永远无法知道那种神经冲动对应的是什么感觉。</strong></p>
-<p><strong>而人类大概也只有变成蝙蝠，才可能真正了解蝙蝠的感受。</strong></p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/Picb0jl7T0ZZCvGVUof6ERdrKreaf77QYIJC35jP5Yib7ibiasibS9241eFJHahmCD6qZ6zLR8FvVNzibosnLTZHQ8OQ/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
-<p>蝙蝠通过声呐定位捕猎小虫子</p>
-<p>图源：askabiologist. Asu. Edu</p>
-<p>尽管在现代科技的发展下，我们将来完全有可能通过「脑机接口」等技术手段获得<strong>关于大脑和人类行为的客观物理特征</strong>的非常细致的知识，但我们也无法完全了解他人乃至动物对于颜色、气味、疼痛等等的<strong>主观感受</strong>。</p>
-<p>心灵哲学的探讨则为技术提供了理论上的洞见，指引并拓宽科学发现的可能性。</p>
-<p>作为一项研究人类优美的思维活动本身的学科，心灵哲学在<strong>人类心智、思维、意识</strong>等问题的反复讨论中，以理论解密人类思维的本质；并在与<strong>认知神经科学、认知心理学、语言学</strong>等的学科交叉中，绽发出全新的学科活力与对现实的解释力。</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/Picb0jl7T0ZZCvGVUof6ERdrKreaf77QY9gkvhDZXTviatOuxxUDNfoGCtaqhORZXJF0KUHZvK1mCfxMcx8faUgQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
-<p><strong>在「HumanitieX 心灵哲学导论」中</strong>，你将收获包括但不限于以下问题的回答：</p>
-<p><strong><em>意识如何从物质大脑中产生？</em></strong></p>
-<p><strong><em>人格与自由意志如何可能？</em></strong></p>
-<p><strong><em>人工智能可以作为一个道德主体吗？</em></strong></p>
-<p><strong><em>人类的道德是否只是演化优势的产物？</em></strong></p>
-<p><strong><em>动物有心灵吗？从动物到人之间的心灵最关键的区别在哪？</em></strong></p>
-<p>本课程将带领探索者们<strong>从「黑白玛丽」「中文屋」「哲学僵尸」「缸中之脑」等</strong>心灵哲学的思想实验，<strong>以及「裂脑人」「大脑植入」等</strong>认知科学实验的例子出发，一起探讨心灵哲学中的经典问题：思维、知觉、意识、心灵与身体，心灵与价值判断，心灵与世界的关系等等。</p>
-<p>并在激荡思维、灵感迸发的课堂讨论中，进一步锻炼探索者<strong>对事实进行抽丝剥茧的逻辑推理思维能力</strong>，以及<strong>独立思考并解决问题的能力</strong>。</p>
-<p>通过本门课程的学习，探索者们将借助体系化的哲学理论，收获对世界的独到见解；并立足于不断变化的时代，把握人之为人的深刻本质；最终塑造自己成为具备理性思维与广阔视野，在人工智能时代提出真知灼见的<strong>「爱智慧的人」</strong>。</p>
-<p><strong>前置要求：</strong></p>
-<p>对哲学尤其是对自我意识、人格、人类认知能力与人工智能等有强烈的兴趣，有基础的英文文献阅读能力即可。</p>
-<p><strong>课程大纲：</strong></p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/Picb0jl7T0ZZCvGVUof6ERdrKreaf77QYicNUibGELvTH0ydyicqiasMgLXtrZpSbmRUglfQgvuVfIQJdmQFyAUQibIg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/Picb0jl7T0ZZCvGVUof6ERdrKreaf77QYHhBbwqxiaoKFIyyeymebylQOQ7Rf3UmPeicZBHk48qnDkXAd0iaglQMTA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/Picb0jl7T0ZZCvGVUof6ERdrKreaf77QYNssY0fOD4onHzq5gx2SRw9wtI86jV5dkDFcsjydjbibcCqhmcp7BHRA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/04/02/DGL%E7%AC%94%E8%AE%B0/6.%20%E9%9A%8F%E6%9C%BA%E6%89%B9%E6%AC%A1%E8%AE%AD%E7%BB%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="CarlosDJY">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="巧克力の博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/04/02/DGL%E7%AC%94%E8%AE%B0/6.%20%E9%9A%8F%E6%9C%BA%E6%89%B9%E6%AC%A1%E8%AE%AD%E7%BB%83/" class="post-title-link" itemprop="url">6. 随机批次训练</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-04-02 00:55:02" itemprop="dateCreated datePublished" datetime="2023-04-02T00:55:02+08:00">2023-04-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-17 04:15:53" itemprop="dateModified" datetime="2023-06-17T04:15:53+08:00">2023-06-17</time>
+                <time title="修改时间：2023-06-17 15:27:57" itemprop="dateModified" datetime="2023-06-17T15:27:57+08:00">2023-06-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -323,21 +205,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="邻居采样方法概述"><a href="#邻居采样方法概述" class="headerlink" title="邻居采样方法概述"></a>邻居采样方法概述</h3><p>相关内容：[[3. 构建GNN模块#小批次训练|小批次训练]]</p>
-<h4 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h4><p>每次梯度下降，选择一个小批次的图节点， 其最终表示将在神经网络的第 $L$ 层进行计算，然后在网络的第 $L-1$ 层选择该批次节点的全部或部分邻居节点。 重复这个过程，直到到达输入层。</p>
-<h4 id="采样步骤"><a href="#采样步骤" class="headerlink" title="采样步骤"></a>采样步骤</h4><ol>
-<li>在整张图中随机选择一组目标节点。</li>
-<li>确定每个目标节点的邻居节点。</li>
-<li>从目标节点和其邻居节点中随机选择一定数量的节点。</li>
-<li>使用选定的节点作为训练集中的样本进行训练。</li>
-</ol>
-<h4 id="具体操作"><a href="#具体操作" class="headerlink" title="具体操作"></a>具体操作</h4><ul>
-<li>定义邻居采样器。</li>
-<li>调整模型以进行小批次训练。</li>
-<li>修改模型训练循环部分。</li>
-</ul>
-<h3 id="节点分类任务"><a href="#节点分类任务" class="headerlink" title="节点分类任务"></a>节点分类任务</h3><p>[[Mini-batch]]</p>
-
+          <h2 id="省流"><a href="#省流" class="headerlink" title="省流"></a>省流</h2><p>DGL中构造函数和前向函数的使用方法。构造函数包括设置选项、注册可学习的参数或者子模块和初始化参数三个部分。前向函数包括消息传递，聚合和聚合后更新特征。<br>小批次训练的实际执行方式：前向计算子图。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/03/25/DGL%E7%AC%94%E8%AE%B0/3.%20%E6%9E%84%E5%BB%BAGNN%E6%A8%A1%E5%9D%97/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -356,10 +232,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/04/01/DGL%E7%AC%94%E8%AE%B0/PyTorch/">
+    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/03/24/DGL%E7%AC%94%E8%AE%B0/2.%20%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92%E6%9C%BA%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="CarlosDJY">
       <meta itemprop="description" content="">
     </span>
@@ -370,7 +246,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/04/01/DGL%E7%AC%94%E8%AE%B0/PyTorch/" class="post-title-link" itemprop="url">PyTorch</a>
+            <a href="/2023/03/24/DGL%E7%AC%94%E8%AE%B0/2.%20%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">2. 消息传递机制</a>
         </h2>
 
         <div class="post-meta">
@@ -380,14 +256,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-04-01 12:16:09" itemprop="dateCreated datePublished" datetime="2023-04-01T12:16:09+08:00">2023-04-01</time>
+              <time title="创建时间：2023-03-24 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-24T00:00:00+08:00">2023-03-24</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-17 04:15:53" itemprop="dateModified" datetime="2023-06-17T04:15:53+08:00">2023-06-17</time>
+                <time title="修改时间：2023-06-17 15:27:53" itemprop="dateModified" datetime="2023-06-17T15:27:53+08:00">2023-06-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -410,35 +286,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>0. <a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html">Quickstart</a></p>
-<h3 id="Tensors"><a href="#Tensors" class="headerlink" title="Tensors"></a>Tensors</h3><p>1. <a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html">Tensors</a></p>
-<h4 id="数组计算"><a href="#数组计算" class="headerlink" title="数组计算"></a>数组计算</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> np.arange(<span class="number">12</span>).reshape(<span class="number">3</span>,<span class="number">4</span>) <span class="comment"># 可以改变输出形状</span></span><br><span class="line"><span class="built_in">print</span> np.arange(<span class="number">24</span>).reshape(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>)<span class="comment"># 2页，3行，4页</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> a.<span class="built_in">sum</span>(),a.<span class="built_in">sum</span>(axis=<span class="number">1</span>),a.<span class="built_in">sum</span>(<span class="number">0</span>) </span><br><span class="line"><span class="comment"># axis用于指定运算轴（默认全部，可指定0或1）</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> a.<span class="built_in">min</span>(),a.<span class="built_in">max</span>(axis=<span class="number">1</span>),a.mean(axis=<span class="number">1</span>) </span><br><span class="line"><span class="comment"># axis = 0: 按列计算，axis = 1: 按行计算</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> a.cumsum(<span class="number">1</span>) <span class="comment"># 按行计算累积和</span></span><br></pre></td></tr></table></figure>
-<h4 id="数组索引和切片"><a href="#数组索引和切片" class="headerlink" title="数组索引和切片"></a>数组索引和切片</h4><h5 id="大致解释"><a href="#大致解释" class="headerlink" title="大致解释"></a>大致解释</h5><p><code>[:,1]</code> 行 <code>index[0:-1]</code> 列 <code>index[1]</code></p>
-<h5 id="一维数组"><a href="#一维数组" class="headerlink" title="一维数组"></a>一维数组</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">a = np.arange(<span class="number">0</span>,<span class="number">10</span>,<span class="number">1</span>)**<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> a[<span class="number">0</span>],a[<span class="number">2</span>],a[-<span class="number">1</span>],a[-<span class="number">2</span>] <span class="comment"># 索引从0开始，-1表示最后一个索引</span></span><br><span class="line"><span class="built_in">print</span> a[<span class="number">2</span>:<span class="number">5</span>],a[-<span class="number">5</span>:-<span class="number">1</span>] <span class="comment"># 包括起点，不包括终点</span></span><br><span class="line">a[<span class="number">1</span>:<span class="number">4</span>]=<span class="number">100</span>; <span class="comment"># 批量赋值</span></span><br><span class="line"></span><br><span class="line">a[:<span class="number">6</span>:<span class="number">2</span>] = -<span class="number">100</span>;</span><br><span class="line"><span class="comment"># 从开始到第6个索引，每隔一个元素（步长=2）赋值</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> a[: :-<span class="number">1</span>];</span><br><span class="line"><span class="comment"># 将a逆序输出，a本身未发生改变</span></span><br><span class="line"></span><br><span class="line">b = [np.sqrt(np.<span class="built_in">abs</span>(i)) <span class="keyword">for</span> i <span class="keyword">in</span> a]; <span class="comment"># 通过遍历赋值</span></span><br></pre></td></tr></table></figure>
-<h5 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a = np.arange(<span class="number">0</span>,<span class="number">20</span>).reshape((<span class="number">4</span>,<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> a, a[<span class="number">2</span>,<span class="number">3</span>], a[:,<span class="number">1</span>], a[<span class="number">1</span>:<span class="number">4</span>,<span class="number">2</span>], a[<span class="number">1</span>:<span class="number">3</span>,:]</span><br><span class="line"><span class="built_in">print</span> a[-<span class="number">1</span>] <span class="comment"># 相当于a[-1,:],即索引少于轴数时，确实的索引默认为整个切片</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> a:</span><br><span class="line">    <span class="built_in">print</span> row <span class="comment"># 遍历以第一个轴为基础</span></span><br></pre></td></tr></table></figure>
-<h3 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h3><p>2. <a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/data_tutorial.html">Datasets and DataLoaders</a></p>
-<h4 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> torchvision.io <span class="keyword">import</span> read_image</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CustomImageDataset</span>(<span class="title class_ inherited__">Dataset</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, annotations_file, img_dir, transform=<span class="literal">None</span>, target_transform=<span class="literal">None</span></span>):</span><br><span class="line">        self.img_labels = pd.read_csv(annotations_file)</span><br><span class="line">        self.img_dir = img_dir</span><br><span class="line">        self.transform = transform</span><br><span class="line">        self.target_transform = target_transform</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.img_labels)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, idx</span>):</span><br><span class="line">        img_path = os.path.join(self.img_dir, self.img_labels.iloc[idx, <span class="number">0</span>])</span><br><span class="line">        image = read_image(img_path)</span><br><span class="line">        label = self.img_labels.iloc[idx, <span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> self.transform:</span><br><span class="line">            image = self.transform(image)</span><br><span class="line">        <span class="keyword">if</span> self.target_transform:</span><br><span class="line">            label = self.target_transform(label)</span><br><span class="line">        <span class="keyword">return</span> image, label</span><br></pre></td></tr></table></figure>
-<h5 id="getitem"><a href="#getitem" class="headerlink" title="__getitem__"></a><code>__getitem__</code></h5><p>该函数通过给定的索引从数据集中加载并返回一个样本。<br>根据索引，使用 <code>read_image</code> 将其转换为张量，从 <code>self.img_labels</code> 中的CSV数据检索出相应的标签，对它们调用相应的转换函数，并在元组中返回张量图像和相应的标签。</p>
-<h4 id="DataLoader"><a href="#DataLoader" class="headerlink" title="DataLoader"></a>DataLoader</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"></span><br><span class="line">train_dataloader = DataLoader(training_data, batch_size=<span class="number">64</span>, shuffle=<span class="literal">True</span>)</span><br><span class="line">test_dataloader = DataLoader(test_data, batch_size=<span class="number">64</span>, shuffle=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">[train_features], [train_labels] = <span class="built_in">next</span>(<span class="built_in">iter</span>([train_dataloader]))</span><br></pre></td></tr></table></figure>
-<p>每次迭代都会返回包含batch_size &#x3D; 64个特征和标签的train_features和train_labels批次。</p>
-<h3 id="Transforms"><a href="#Transforms" class="headerlink" title="Transforms"></a>Transforms</h3><p>3. <a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/transforms_tutorial.html">Transforms</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> torchvision.transforms <span class="keyword">import</span> ToTensor, Lambda</span><br><span class="line"></span><br><span class="line">ds = datasets.FashionMNIST(</span><br><span class="line">    root=<span class="string">&quot;data&quot;</span>,</span><br><span class="line">    train=<span class="literal">True</span>,</span><br><span class="line">    download=<span class="literal">True</span>,</span><br><span class="line">    transform=ToTensor(),</span><br><span class="line">    target_transform=Lambda(<span class="keyword">lambda</span> y: torch.zeros(<span class="number">10</span>, dtype=torch.<span class="built_in">float</span>).scatter_(<span class="number">0</span>, torch.tensor(y), value=<span class="number">1</span>))</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p><code>ToTensor</code> 和 <code>Lambda</code></p>
-<h4 id="ToTensor"><a href="#ToTensor" class="headerlink" title="ToTensor"></a><code>ToTensor</code></h4><p>PIL image or NumPy <code>ndarray</code> into a <code>FloatTensor</code>, and scales the image’s pixel intensity values in the range <code>[0., 1.]</code></p>
-<h4 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a><code>Lambda</code></h4><p>自定义的转换<br>定义一个函数将整数转换为one-hot编码张量<br>它首先创建大小为10（数据集中标签的数量）的零张量<br>调用scatter_，该函数根据标签y指定的索引分配值&#x3D;1</p>
-<h3 id="Build-Model"><a href="#Build-Model" class="headerlink" title="Build Model"></a>Build Model</h3><p>4. <a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html">Build Model</a><br>[[3. 构建GNN模块]]<br>[[4. 图数据处理管道]]</p>
-<h3 id="Automatic-Differentiation"><a href="#Automatic-Differentiation" class="headerlink" title="Automatic Differentiation"></a>Automatic Differentiation</h3><p>5. <a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html">Automatic Differentiation</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">x = torch.ones(<span class="number">5</span>)  <span class="comment"># input tensor</span></span><br><span class="line">y = torch.zeros(<span class="number">3</span>)  <span class="comment"># expected output</span></span><br><span class="line">w = torch.randn(<span class="number">5</span>, <span class="number">3</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">b = torch.randn(<span class="number">3</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">z = torch.matmul(x, w)+b</span><br><span class="line">loss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)</span><br></pre></td></tr></table></figure>
-<h4 id="with-torch-no-grad"><a href="#with-torch-no-grad" class="headerlink" title="with [torch.no_grad]"></a><code>with [torch.no_grad]</code></h4><p>当需要执行前向计算而不需要梯度时，使用torch.no_grad() 来停止张量跟踪其计算历史和支持梯度计算。<br>这通常用于在已经训练好模型并应用于输入数据时。</p>
-<h4 id="loss-backward"><a href="#loss-backward" class="headerlink" title="loss.backward()"></a><code>loss.backward()</code></h4><p>在固定的x和y值下，对于w和b求偏导数。<br>使用 <code>loss.backward()</code> 函数，然后获取 <code>w.grad</code> 和 <code>b.grad</code> 的值。</p>
-<h3 id="Optimization-Loop"><a href="#Optimization-Loop" class="headerlink" title="Optimization Loop"></a>Optimization Loop</h3><p>6. <a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/optimization_tutorial.html">Optimization Loop</a></p>
-<h4 id="Hyperparameters"><a href="#Hyperparameters" class="headerlink" title="Hyperparameters"></a>Hyperparameters</h4><p>Number of Epochs - 迭代数据集的次数。<br>Batch Size - 在更新参数之前通过网络传播的数据样本数量。<br>Learning Rate - 每个批次&#x2F;迭代更新模型参数的数量。</p>
-<h4 id="Optimization-Loop-1"><a href="#Optimization-Loop-1" class="headerlink" title="Optimization Loop"></a>Optimization Loop</h4><p>Train Loop - 通过迭代训练数据集来尝试达到最优参数。<br>Validation&#x2F;Test Loop - 通过迭代测试数据集来检查模型性能是否在提高。</p>
-<h4 id="Loss-Function"><a href="#Loss-Function" class="headerlink" title="Loss Function"></a>Loss Function</h4><p>常见的损失函数包括用于回归任务的 <code>nn.MSELoss</code>（均方误差）和用于分类的 <code>nn.NLLLoss</code>（负对数似然）<br><code>nn.CrossEntropyLoss</code> 将 <code>nn.LogSoftmax</code> 和 <code>nn.NLLLoss</code> 结合起来。</p>
-<h4 id="Optimizer"><a href="#Optimizer" class="headerlink" title="Optimizer"></a>Optimizer</h4><p><code>optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)</code><br>调用 <code>optimizer.zero_grad()</code> 可以重置模型参数的梯度，因为梯度默认会累加，为了避免对它们进行重复计算，在每次迭代中我们都要明确地将它们重置为零。<br>通过调用 <code>loss.backward()</code> 反向传播损失。PyTorch会计算与每个参数相关的损失梯度。<br>调用 <code>optimizer.step()</code> 可以通过在反向传播过程中收集的梯度来调整模型的参数。</p>
-<h3 id="Save-Load-and-Use"><a href="#Save-Load-and-Use" class="headerlink" title="Save, Load and Use"></a>Save, Load and Use</h3><p>7. <a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/saveloadrun_tutorial.html">Save, Load and Use Model</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torchvision.models <span class="keyword">as</span> models</span><br><span class="line"></span><br><span class="line"><span class="comment"># save</span></span><br><span class="line">model = models.vgg16(pretrained=<span class="literal">True</span>)</span><br><span class="line">torch.save(model.state_dict(), <span class="string">&#x27;model_weights.pth&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># load</span></span><br><span class="line">model = models.vgg16() </span><br><span class="line"><span class="comment"># we do not specify pretrained=True, i.e. do not load default weights</span></span><br><span class="line">model.load_state_dict(torch.load(<span class="string">&#x27;model_weights.pth&#x27;</span>))</span><br><span class="line">model.<span class="built_in">eval</span>()</span><br><span class="line"></span><br><span class="line">torch.save(model, <span class="string">&#x27;model.pth&#x27;</span>)</span><br><span class="line">model = torch.load(<span class="string">&#x27;model.pth&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
+          <h2 id="省流"><a href="#省流" class="headerlink" title="省流"></a>省流</h2><p>图神经网络中的消息传递机制的基本原理和函数库API，包括<strong>消息函数</strong>、<strong>聚合函数</strong>、<strong>更新函数</strong>三个部分，以及常用的函数操作，如加、乘、求和、最大值等。<br>基于内置函数的图神经网络计算方法和<strong>使用子图</strong>部分更新，以及异构图上的消息传递方法：对每个关系<strong>分别计算和聚合</strong>消息并<strong>集中更新</strong>。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/03/24/DGL%E7%AC%94%E8%AE%B0/2.%20%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92%E6%9C%BA%E5%88%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -457,10 +313,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/03/30/DGL%E7%AC%94%E8%AE%B0/5.%20%E8%AE%AD%E7%BB%83%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/03/23/DGL%E7%AC%94%E8%AE%B0/1.%20%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="CarlosDJY">
       <meta itemprop="description" content="">
     </span>
@@ -471,7 +327,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/03/30/DGL%E7%AC%94%E8%AE%B0/5.%20%E8%AE%AD%E7%BB%83%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">5. 训练图神经网络</a>
+            <a href="/2023/03/23/DGL%E7%AC%94%E8%AE%B0/1.%20%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">1. 图的基本概念</a>
         </h2>
 
         <div class="post-meta">
@@ -481,14 +337,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-03-30 11:06:23" itemprop="dateCreated datePublished" datetime="2023-03-30T11:06:23+08:00">2023-03-30</time>
+              <time title="创建时间：2023-03-23 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-23T00:00:00+08:00">2023-03-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-17 04:15:53" itemprop="dateModified" datetime="2023-06-17T04:15:53+08:00">2023-06-17</time>
+                <time title="修改时间：2023-06-17 15:17:41" itemprop="dateModified" datetime="2023-06-17T15:17:41+08:00">2023-06-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -511,138 +367,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h3><h4 id="参考图数据处理管道"><a href="#参考图数据处理管道" class="headerlink" title="参考图数据处理管道"></a>参考图数据处理管道</h4><p>[[4. 图数据处理管道]]</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> dgl</span><br><span class="line"></span><br><span class="line">dataset = dgl.data.CiteseerGraphDataset()</span><br><span class="line">graph = dataset[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<h3 id="节点分类任务"><a href="#节点分类任务" class="headerlink" title="节点分类任务"></a>节点分类任务</h3><h4 id="模型构建"><a href="#模型构建" class="headerlink" title="模型构建"></a>模型构建</h4><p>[[2. 消息传递机制]]<br>[[3. 构建GNN模块]]</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 构建一个2层的GNN模型</span></span><br><span class="line"><span class="keyword">import</span> dgl.nn <span class="keyword">as</span> dglnn</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SAGE</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_feats, hid_feats, out_feats</span>):</span><br><span class="line">    </span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="comment"># 实例化SAGEConve</span></span><br><span class="line">        <span class="comment"># in_feats是输入特征的维度, out_feats是输出特征的维度</span></span><br><span class="line">        <span class="comment"># aggregator_type是聚合函数的类型</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 一个隐藏层一个输出层</span></span><br><span class="line">        self.conv1 = dglnn.SAGEConv(</span><br><span class="line">            in_feats=in_feats, out_feats=hid_feats, aggregator_type=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.conv2 = dglnn.SAGEConv(</span><br><span class="line">            in_feats=hid_feats, out_feats=out_feats, aggregator_type=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, graph, inputs</span>):</span><br><span class="line">	    </span><br><span class="line">        <span class="comment"># 输入是节点的特征</span></span><br><span class="line">        h = self.conv1(graph, inputs)</span><br><span class="line">        <span class="comment"># 经过 ReLU 激活</span></span><br><span class="line">        h = F.relu(h)</span><br><span class="line">        <span class="comment"># 再经过一个卷积层</span></span><br><span class="line">        h = self.conv2(graph, h)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> h</span><br></pre></td></tr></table></figure>
-<h4 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h4><h5 id="数据集分割"><a href="#数据集分割" class="headerlink" title="数据集分割"></a>数据集分割</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">node_features = graph.ndata[<span class="string">&#x27;feat&#x27;</span>]</span><br><span class="line">node_labels = graph.ndata[<span class="string">&#x27;label&#x27;</span>]</span><br><span class="line"></span><br><span class="line">train_mask = graph.ndata[<span class="string">&#x27;train_mask&#x27;</span>]</span><br><span class="line">valid_mask = graph.ndata[<span class="string">&#x27;val_mask&#x27;</span>]</span><br><span class="line">test_mask = graph.ndata[<span class="string">&#x27;test_mask&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 特征数量和标签</span></span><br><span class="line">n_features = node_features.shape[<span class="number">1</span>]</span><br><span class="line">n_labels = <span class="built_in">int</span>(node_labels.<span class="built_in">max</span>().item() + <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-<h5 id="准确性评估"><a href="#准确性评估" class="headerlink" title="准确性评估"></a>准确性评估</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate</span>(<span class="params">model, graph, features, labels, mask</span>):</span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 不使用梯度下降</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">	    </span><br><span class="line">	    <span class="comment"># 经过 model 的原始输出</span></span><br><span class="line">        logits = model(graph, features)</span><br><span class="line">        <span class="comment"># 保留 validation set 的输出值</span></span><br><span class="line">        logits = logits[mask]</span><br><span class="line">        labels = labels[mask]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 找出每个 logits 样本的最大值的索引</span></span><br><span class="line">        _, indices = torch.<span class="built_in">max</span>(logits, dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 计算正确的 prediction 的占比</span></span><br><span class="line">        correct = torch.<span class="built_in">sum</span>(indices == labels)</span><br><span class="line">        <span class="keyword">return</span> correct.item() * <span class="number">1.0</span> / <span class="built_in">len</span>(labels)</span><br></pre></td></tr></table></figure>
-<h5 id="梯度下降训练"><a href="#梯度下降训练" class="headerlink" title="梯度下降训练"></a>梯度下降训练</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">model = SAGE(in_feats=n_features, hid_feats=<span class="number">100</span>, out_feats=n_labels)</span><br><span class="line">opt = torch.optim.Adam(model.parameters())</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    model.train()</span><br><span class="line">    <span class="comment"># 使用所有节点(全图)进行前向传播计算</span></span><br><span class="line">    logits = model(graph, node_features)</span><br><span class="line">    <span class="comment"># 计算损失值</span></span><br><span class="line">    loss = F.cross_entropy(logits[train_mask], node_labels[train_mask])</span><br><span class="line">    <span class="comment"># 计算验证集的准确度</span></span><br><span class="line">    acc = evaluate(model, graph, node_features, node_labels, valid_mask)</span><br><span class="line">    <span class="comment"># 进行反向传播计算</span></span><br><span class="line">    opt.zero_grad()</span><br><span class="line">    loss.backward()</span><br><span class="line">    opt.step()</span><br><span class="line">    <span class="built_in">print</span>(loss.item())</span><br></pre></td></tr></table></figure>
-<h4 id="异构图上的训练"><a href="#异构图上的训练" class="headerlink" title="异构图上的训练"></a>异构图上的训练</h4><h5 id="模型构建-1"><a href="#模型构建-1" class="headerlink" title="模型构建"></a>模型构建</h5><p>对每种边类型进行单独的图卷积计算<br>将每种边类型上的消息聚合结果再相加<br>作为所有节点类型的最终结果</p>
-<h6 id="实现上与同构图基本一致"><a href="#实现上与同构图基本一致" class="headerlink" title="实现上与同构图基本一致"></a>实现上与同构图基本一致</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Define a Heterograph Conv model</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RGCN</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_feats, hid_feats, out_feats, rel_names</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="comment"># 实例化HeteroGraphConv</span></span><br><span class="line">        <span class="comment"># in_feats是输入特征的维度, out_feats是输出特征的维度</span></span><br><span class="line">        <span class="comment"># aggregate是聚合函数的类型</span></span><br><span class="line">        self.conv1 = dglnn.HeteroGraphConv(&#123;</span><br><span class="line">            rel: dglnn.GraphConv(in_feats, hid_feats)</span><br><span class="line">            <span class="keyword">for</span> rel <span class="keyword">in</span> rel_names&#125;, aggregate=<span class="string">&#x27;sum&#x27;</span>)</span><br><span class="line">        self.conv2 = dglnn.HeteroGraphConv(&#123;</span><br><span class="line">            rel: dglnn.GraphConv(hid_feats, out_feats)</span><br><span class="line">            <span class="keyword">for</span> rel <span class="keyword">in</span> rel_names&#125;, aggregate=<span class="string">&#x27;sum&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, graph, inputs</span>):</span><br><span class="line">        <span class="comment"># 输入是节点的特征字典</span></span><br><span class="line">        h = self.conv1(graph, inputs)</span><br><span class="line">        h = &#123;k: F.relu(v) <span class="keyword">for</span> k, v <span class="keyword">in</span> h.items()&#125;</span><br><span class="line">        h = self.conv2(graph, h)</span><br><span class="line">        <span class="keyword">return</span> h</span><br></pre></td></tr></table></figure>
-<h5 id="数据集获取"><a href="#数据集获取" class="headerlink" title="数据集获取"></a>数据集获取</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">model = RGCN(n_hetero_features, <span class="number">20</span>, n_user_classes, hetero_graph.etypes)</span><br><span class="line">user_feats = hetero_graph.nodes[<span class="string">&#x27;user&#x27;</span>].data[<span class="string">&#x27;feature&#x27;</span>]</span><br><span class="line">item_feats = hetero_graph.nodes[<span class="string">&#x27;item&#x27;</span>].data[<span class="string">&#x27;feature&#x27;</span>]</span><br><span class="line">labels = hetero_graph.nodes[<span class="string">&#x27;user&#x27;</span>].data[<span class="string">&#x27;label&#x27;</span>]</span><br><span class="line">train_mask = hetero_graph.nodes[<span class="string">&#x27;user&#x27;</span>].data[<span class="string">&#x27;train_mask&#x27;</span>]</span><br><span class="line"></span><br><span class="line">node_features = &#123;<span class="string">&#x27;user&#x27;</span>: user_feats, <span class="string">&#x27;item&#x27;</span>: item_feats&#125;</span><br><span class="line">h_dict = model(hetero_graph, &#123;<span class="string">&#x27;user&#x27;</span>: user_feats, <span class="string">&#x27;item&#x27;</span>: item_feats&#125;)</span><br><span class="line">h_user = h_dict[<span class="string">&#x27;user&#x27;</span>]</span><br><span class="line">h_item = h_dict[<span class="string">&#x27;item&#x27;</span>]</span><br></pre></td></tr></table></figure>
-<h5 id="梯度下降训练-1"><a href="#梯度下降训练-1" class="headerlink" title="梯度下降训练"></a>梯度下降训练</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">opt = torch.optim.Adam(model.parameters())</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    model.train()</span><br><span class="line">    <span class="comment"># 使用所有节点的特征进行前向传播计算，并提取输出的user节点嵌入</span></span><br><span class="line">    logits = model(hetero_graph, node_features)[<span class="string">&#x27;user&#x27;</span>]</span><br><span class="line">    <span class="comment"># 计算损失值</span></span><br><span class="line">    loss = F.cross_entropy(logits[train_mask], labels[train_mask])</span><br><span class="line">    <span class="comment"># 计算验证集的准确度。在本例中省略。</span></span><br><span class="line">    <span class="comment"># 进行反向传播计算</span></span><br><span class="line">    opt.zero_grad()</span><br><span class="line">    loss.backward()</span><br><span class="line">    opt.step()</span><br><span class="line">    <span class="built_in">print</span>(loss.item())</span><br></pre></td></tr></table></figure>
-<h3 id="边的分类"><a href="#边的分类" class="headerlink" title="边的分类"></a>边的分类</h3><h4 id="模型构建-2"><a href="#模型构建-2" class="headerlink" title="模型构建"></a>模型构建</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> dgl.function <span class="keyword">as</span> fn</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DotProductPredictor</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, graph, h</span>):</span><br><span class="line">        <span class="comment"># h是从5.1节的GNN模型中计算出的节点表示</span></span><br><span class="line">        <span class="keyword">with</span> graph.local_scope():</span><br><span class="line">            graph.ndata[<span class="string">&#x27;h&#x27;</span>] = h</span><br><span class="line">            graph.apply_edges(fn.u_dot_v(<span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;score&#x27;</span>))</span><br><span class="line">            <span class="keyword">return</span> graph.edata[<span class="string">&#x27;score&#x27;</span>]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 异构图：</span></span><br><span class="line">            <span class="comment"># forward(self, graph, h, etype):</span></span><br><span class="line">            <span class="comment"># ...</span></span><br><span class="line">            <span class="comment"># graph.apply_edges(fn.u_dot_v(&#x27;h&#x27;, &#x27;h&#x27;, &#x27;score&#x27;), etype=etype)</span></span><br><span class="line">            <span class="comment"># return graph.edges[etype].data[&#x27;score&#x27;]</span></span><br></pre></td></tr></table></figure>
-<p>也可以使用 MLP：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MLPPredictor</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_features, out_classes</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.W = nn.Linear(in_features * <span class="number">2</span>, out_classes)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">apply_edges</span>(<span class="params">self, edges</span>):</span><br><span class="line">        h_u = edges.src[<span class="string">&#x27;h&#x27;</span>]</span><br><span class="line">        h_v = edges.dst[<span class="string">&#x27;h&#x27;</span>]</span><br><span class="line">        <span class="comment"># 输入src 和 dst，经过 MLP 输出</span></span><br><span class="line">        score = self.W(torch.cat([h_u, h_v], <span class="number">1</span>))</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&#x27;score&#x27;</span>: score&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, graph, h</span>):</span><br><span class="line">        <span class="comment"># h是从5.1节的GNN模型中计算出的节点表示</span></span><br><span class="line">        <span class="keyword">with</span> graph.local_scope():</span><br><span class="line">            graph.ndata[<span class="string">&#x27;h&#x27;</span>] = h</span><br><span class="line">            graph.apply_edges(self.apply_edges)</span><br><span class="line">            <span class="keyword">return</span> graph.edata[<span class="string">&#x27;score&#x27;</span>]</span><br><span class="line">    <span class="comment"># 异构图：改动同上</span></span><br></pre></td></tr></table></figure>
-<h4 id="预测部分"><a href="#预测部分" class="headerlink" title="预测部分"></a>预测部分</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Model</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_features, hidden_features, out_features, rel_names</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.sage = RGCN(in_features, hidden_features, out_features, rel_names)</span><br><span class="line">        self.pred = HeteroMLPPredictor(out_features, <span class="built_in">len</span>(rel_names))</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, g, x, dec_graph</span>):</span><br><span class="line">        h = self.sage(g, x)</span><br><span class="line">        <span class="keyword">return</span> self.pred(dec_graph, h)</span><br></pre></td></tr></table></figure>
-<p>其中 <code>HeteroMLPPredictor</code> 模块定义如下：<br>（其实还是一个多层感知机）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">HeteroMLPPredictor</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_dims, n_classes</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.W = nn.Linear(in_dims * <span class="number">2</span>, n_classes)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">apply_edges</span>(<span class="params">self, edges</span>):</span><br><span class="line">        x = torch.cat([edges.src[<span class="string">&#x27;h&#x27;</span>], edges.dst[<span class="string">&#x27;h&#x27;</span>]], <span class="number">1</span>)</span><br><span class="line">        y = self.W(x)</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&#x27;score&#x27;</span>: y&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, graph, h</span>):</span><br><span class="line">        <span class="comment"># h是从5.1节中对异构图的每种类型的边所计算的节点表示</span></span><br><span class="line">        <span class="keyword">with</span> graph.local_scope():</span><br><span class="line">            graph.ndata[<span class="string">&#x27;h&#x27;</span>] = h   <span class="comment">#一次性为所有节点类型的 &#x27;h&#x27;赋值</span></span><br><span class="line">            graph.apply_edges(self.apply_edges)</span><br><span class="line">            <span class="keyword">return</span> graph.edata[<span class="string">&#x27;score&#x27;</span>]</span><br></pre></td></tr></table></figure>
-<h3 id="链接预测"><a href="#链接预测" class="headerlink" title="链接预测"></a>链接预测</h3><h4 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h4><p>使用所需预测的节点对 $u$, $v$ 的节点表示 $\boldsymbol{h}<em>u^{(L)}, \boldsymbol{h}<em>v^{(L)}$，计算存在连接的可能性得分$y</em>{u,v}$。<br>$$y</em>{u,v} &#x3D; \phi(\boldsymbol{h}_u^{(L)}, \boldsymbol{h}_v^{(L)})$$<br>训练方法：比对两个相连接节点之间的得分与任意一对节点之间的得分的差异。 例如，给定一条连接 $u$ 和 $v$ 的边，一个好的模型希望 $u$ 和 $v$ 之间的得分要高于 $u$ 和从一个任意的噪声分布 $v’∼Pn(v)$ 中所采样的节点 $v’$ 之间的得分。 这样的方法称作负采样。</p>
-<h4 id="负样本设计"><a href="#负样本设计" class="headerlink" title="负样本设计"></a>负样本设计</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">construct_negative_graph</span>(<span class="params">graph, k</span>):</span><br><span class="line">    src, dst = graph.edges()</span><br><span class="line"></span><br><span class="line">    neg_src = src.repeat_interleave(k)</span><br><span class="line">    neg_dst = torch.randint(<span class="number">0</span>, graph.num_nodes(), (<span class="built_in">len</span>(src) * k,))</span><br><span class="line">    <span class="keyword">return</span> dgl.graph((neg_src, neg_dst), num_nodes=graph.num_nodes())</span><br></pre></td></tr></table></figure>
-<h4 id="模型训练-1"><a href="#模型训练-1" class="headerlink" title="模型训练"></a>模型训练</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">compute_loss</span>(<span class="params">pos_score, neg_score</span>):</span><br><span class="line">    <span class="comment"># 间隔损失</span></span><br><span class="line">    n_edges = pos_score.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">1</span> - pos_score.unsqueeze(<span class="number">1</span>) + neg_score.view(n_edges, -<span class="number">1</span>)).clamp(<span class="built_in">min</span>=<span class="number">0</span>).mean()</span><br><span class="line"></span><br><span class="line">node_features = graph.ndata[<span class="string">&#x27;feat&#x27;</span>]</span><br><span class="line">n_features = node_features.shape[<span class="number">1</span>]</span><br><span class="line">k = <span class="number">5</span></span><br><span class="line">model = Model(n_features, <span class="number">100</span>, <span class="number">100</span>)</span><br><span class="line">opt = torch.optim.Adam(model.parameters())</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    negative_graph = construct_negative_graph(graph, k)</span><br><span class="line">    pos_score, neg_score = model(graph, negative_graph, node_features)</span><br><span class="line">    loss = compute_loss(pos_score, neg_score)</span><br><span class="line">    opt.zero_grad()</span><br><span class="line">    loss.backward()</span><br><span class="line">    opt.step()</span><br><span class="line">    <span class="built_in">print</span>(loss.item())</span><br></pre></td></tr></table></figure>
-<h5 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h5><p>计算每一组样本对应的损失值<br>使用<code>(1 - pos_score.unsqueeze(1) + neg_score.view(n_edges, -1))</code>进行计算。<br>其中 <code>unsqueeze</code> 方法用于在tensor中增加一个维度，将 <code>pos_score</code> 变成 <code>(n_edges, 1)</code> 的形式，方便和 <code>neg_score</code> 计算损失。<br><code>view</code> 方法用于变换tensor形状把 <code>neg_score</code> 的形状变成 <code>(n_edges, n_neg)</code> 的形状。<br>然后使用 <code>clamp</code> 方法将每个样本对应的损失限制在0和正无穷之间。<br>使用 <code>mean</code> 方法计算所有样本对的平均损失值，作为整个模型的损失值。 </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">compute_loss</span>(<span class="params">pos_score, neg_score</span>):</span><br><span class="line">    <span class="comment"># 间隔损失</span></span><br><span class="line">    n_edges = pos_score.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">1</span> - pos_score.unsqueeze(<span class="number">1</span>) + neg_score.view(n_edges, -<span class="number">1</span>)).clamp(<span class="built_in">min</span>=<span class="number">0</span>).mean()</span><br></pre></td></tr></table></figure>
-<h4 id="异构图链接预测"><a href="#异构图链接预测" class="headerlink" title="异构图链接预测"></a>异构图链接预测</h4><p>需要指定在那种边上进行链接预测</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 链接预测模型</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Model</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_features, hidden_features, out_features, rel_names</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.sage = RGCN(in_features, hidden_features, out_features, rel_names)</span><br><span class="line">        self.pred = HeteroDotProductPredictor()</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, g, neg_g, x, etype</span>):</span><br><span class="line">        h = self.sage(g, x)</span><br><span class="line">        <span class="keyword">return</span> self.pred(g, h, etype), self.pred(neg_g, h, etype)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对比边分类模型</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, g, x, etype</span>):</span><br><span class="line">        h = self.sage(g, x)</span><br><span class="line">        <span class="keyword">return</span> self.pred(g, h, etype)</span><br></pre></td></tr></table></figure>
-<h3 id="整图分类"><a href="#整图分类" class="headerlink" title="整图分类"></a>整图分类</h3><h4 id="图的训练"><a href="#图的训练" class="headerlink" title="图的训练"></a>图的训练</h4><p>类似小批量训练：<br>使用DGL，用户可将一系列的图建立成一个图批次。一个图批次可以被看作是一张大图，图中的每个连通子图对应一张原始小图。<br>需要注意，DGL里对图进行变换的函数会去掉图上的批次信息。用户可以通过 <code>dgl.DGLGraph.set_batch_num_nodes()</code> 和 <code>dgl.DGLGraph.set_batch_num_edges()</code> 两个函数在变换后的图上重新加入批次信息。</p>
-<h4 id="图的读出"><a href="#图的读出" class="headerlink" title="图的读出"></a>图的读出</h4><p>$$h_g &#x3D; \frac{1}{|\mathcal{V}|}\sum_{v\in \mathcal{V}}h_v$$<br>其中，$h_g$ 是图 $g$ 的表征， $\mathcal V$ 是图 $g$ 中节点的集合， $h_v$ 是节点 $v$ 的特征。<br><code>dgl.readout_nodes()</code> 就实现了上述的平均值读出计算。<br>后续接一个多层感知机获得分类输出。</p>
-<h5 id="使用-DataLoader-遍历数据"><a href="#使用-DataLoader-遍历数据" class="headerlink" title="使用 DataLoader 遍历数据"></a>使用 DataLoader 遍历数据</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> dgl.dataloading <span class="keyword">import</span> GraphDataLoader</span><br><span class="line">dataloader = GraphDataLoader(</span><br><span class="line">    dataset,</span><br><span class="line">    batch_size=<span class="number">1024</span>,</span><br><span class="line">    drop_last=<span class="literal">False</span>,</span><br><span class="line">    shuffle=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-<h5 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这仅是个例子，特征尺寸是7</span></span><br><span class="line">model = Classifier(<span class="number">7</span>, <span class="number">20</span>, <span class="number">5</span>)</span><br><span class="line">opt = torch.optim.Adam(model.parameters())</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">20</span>):</span><br><span class="line">    <span class="keyword">for</span> batched_graph, labels <span class="keyword">in</span> dataloader:</span><br><span class="line">        feats = batched_graph.ndata[<span class="string">&#x27;attr&#x27;</span>]</span><br><span class="line">        logits = model(batched_graph, feats)</span><br><span class="line">        loss = F.cross_entropy(logits, labels)</span><br><span class="line">        opt.zero_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        opt.step()</span><br></pre></td></tr></table></figure>
-<h4 id="异构图上的训练-1"><a href="#异构图上的训练-1" class="headerlink" title="异构图上的训练"></a>异构图上的训练</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RGCN</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_feats, hid_feats, out_feats, rel_names</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.conv1 = dglnn.HeteroGraphConv(&#123;</span><br><span class="line">            rel: dglnn.GraphConv(in_feats, hid_feats)</span><br><span class="line">            <span class="keyword">for</span> rel <span class="keyword">in</span> rel_names&#125;, aggregate=<span class="string">&#x27;sum&#x27;</span>)</span><br><span class="line">        self.conv2 = dglnn.HeteroGraphConv(&#123;</span><br><span class="line">            rel: dglnn.GraphConv(hid_feats, out_feats)</span><br><span class="line">            <span class="keyword">for</span> rel <span class="keyword">in</span> rel_names&#125;, aggregate=<span class="string">&#x27;sum&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, graph, inputs</span>):</span><br><span class="line">        <span class="comment"># inputs是节点的特征</span></span><br><span class="line">        h = self.conv1(graph, inputs)</span><br><span class="line">        h = &#123;k: F.relu(v) <span class="keyword">for</span> k, v <span class="keyword">in</span> h.items()&#125;</span><br><span class="line">        h = self.conv2(graph, h)</span><br><span class="line">        <span class="keyword">return</span> h</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HeteroClassifier</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_dim, hidden_dim, n_classes, rel_names</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.rgcn = RGCN(in_dim, hidden_dim, hidden_dim, rel_names)</span><br><span class="line">        self.classify = nn.Linear(hidden_dim, n_classes)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, g</span>):</span><br><span class="line">        h = g.ndata[<span class="string">&#x27;feat&#x27;</span>]</span><br><span class="line">        h = self.rgcn(g, h)</span><br><span class="line">        <span class="keyword">with</span> g.local_scope():</span><br><span class="line">            g.ndata[<span class="string">&#x27;h&#x27;</span>] = h</span><br><span class="line">            <span class="comment"># 通过平均读出值来计算单图的表征</span></span><br><span class="line">            hg = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> ntype <span class="keyword">in</span> g.ntypes:</span><br><span class="line">                hg = hg + dgl.mean_nodes(g, <span class="string">&#x27;h&#x27;</span>, ntype=ntype)</span><br><span class="line">            <span class="keyword">return</span> self.classify(hg)</span><br></pre></td></tr></table></figure>
-<h5 id="RGCN-模块"><a href="#RGCN-模块" class="headerlink" title="RGCN 模块"></a>RGCN 模块</h5><p>RGCN 是一个 <code>nn.Module</code> 子类，其作用是在异构图上执行图卷积操作。<br>它有两个 <code>dglnn.HeteroGraphConv</code> 层，每个层都针对关系类型 <code>rel_names</code> 创建 <code>dglnn.GraphConv</code> 实例。<br><code>forward()</code> 方法首先使用第一个图卷积层处理输入图和节点特征，然后应用ReLU激活函数。接下来，它将处理后的特征传递给第二个图卷积层以获取最终输出。</p>
-<h5 id="异构图-Classifier-模块"><a href="#异构图-Classifier-模块" class="headerlink" title="异构图 Classifier 模块"></a>异构图 Classifier 模块</h5><p><code>HeteroClassifier</code> 是 <code>nn.Module</code> 子类，用于在异构图上执行节点分类。它包含一个RGCN层来处理图的特征，并使用线性层 <code>nn.Linear</code> 执行分类。 <code>aggregate</code> 参数指定了不同节点的消息汇聚方式，这里的 <code>sum</code> 表示使用求和的方式。<br><code>HeteroClassifier</code> 的 <code>forward()</code> 方法首先从图中提取节点特征并将其传递给RGCN层。<br>在图的本地作用域 <code>g.local_scope()</code> 内，将RGCN层的输出赋给图中的节点特征。<br>然后，通过求取节点特征 <code>h</code> 的平均值计算每个节点类型的图表示，最后将这些表示传递给线性分类器以获取分类结果。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/03/30/DGL%E7%AC%94%E8%AE%B0/1.%20%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="CarlosDJY">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="巧克力の博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/30/DGL%E7%AC%94%E8%AE%B0/1.%20%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">1. 图的基本概念</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-03-30 01:17:22" itemprop="dateCreated datePublished" datetime="2023-03-30T01:17:22+08:00">2023-03-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-06-17 04:15:53" itemprop="dateModified" datetime="2023-06-17T04:15:53+08:00">2023-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">DGL学习笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="省流"><a href="#省流" class="headerlink" title="省流"></a>省流</h2><p>图由边的集合和顶点的集合组成，加权图或未加权图，<strong>同构图</strong>和<strong>异构图</strong>等概念。<br>节点和边用<strong>整数ID</strong>表示，并可以赋予<strong>特征</strong>，可通过ndarray或其他图的快捷方式加载外部源。<br>异构图由一系列子图构成，<strong>每个子图代表一种关系</strong>。<br>如何复制 DGLGraph 对象<strong>到GPU上</strong>使用。</p>
-<h2 id="详细内容"><a href="#详细内容" class="headerlink" title="详细内容"></a>详细内容</h2><h3 id="图的定义"><a href="#图的定义" class="headerlink" title="图的定义"></a>图的定义</h3><h4 id="图的表示"><a href="#图的表示" class="headerlink" title="图的表示"></a>图的表示</h4><p>$G&#x3D;(V,E)$<br>图由边的集合和顶点的集合组成<br>加权图或未加权图<br><em>weighted</em> or <em>unweighted</em><br>同构图 <em>homogeneous</em><br>    所有节点表示同一类型的实体，所有边表示同一类型的关系<br>异构图 <em>heterogeneous</em><br>    节点和边的类型可以是不同的<br>多重图 <em>multigraphs</em><br>    同一对节点之间可以有多条（有向）边，包括自循环的边</p>
-<h3 id="图、节点和边"><a href="#图、节点和边" class="headerlink" title="图、节点和边"></a>图、节点和边</h3><h4 id="节点的表示"><a href="#节点的表示" class="headerlink" title="节点的表示"></a>节点的表示</h4><p>DGL使用一个唯一的整数来表示一个节点：点 ID<br>多个节点：一个一维整型 Tensor 节点张量 <em>node-tensors</em></p>
-<h4 id="边的表示"><a href="#边的表示" class="headerlink" title="边的表示"></a>边的表示</h4><p>根据边被添加的顺序， 给每条边分配一个唯一的整数编号：边 ID<br>对应的两个端点ID表示一条边<br>所有的边都是有方向的<br>多个边：包含两个节点张量的 tuple $(U,V)$</p>
-<h4 id="图的创建"><a href="#图的创建" class="headerlink" title="图的创建"></a>图的创建</h4><p>通过接受一个边的集合作为输入来生成图</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> dgl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 边 0-&gt;1, 0-&gt;2, 0-&gt;3, 1-&gt;3</span></span><br><span class="line">u, v = torch.tensor([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>]), torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>])</span><br><span class="line">g = dgl.graph((u, v))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换为无向图</span></span><br><span class="line">bg = dgl.to_bidirected(g)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 节点和边数较少时，用 32 位整数节省内存并提升速度</span></span><br><span class="line">dgl.graph((u, v), idtype=th.int32)</span><br></pre></td></tr></table></figure>
-<h3 id="节点和边的特征"><a href="#节点和边的特征" class="headerlink" title="节点和边的特征"></a>节点和边的特征</h3><h4 id="特征的创建与访问"><a href="#特征的创建与访问" class="headerlink" title="特征的创建与访问"></a>特征的创建与访问</h4><p>可以通过 <code>ndata</code> 和 <code>edata</code> 接口访问节点和边的特征</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> dgl</span><br><span class="line"></span><br><span class="line">g = dgl.graph(([<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">5</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">0</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将节点特征向量设定为 [1., 1., 1.]</span></span><br><span class="line"><span class="comment"># 将这些（此处是所有）节点的该特征向量标为&#x27;x&#x27;</span></span><br><span class="line"><span class="comment"># 一个节点可以有多组特征向量, 各组特征向量的维度不必相同</span></span><br><span class="line">g.ndata[<span class="string">&#x27;x&#x27;</span>] = torch.ones(g.num_nodes(), <span class="number">3</span>) </span><br><span class="line"></span><br><span class="line"><span class="comment"># 同理，将所有边的特征向量设定为 32 位整数</span></span><br><span class="line"><span class="comment"># 不对向量形状作限制, 但将初始值全部设定为 1</span></span><br><span class="line"><span class="comment"># 将所有的边标为&#x27;x&#x27;</span></span><br><span class="line"><span class="comment"># 同理可以将权重储存为边特征</span></span><br><span class="line">g.edata[<span class="string">&#x27;x&#x27;</span>] = torch.ones(g.num_edges(), dtype=th.int32)</span><br></pre></td></tr></table></figure>
-<h4 id="通过张量分配创建特征"><a href="#通过张量分配创建特征" class="headerlink" title="通过张量分配创建特征"></a>通过张量分配创建特征</h4><p>DGL会将特征赋给图中的每个节点和每条边<br>该张量的第一维必须与图中节点或边的数量一致<br>不能将特征赋给图中节点或边的子集</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">edges = th.tensor([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>]), th.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>])</span><br><span class="line">weights = th.tensor([<span class="number">0.1</span>, <span class="number">0.6</span>, <span class="number">0.9</span>, <span class="number">0.7</span>])  <span class="comment"># 每条边的权重</span></span><br><span class="line">g = dgl.graph(edges)</span><br><span class="line">g.edata[<span class="string">&#x27;w&#x27;</span>] = weights  <span class="comment"># 将其命名为 &#x27;w&#x27;</span></span><br></pre></td></tr></table></figure>
-<h3 id="从外部源创建图"><a href="#从外部源创建图" class="headerlink" title="从外部源创建图"></a>从外部源创建图</h3><ul>
-<li>从用于图和稀疏矩阵的外部Python库（NetworkX 和 SciPy）创建</li>
-<li>从磁盘加载图数据</li>
-</ul>
-<h4 id="从外部库加载图"><a href="#从外部库加载图" class="headerlink" title="从外部库加载图"></a>从外部库加载图</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> dgl</span><br><span class="line"><span class="keyword">import</span> torch <span class="keyword">as</span> th</span><br><span class="line"><span class="keyword">import</span> scipy.sparse <span class="keyword">as</span> sp</span><br><span class="line"><span class="keyword">import</span> networkx <span class="keyword">as</span> nx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5% 非零项（即500条边）的随机 100 顶点图</span></span><br><span class="line">spmat = sp.rand(<span class="number">100</span>, <span class="number">100</span>, density=<span class="number">0.05</span>)</span><br><span class="line"><span class="comment"># 来自 scipy</span></span><br><span class="line">dgl.from_scipy(spmat)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一条链路0-1-2-3-4</span></span><br><span class="line"><span class="comment"># 默认为无向图, 双向边, 所以有 8 条边</span></span><br><span class="line"><span class="comment"># 使用 nx.DiGraph([(u,v), ...]) 创建有向图</span></span><br><span class="line">nx_g = nx.path_graph(<span class="number">5</span>)</span><br><span class="line"><span class="comment"># 来自NetworkX</span></span><br><span class="line">dgl.from_networkx(nx_g)</span><br></pre></td></tr></table></figure>
-<h4 id="从磁盘加载图"><a href="#从磁盘加载图" class="headerlink" title="从磁盘加载图"></a>从磁盘加载图</h4><p>先加载到如 <code>numpy.ndarray</code> 中，再构建 DGLGraph 对象</p>
-<h3 id="异构图的使用"><a href="#异构图的使用" class="headerlink" title="异构图的使用"></a>异构图的使用</h3><h4 id="异构图的创建"><a href="#异构图的创建" class="headerlink" title="异构图的创建"></a>异构图的创建</h4><p>一个异构图由一系列子图构成，一个子图对应一种关系</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> dgl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个具有3种节点类型和3种边类型的异构图</span></span><br><span class="line">graph_data = &#123;</span><br><span class="line">   (<span class="string">&#x27;drug&#x27;</span>, <span class="string">&#x27;interacts&#x27;</span>, <span class="string">&#x27;drug&#x27;</span>): (th.tensor([<span class="number">0</span>, <span class="number">1</span>]), th.tensor([<span class="number">1</span>, <span class="number">2</span>])),</span><br><span class="line">   (<span class="string">&#x27;drug&#x27;</span>, <span class="string">&#x27;interacts&#x27;</span>, <span class="string">&#x27;gene&#x27;</span>): (th.tensor([<span class="number">0</span>, <span class="number">1</span>]), th.tensor([<span class="number">2</span>, <span class="number">3</span>])),</span><br><span class="line">   (<span class="string">&#x27;drug&#x27;</span>, <span class="string">&#x27;treats&#x27;</span>, <span class="string">&#x27;disease&#x27;</span>): (th.tensor([<span class="number">1</span>]), th.tensor([<span class="number">2</span>]))</span><br><span class="line">&#125;</span><br><span class="line">g = dgl.heterograph(graph_data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># metagraph 中储存了对应异构图中存在的边的关系</span></span><br><span class="line">g.metagraph().edges()</span><br></pre></td></tr></table></figure>
-<p>同构图和二分图可以视作特殊的异构图</p>
-<h4 id="节点和边类型"><a href="#节点和边类型" class="headerlink" title="节点和边类型"></a>节点和边类型</h4><p>设置与获取：<br><code>g.nodes[‘node_type’].data[‘feat_name’]</code> 和 <code>g.edges[‘edge_type’].data[‘feat_name’]</code><br>进行对应的赋值或读取</p>
-<h4 id="从磁盘加载"><a href="#从磁盘加载" class="headerlink" title="从磁盘加载"></a>从磁盘加载</h4><p>先加载到如 <code>numpy.ndarray</code> 中，再构建 DGLGraph 对象</p>
-<h4 id="保留部分边关系的子图"><a href="#保留部分边关系的子图" class="headerlink" title="保留部分边关系的子图"></a>保留部分边关系的子图</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 原始图 + 保留的关系</span></span><br><span class="line"><span class="comment"># 相关特征也会被保留</span></span><br><span class="line">eg = dgl.edge_type_subgraph(g, [(<span class="string">&#x27;drug&#x27;</span>, <span class="string">&#x27;interacts&#x27;</span>, <span class="string">&#x27;drug&#x27;</span>),</span><br><span class="line">								(<span class="string">&#x27;drug&#x27;</span>, <span class="string">&#x27;treats&#x27;</span>, <span class="string">&#x27;disease&#x27;</span>)])</span><br></pre></td></tr></table></figure>
-<h4 id="转化为同构图"><a href="#转化为同构图" class="headerlink" title="转化为同构图"></a>转化为同构图</h4><h5 id="合并整个图"><a href="#合并整个图" class="headerlink" title="合并整个图"></a>合并整个图</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 合并图, 不合并特征</span></span><br><span class="line">hg = dgl.to_homogeneous(g)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 需要合并的特征应当具有相同的大小和数据类型</span></span><br><span class="line"><span class="comment"># 否则给出 DGLError</span></span><br><span class="line">hg = dgl.to_homogeneous(g, edata=[<span class="string">&#x27;he&#x27;</span>])</span><br></pre></td></tr></table></figure>
-<p>原始的节点或边的类型和对应的ID被存储在 <code>ndata</code> 和 <code>edata</code> 中</p>
-<h5 id="合并部分关系"><a href="#合并部分关系" class="headerlink" title="合并部分关系"></a>合并部分关系</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先抽取边类型子图</span></span><br><span class="line">sub_g = dgl.edge_type_subgraph (g, [(<span class="string">&#x27;drug&#x27;</span>, <span class="string">&#x27;interacts&#x27;</span>, <span class="string">&#x27;drug&#x27;</span>),</span><br><span class="line">									(<span class="string">&#x27;drug&#x27;</span>, <span class="string">&#x27;interacts&#x27;</span>, <span class="string">&#x27;gene&#x27;</span>)])</span><br><span class="line"><span class="comment"># 再转化为同构图</span></span><br><span class="line">h_sub_g = dgl.to_homogeneous(sub_g)</span><br></pre></td></tr></table></figure>
-<h3 id="在GPU上使用DGLGraph"><a href="#在GPU上使用DGLGraph" class="headerlink" title="在GPU上使用DGLGraph"></a>在GPU上使用DGLGraph</h3><h4 id="复制到-GPU"><a href="#复制到-GPU" class="headerlink" title="复制到 GPU"></a>复制到 GPU</h4><p>GPU图只接受GPU上的特征数据</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cuda_g = g.to(<span class="string">&#x27;cuda:0&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以创建 gpu 张量以构造图</span></span><br><span class="line">u, v = u.to(<span class="string">&#x27;cuda:0&#x27;</span>), v.to(<span class="string">&#x27;cuda:0&#x27;</span>)</span><br><span class="line">g = dgl.graph((u, v))</span><br></pre></td></tr></table></figure>
-
+          <h2 id="省流"><a href="#省流" class="headerlink" title="省流"></a>省流</h2><p>图由边的集合和顶点的集合组成，加权图或未加权图，<strong>同构图</strong>和<strong>异构图</strong>等概念。<br>节点和边用<strong>整数ID</strong>表示，并可以赋予<strong>特征</strong>，可通过ndarray或其他图的快捷方式加载外部源。<br>异构图由一系列子图构成，<strong>每个子图代表一种关系</strong>。<br>如何复制 DGLGraph 对象<strong>到 GPU 上</strong>使用。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/03/23/DGL%E7%AC%94%E8%AE%B0/1.%20%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -660,7 +393,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/2023/06/17/Introduction/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/2023/06/17/Introduction/">1</a><span class="page-number current">2</span><a class="page-number" href="/2023/06/17/Introduction/page/3/">3</a><a class="extend next" rel="next" href="/2023/06/17/Introduction/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/2023/06/17/Introduction/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/2023/06/17/Introduction/">1</a><span class="page-number current">2</span>
   </nav>
 
 
@@ -718,6 +451,8 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="CarlosDJY"
+      src="/images/avatar.jpg">
   <p class="site-author-name" itemprop="name">CarlosDJY</p>
   <div class="site-description" itemprop="description"></div>
 </div>
@@ -738,6 +473,11 @@
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CarlosDJY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CarlosDJY" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
 
 
 
@@ -783,6 +523,8 @@
   </div>
 
   
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
@@ -817,6 +559,61 @@
 
 
   
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
