@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carlosdjy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="省流Index Concurrency Control：索引并发控制是数据库系统中一种协调多用户同时访问索引结构的机制，保证数据的一致性和完整性。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Index Concurrency Control">
+<meta property="og:url" content="https://carlosdjy.github.io/2023/04/16/%E6%95%B0%E6%8D%AE%E5%BA%93/Index%20Concurrency%20Control/index.html">
+<meta property="og:site_name" content="巧克力の博客">
+<meta property="og:description" content="省流Index Concurrency Control：索引并发控制是数据库系统中一种协调多用户同时访问索引结构的机制，保证数据的一致性和完整性。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-19T11:22:06.135Z">
+<meta property="article:author" content="CarlosDJY">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://carlosdjy.github.io/2023/04/16/%E6%95%B0%E6%8D%AE%E5%BA%93/Index%20Concurrency%20Control/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Index Concurrency Control | 巧克力の博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">巧克力の博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一场思想与心灵之旅</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/2023/06/17/Introduction" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">21</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/04/16/%E6%95%B0%E6%8D%AE%E5%BA%93/Index%20Concurrency%20Control/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="CarlosDJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="巧克力の博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Index Concurrency Control
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-04-16 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-16T00:00:00+08:00">2023-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-19 19:22:06" itemprop="dateModified" datetime="2023-06-19T19:22:06+08:00">2023-06-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="省流"><a href="#省流" class="headerlink" title="省流"></a>省流</h2><p><strong>Index Concurrency Control</strong>：索引并发控制是数据库系统中一种<strong>协调多用户同时访问</strong>索引结构的机制，保证数据的一致性和完整性。</p>
+<span id="more"></span>  
+
+<h1 id="Index-Concurrency-Control"><a href="#Index-Concurrency-Control" class="headerlink" title="Index Concurrency Control"></a>Index Concurrency Control</h1><h2 id="Concurrency-Control"><a href="#Concurrency-Control" class="headerlink" title="Concurrency Control"></a>Concurrency Control</h2><h5 id="Correctness"><a href="#Correctness" class="headerlink" title="Correctness"></a>Correctness</h5><p>DBMS: ensures correctness for concurrent operations</p>
+<h6 id="Logical-Correctness"><a href="#Logical-Correctness" class="headerlink" title="Logical Correctness"></a>Logical Correctness</h6><p>see what is supposed to see</p>
+<h6 id="Physical-Correctness"><a href="#Physical-Correctness" class="headerlink" title="Physical Correctness"></a>Physical Correctness</h6><p>data and indexes not corrupted by concurrent modification</p>
+<h3 id="Physical-Correctness-1"><a href="#Physical-Correctness-1" class="headerlink" title="Physical Correctness"></a>Physical Correctness</h3><h4 id="Latches-Overview"><a href="#Latches-Overview" class="headerlink" title="Latches Overview"></a>Latches Overview</h4><h5 id="Comparison-Between-Locks-and-Latches"><a href="#Comparison-Between-Locks-and-Latches" class="headerlink" title="Comparison Between Locks and Latches"></a>Comparison Between Locks and Latches</h5><p>![[Locks&amp;Latches.png]]</p>
+<h5 id="Read-Mode"><a href="#Read-Mode" class="headerlink" title="Read Mode"></a>Read Mode</h5><p>multiple read allowed<br>another thread has it in read: </p>
+<ul>
+<li>can acquire read latch</li>
+</ul>
+<h5 id="Write-Mode"><a href="#Write-Mode" class="headerlink" title="Write Mode"></a>Write Mode</h5><p>one write at one time<br>another thread has it in any mode:</p>
+<ul>
+<li>can’t acquire a write latch</li>
+</ul>
+<h4 id="Latch-Implementations"><a href="#Latch-Implementations" class="headerlink" title="Latch Implementations"></a>Latch Implementations</h4><h5 id="Blocking-OS-Mutex"><a href="#Blocking-OS-Mutex" class="headerlink" title="Blocking OS Mutex"></a>Blocking OS Mutex</h5><p>simple to use<br>non-scalable: 25ns &#x2F; invocation</p>
+<h5 id="Test-and-Set-Spin-Latch"><a href="#Test-and-Set-Spin-Latch" class="headerlink" title="Test-and-Set Spin Latch"></a>Test-and-Set Spin Latch</h5><p>very efficient<br>non-scalable, not cache-friendly, not OS-friendly</p>
+<h5 id="Reader-Writer-Latches"><a href="#Reader-Writer-Latches" class="headerlink" title="Reader-Writer Latches"></a>Reader-Writer Latches</h5><p>allow concurrent readers<br>manage read &#x2F; write queues</p>
+<ul>
+<li>maintain a count of read &#x2F; write latch + waiting</li>
+<li>too much reads<ul>
+<li>put readers to waitlist</li>
+<li>let writers go through<br>can be implemented on top of spin latches</li>
+</ul>
+</li>
+</ul>
+<h4 id="Hash-Table-Latching"><a href="#Hash-Table-Latching" class="headerlink" title="Hash Table Latching"></a>Hash Table Latching</h4><p>[[Hash Tables]]<br>all threads</p>
+<ul>
+<li>move forward only</li>
+<li>access one at a time<br>resize -&gt; global write latch</li>
+</ul>
+<h5 id="Page-Latches"><a href="#Page-Latches" class="headerlink" title="Page Latches"></a>Page Latches</h5><p>each page has its own latch</p>
+<h5 id="Slot-Latches"><a href="#Slot-Latches" class="headerlink" title="Slot Latches"></a>Slot Latches</h5><p>each slot has its own latch</p>
+<h5 id="Compare-and-Swap"><a href="#Compare-and-Swap" class="headerlink" title="Compare and Swap"></a>Compare and Swap</h5><p>if same -&gt; give new value<br>else operation fails<br>(address, compare value, new value)</p>
+<h4 id="B-Tree-Latching"><a href="#B-Tree-Latching" class="headerlink" title="B+Tree Latching"></a>B+Tree Latching</h4><p>[[Tree Indexes#B+Tree]]</p>
+<h5 id="Latch-Coupling"><a href="#Latch-Coupling" class="headerlink" title="Latch Coupling"></a>Latch Coupling</h5><h6 id="Basic-Idea"><a href="#Basic-Idea" class="headerlink" title="Basic Idea"></a>Basic Idea</h6><ul>
+<li>latch for parent and child</li>
+<li>release latch for parent if ‘safe’<br>safe node </li>
+<li>not split or merge</li>
+<li>not full (for insert)</li>
+<li>more than half full (for delete)</li>
+</ul>
+<h6 id="Operations"><a href="#Operations" class="headerlink" title="Operations"></a>Operations</h6><p>Search</p>
+<ul>
+<li>start from root</li>
+<li>R latch child</li>
+<li>unlatch parent<br>Insert &#x2F; Delete</li>
+<li>start from root</li>
+<li>W latch as needed</li>
+<li>latch the child -&gt; if safe, release all ancestors</li>
+</ul>
+<h5 id="Better-Latching-Algorithm"><a href="#Better-Latching-Algorithm" class="headerlink" title="Better Latching Algorithm"></a>Better Latching Algorithm</h5><p>always use read latches<br>if there is a split &#x2F; merge</p>
+<ul>
+<li>repeat traversal with pessimistic algorithm</li>
+</ul>
+<h6 id="Operations-1"><a href="#Operations-1" class="headerlink" title="Operations"></a>Operations</h6><p>Search: not changed<br>Insert &#x2F; Delete</p>
+<ul>
+<li>set latches as search</li>
+<li>set leaf latch as W</li>
+<li>if not safe, restart as Latch Coupling</li>
+</ul>
+<h4 id="Leaf-Node-Scans"><a href="#Leaf-Node-Scans" class="headerlink" title="Leaf Node Scans"></a>Leaf Node Scans</h4>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/15/%E6%95%B0%E6%8D%AE%E5%BA%93/Tree%20Indexes/" rel="prev" title="Tree Indexes">
+      <i class="fa fa-chevron-left"></i> Tree Indexes
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/04/17/%E6%95%B0%E6%8D%AE%E5%BA%93/Sort%20and%20Aggregation/" rel="next" title="Sort and Aggregation">
+      Sort and Aggregation <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%81%E6%B5%81"><span class="nav-number">1.</span> <span class="nav-text">省流</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Index-Concurrency-Control"><span class="nav-number"></span> <span class="nav-text">Index Concurrency Control</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Concurrency-Control"><span class="nav-number">1.</span> <span class="nav-text">Concurrency Control</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Correctness"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">Correctness</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Logical-Correctness"><span class="nav-number">1.0.0.1.1.</span> <span class="nav-text">Logical Correctness</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Physical-Correctness"><span class="nav-number">1.0.0.1.2.</span> <span class="nav-text">Physical Correctness</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Physical-Correctness-1"><span class="nav-number">1.1.</span> <span class="nav-text">Physical Correctness</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Latches-Overview"><span class="nav-number">1.1.1.</span> <span class="nav-text">Latches Overview</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Comparison-Between-Locks-and-Latches"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Comparison Between Locks and Latches</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Read-Mode"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Read Mode</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Write-Mode"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Write Mode</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Latch-Implementations"><span class="nav-number">1.1.2.</span> <span class="nav-text">Latch Implementations</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Blocking-OS-Mutex"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Blocking OS Mutex</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Test-and-Set-Spin-Latch"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Test-and-Set Spin Latch</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Reader-Writer-Latches"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">Reader-Writer Latches</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hash-Table-Latching"><span class="nav-number">1.1.3.</span> <span class="nav-text">Hash Table Latching</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Page-Latches"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Page Latches</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Slot-Latches"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Slot Latches</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Compare-and-Swap"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">Compare and Swap</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-Tree-Latching"><span class="nav-number">1.1.4.</span> <span class="nav-text">B+Tree Latching</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Latch-Coupling"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">Latch Coupling</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Basic-Idea"><span class="nav-number">1.1.4.1.1.</span> <span class="nav-text">Basic Idea</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Operations"><span class="nav-number">1.1.4.1.2.</span> <span class="nav-text">Operations</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Better-Latching-Algorithm"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">Better Latching Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Operations-1"><span class="nav-number">1.1.4.2.1.</span> <span class="nav-text">Operations</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Leaf-Node-Scans"><span class="nav-number">1.1.5.</span> <span class="nav-text">Leaf Node Scans</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="CarlosDJY"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">CarlosDJY</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CarlosDJY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CarlosDJY" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CarlosDJY</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

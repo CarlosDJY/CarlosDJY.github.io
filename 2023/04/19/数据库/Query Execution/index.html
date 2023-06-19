@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carlosdjy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="省流Query Execution：查询执行是数据库管理系统处理并返回查询结果的过程，涉及解析查询、创建执行计划、访问数据和返回结果。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Query Execution">
+<meta property="og:url" content="https://carlosdjy.github.io/2023/04/19/%E6%95%B0%E6%8D%AE%E5%BA%93/Query%20Execution/index.html">
+<meta property="og:site_name" content="巧克力の博客">
+<meta property="og:description" content="省流Query Execution：查询执行是数据库管理系统处理并返回查询结果的过程，涉及解析查询、创建执行计划、访问数据和返回结果。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-19T11:21:08.144Z">
+<meta property="article:author" content="CarlosDJY">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://carlosdjy.github.io/2023/04/19/%E6%95%B0%E6%8D%AE%E5%BA%93/Query%20Execution/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Query Execution | 巧克力の博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">巧克力の博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一场思想与心灵之旅</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/2023/06/17/Introduction" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">21</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/04/19/%E6%95%B0%E6%8D%AE%E5%BA%93/Query%20Execution/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="CarlosDJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="巧克力の博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Query Execution
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-04-19 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-19T00:00:00+08:00">2023-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-19 19:21:08" itemprop="dateModified" datetime="2023-06-19T19:21:08+08:00">2023-06-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="省流"><a href="#省流" class="headerlink" title="省流"></a>省流</h2><p><strong>Query Execution</strong>：查询执行是数据库管理系统<strong>处理并返回查询结果</strong>的过程，涉及解析查询、创建执行计划、访问数据和返回结果。  </p>
+<span id="more"></span>
+
+<h2 id="Sequential-Processing"><a href="#Sequential-Processing" class="headerlink" title="Sequential Processing"></a>Sequential Processing</h2><h3 id="Processing-Models"><a href="#Processing-Models" class="headerlink" title="Processing Models"></a>Processing Models</h3><p>How system execute query plan<br>Tradeoff for different workloads</p>
+<h4 id="Iterator-Model"><a href="#Iterator-Model" class="headerlink" title="Iterator Model"></a>Iterator Model</h4><p>Each query plan operator implements <code>Next()</code> function</p>
+<ul>
+<li>Each invocation<ul>
+<li>Operator returns single tuple or null if no more tuples</li>
+</ul>
+</li>
+<li>Loop over its children<ul>
+<li>Retrieve tuples and process them<br>![[Iterator Model.png]]<br>Tuple pipelining<br> Maximize the locality of the data working on<br> Maximize the work do on the tuple get<br>Easy output control</li>
+</ul>
+</li>
+</ul>
+<h4 id="Materialization-Model"><a href="#Materialization-Model" class="headerlink" title="Materialization Model"></a>Materialization Model</h4><p>Each operator</p>
+<ul>
+<li>Process input all at once</li>
+<li>Emit output all at once<br>![[Materialization Model.png]]<br>Better for OLTP workloads</li>
+<li>Online Transaction Processing system<ul>
+<li>Manages and processes real-time transactions</li>
+</ul>
+</li>
+<li>Query only access small numbers of tuples at a time<ul>
+<li>Low execution overhead</li>
+<li>Fewer function calls<br>Not good for OLAP queries</li>
+</ul>
+</li>
+<li>Online analytical processing system <ul>
+<li>Used for complex, multi-dimensional analysis and decision support</li>
+</ul>
+</li>
+<li>Large intermediate results</li>
+</ul>
+<h4 id="Vectorized-x2F-Batch-Model"><a href="#Vectorized-x2F-Batch-Model" class="headerlink" title="Vectorized &#x2F; Batch Model"></a>Vectorized &#x2F; Batch Model</h4><p>Similar to Iterator Model with <code>Next()</code> function<br>Each operator emits a <em>batch</em> instead of single tuple</p>
+<ul>
+<li>Process multiple tuples at a time in loop</li>
+<li>Size of batch varies base on<ul>
+<li>Hardware</li>
+<li>Query properties<br>![[Vectorized Model.png]]</li>
+</ul>
+</li>
+<li>Ideal for OLAP queries<ul>
+<li>Greatly reduce the number of invocations per operator</li>
+<li>Easily use vectorized instructions to process batch</li>
+</ul>
+</li>
+</ul>
+<h3 id="Access-Methods"><a href="#Access-Methods" class="headerlink" title="Access Methods"></a>Access Methods</h3><p>Plan processing direction  </p>
+<h4 id="Top-to-down"><a href="#Top-to-down" class="headerlink" title="Top -to-down"></a>Top -to-down</h4><p> - start with root<br> - pull data from children<br> - tuples passed with function calls  </p>
+<h4 id="Bottom-to-up"><a href="#Bottom-to-up" class="headerlink" title="Bottom -to-up"></a>Bottom -to-up</h4><p> - start with leaf nodes<br> - push data to parents<br> - allow tighter control of caches &#x2F; registers in pipelines  </p>
+<h4 id="Access-Method"><a href="#Access-Method" class="headerlink" title="Access Method"></a>Access Method</h4><p>The way DBMS access data stored in table  </p>
+<h5 id="Sequential-Scan"><a href="#Sequential-Scan" class="headerlink" title="Sequential Scan"></a>Sequential Scan</h5><p>For each page in table<br> - retrieve it from buffer pool<br> - iterate through, check each tuple<br>Maintain an internal cursor tracks the last page &#x2F; slot examined  </p>
+<pre><code class="python">for page in table.pages:  
+for t in page.tuples:  
+if evalPred(t):  
+do()  
+</code></pre>
+<p>Optimization<br> - prefetching<br>    Predict what will be read next<br>    Read it in memory before actual read<br> - buffer pool bypass<br>    Read from disk directly<br> - parallelization<br>    Read with multiple thread<br> - heap clustering<br>    Cluster blocks together<br>    Reduce blocks read<br> - zone maps<br>    Pre-determine which blocks contains data needed<br>    Skip blocks without needed data<br>    Need to update zone map when updating the original data<br> - late materialization<br>    Calculate data when needed rather than at scanned time  </p>
+<h5 id="Index-Scan"><a href="#Index-Scan" class="headerlink" title="Index Scan"></a>Index Scan</h5><p>DBMS pick an index to find tuples the query needs<br>Which index to use<br> - attributes index contains<br> - attributes query references<br> - attribute’s value domain<br> - predicate composition<br> - index with unique or non-unique keys  </p>
+<h5 id="Multi-Index-x2F-Bitmap-Scan"><a href="#Multi-Index-x2F-Bitmap-Scan" class="headerlink" title="Multi -Index &#x2F; Bitmap Scan"></a>Multi -Index &#x2F; Bitmap Scan</h5><p>Multiple indexes DBMS can use for a query<br> - compute sets of record IDs with matching index<br> - combine sets based on the query’s predicates<br> - retrieve records and apply remaining predicates</p>
+<h3 id="Modification-Queries"><a href="#Modification-Queries" class="headerlink" title="Modification Queries"></a>Modification Queries</h3><p>Operators modify the database<br>Responsible for checking constraints and updating indexes</p>
+<h4 id="UPDATE-x2F-DELETE"><a href="#UPDATE-x2F-DELETE" class="headerlink" title="UPDATE &#x2F; DELETE"></a>UPDATE &#x2F; DELETE</h4><p>Child operators pass record IDs for target tuples<br>Keep track of previously seen tuples</p>
+<h4 id="INSERT"><a href="#INSERT" class="headerlink" title="INSERT"></a>INSERT</h4><p>Materialize tuples inside the operator<br>Operator insert tuple passed in from children</p>
+<h3 id="Expression-Evaluation"><a href="#Expression-Evaluation" class="headerlink" title="Expression Evaluation"></a>Expression Evaluation</h3><p>The DBMS represents a WHERE clause as an expression tree<br>Nodes in tree: Different expression types</p>
+<ul>
+<li>Comparisons</li>
+<li>Conjunction, Disjunction</li>
+<li>Arithmetic Operators</li>
+<li>Constant Values</li>
+<li>Tuple Attribute References<br>Do for every single node</li>
+<li>Slow</li>
+<li>Do for each node</li>
+<li>Even if  <code>WHERE 1 = 1</code></li>
+<li>Optimized at compile time</li>
+</ul>
+<h2 id="Parallel-Processing"><a href="#Parallel-Processing" class="headerlink" title="Parallel Processing"></a>Parallel Processing</h2><h3 id="Parallel-Execution"><a href="#Parallel-Execution" class="headerlink" title="Parallel Execution"></a>Parallel Execution</h3><p>Internal: Increase performance<br>External: Increase responsiveness and availability<br>DBMS level: Lower total cost of ownership<br>Parallel and Distributed:<br>    Managed by the DBMS<br>Parallel DBMSs</p>
+<ul>
+<li>Physically close</li>
+<li>Communicate over high-speed interconnect</li>
+<li>Cheap and reliable communication<br>Distributed DBMSs</li>
+<li>Far from each other</li>
+<li>Communicate using slow interconnect</li>
+<li>Communication cost and problems</li>
+</ul>
+<h3 id="Processing-Models-1"><a href="#Processing-Models-1" class="headerlink" title="Processing Models"></a>Processing Models</h3><p>How system support concurrent requests from multi-user application<br>Worker:<br>    DBMS component<br>    Responsible for executing tasks<br>    On behalf of clients<br>    Return results</p>
+<h4 id="Process-per-DBMS-Worker"><a href="#Process-per-DBMS-Worker" class="headerlink" title="Process per DBMS Worker"></a>Process per DBMS Worker</h4><p>Separate OS process</p>
+<ul>
+<li>Rely on OS scheduler</li>
+<li>Shared-memory for global data structures</li>
+<li>One process don’t affect another<br>Request -&gt; Dispatcher -&gt; Worker &lt;-&gt; Database</li>
+</ul>
+<h4 id="Process-Pool"><a href="#Process-Pool" class="headerlink" title="Process Pool"></a>Process Pool</h4><p>Any free process from the pool</p>
+<ul>
+<li>Rely on OS scheduler</li>
+<li>Shared-memory for global data structures</li>
+<li>Bad for CPU cache locality<br>Request -&gt; Dispatcher -&gt; Worker Pool &lt;-&gt; Database</li>
+</ul>
+<h4 id="Thread-per-DBMS-Worker"><a href="#Thread-per-DBMS-Worker" class="headerlink" title="Thread per DBMS Worker"></a>Thread per DBMS Worker</h4><p>Single process with multiple threads</p>
+<ul>
+<li>DBMS manage its scheduling</li>
+<li>Thread crash may kill the system</li>
+<li>With or without dispatcher thread</li>
+<li>No need for managing shared memory<br>Request &lt;-&gt; Worker Threads &lt;-&gt; Database</li>
+</ul>
+<h3 id="Execution-Parallelism"><a href="#Execution-Parallelism" class="headerlink" title="Execution Parallelism"></a>Execution Parallelism</h3><h4 id="Inter-Query"><a href="#Inter-Query" class="headerlink" title="Inter - Query"></a>Inter - Query</h4><ul>
+<li>Queries executed concurrently</li>
+<li>Reduce latency</li>
+<li>Increase throughput</li>
+</ul>
+<h4 id="Intra-Query"><a href="#Intra-Query" class="headerlink" title="Intra - Query"></a>Intra - Query</h4><ul>
+<li>Query operations execute in parallel<ul>
+<li>Parallel versions for every operator</li>
+<li>Multiple threads accessing data</li>
+<li>Partitioning to divide works</li>
+</ul>
+</li>
+<li>Decrease latency for long-running queries</li>
+</ul>
+<h5 id="Intra-Operator-Horizontal"><a href="#Intra-Operator-Horizontal" class="headerlink" title="Intra-Operator (Horizontal)"></a>Intra-Operator (Horizontal)</h5><p>Decompose into independent fragments<br>Perform same function on different subsets of data<br><strong>Exchange</strong> operator</p>
+<ul>
+<li>High level abstraction</li>
+<li>Insert into query plan</li>
+<li>Coalescing or splitting results from multiple operators</li>
+<li>Gather, Distribute, Repartition<br>![[Exchange Operators.png]]</li>
+</ul>
+<h5 id="Inter-Operator-Vertical"><a href="#Inter-Operator-Vertical" class="headerlink" title="Inter-Operator (Vertical)"></a>Inter-Operator (Vertical)</h5><p>Overlapping operations to pipeline data from one stage to next<br>Workers execute operators from different segments of a query plan<br>Kind of like <em>assembly line</em></p>
+<ul>
+<li>Separate worker doing their own job</li>
+</ul>
+<h5 id="Bushy"><a href="#Bushy" class="headerlink" title="Bushy"></a>Bushy</h5><p>Combine intra- and inter-operator parallelism<br>Need exchange operators to combine intermediate results</p>
+<h3 id="I-x2F-O-Parallelism"><a href="#I-x2F-O-Parallelism" class="headerlink" title="I&#x2F;O Parallelism"></a>I&#x2F;O Parallelism</h3><ul>
+<li>Multiple disks per database</li>
+<li>One database per disk</li>
+<li>One relation per disk</li>
+<li>Split relation across multiple disks</li>
+</ul>
+<h4 id="Multiple-Disks-per-Database"><a href="#Multiple-Disks-per-Database" class="headerlink" title="Multiple Disks per Database"></a>Multiple Disks per Database</h4><p>Storage appliances<br>RAID configuration</p>
+<ul>
+<li>RAID 0<br> Frequent access<br> Better for read and writ  </li>
+<li>RAID 1<br> Better security<br> Better read, slower write  </li>
+<li>RAID 5<br> Parity to provide data redundancy<br> Improved data reliability<br> Better system performance<br> Worse write performance<br> Complicate data recovery</li>
+</ul>
+<h4 id="Database-Partitioning"><a href="#Database-Partitioning" class="headerlink" title="Database Partitioning"></a>Database Partitioning</h4><p>Specify disk location of each database<br> - buffer pool manager maps page to disk location<br> - can do at filesystem level with log file  </p>
+<h5 id="Partitioning"><a href="#Partitioning" class="headerlink" title="Partitioning"></a>Partitioning</h5><p>Split single logical table<br>Into disjoint physical segment separately<br>Transparent to application<br> - access logical table not worry about how physically stored</p>
+<h5 id="Vertical-Partitioning"><a href="#Vertical-Partitioning" class="headerlink" title="Vertical Partitioning"></a>Vertical Partitioning</h5><p>Separate location<br>Store tuple information to reconstruct original record<br>Separate data access frequently and less frequent</p>
+<h5 id="Horizontal-partitioning"><a href="#Horizontal-partitioning" class="headerlink" title="Horizontal partitioning"></a>Horizontal partitioning</h5><p>Divide based on partitioning key</p>
+<ul>
+<li>Hash Partitioning</li>
+<li>Range Partitioning</li>
+<li>Predicate Partitioning</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/18/%E6%95%B0%E6%8D%AE%E5%BA%93/Join%20Algorithms/" rel="prev" title="Join Algorithms">
+      <i class="fa fa-chevron-left"></i> Join Algorithms
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/05/18/AI%20%E7%A4%BE%E4%BC%9A%E5%AD%A6%E4%B8%8E%E5%BF%83%E7%90%86%E5%AD%A6/AI%20%E7%9A%84%E8%87%AA%E6%88%91%E6%84%8F%E8%AF%86/" rel="next" title="AI 的自我意识">
+      AI 的自我意识 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%81%E6%B5%81"><span class="nav-number">1.</span> <span class="nav-text">省流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sequential-Processing"><span class="nav-number">2.</span> <span class="nav-text">Sequential Processing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Processing-Models"><span class="nav-number">2.1.</span> <span class="nav-text">Processing Models</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Iterator-Model"><span class="nav-number">2.1.1.</span> <span class="nav-text">Iterator Model</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Materialization-Model"><span class="nav-number">2.1.2.</span> <span class="nav-text">Materialization Model</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Vectorized-x2F-Batch-Model"><span class="nav-number">2.1.3.</span> <span class="nav-text">Vectorized &#x2F; Batch Model</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Access-Methods"><span class="nav-number">2.2.</span> <span class="nav-text">Access Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Top-to-down"><span class="nav-number">2.2.1.</span> <span class="nav-text">Top -to-down</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bottom-to-up"><span class="nav-number">2.2.2.</span> <span class="nav-text">Bottom -to-up</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Access-Method"><span class="nav-number">2.2.3.</span> <span class="nav-text">Access Method</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Sequential-Scan"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">Sequential Scan</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Index-Scan"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">Index Scan</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Multi-Index-x2F-Bitmap-Scan"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">Multi -Index &#x2F; Bitmap Scan</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Modification-Queries"><span class="nav-number">2.3.</span> <span class="nav-text">Modification Queries</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UPDATE-x2F-DELETE"><span class="nav-number">2.3.1.</span> <span class="nav-text">UPDATE &#x2F; DELETE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#INSERT"><span class="nav-number">2.3.2.</span> <span class="nav-text">INSERT</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Expression-Evaluation"><span class="nav-number">2.4.</span> <span class="nav-text">Expression Evaluation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parallel-Processing"><span class="nav-number">3.</span> <span class="nav-text">Parallel Processing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Parallel-Execution"><span class="nav-number">3.1.</span> <span class="nav-text">Parallel Execution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Processing-Models-1"><span class="nav-number">3.2.</span> <span class="nav-text">Processing Models</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Process-per-DBMS-Worker"><span class="nav-number">3.2.1.</span> <span class="nav-text">Process per DBMS Worker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Process-Pool"><span class="nav-number">3.2.2.</span> <span class="nav-text">Process Pool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Thread-per-DBMS-Worker"><span class="nav-number">3.2.3.</span> <span class="nav-text">Thread per DBMS Worker</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Execution-Parallelism"><span class="nav-number">3.3.</span> <span class="nav-text">Execution Parallelism</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Inter-Query"><span class="nav-number">3.3.1.</span> <span class="nav-text">Inter - Query</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Intra-Query"><span class="nav-number">3.3.2.</span> <span class="nav-text">Intra - Query</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Intra-Operator-Horizontal"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">Intra-Operator (Horizontal)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Inter-Operator-Vertical"><span class="nav-number">3.3.2.2.</span> <span class="nav-text">Inter-Operator (Vertical)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Bushy"><span class="nav-number">3.3.2.3.</span> <span class="nav-text">Bushy</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-x2F-O-Parallelism"><span class="nav-number">3.4.</span> <span class="nav-text">I&#x2F;O Parallelism</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Multiple-Disks-per-Database"><span class="nav-number">3.4.1.</span> <span class="nav-text">Multiple Disks per Database</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Database-Partitioning"><span class="nav-number">3.4.2.</span> <span class="nav-text">Database Partitioning</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Partitioning"><span class="nav-number">3.4.2.1.</span> <span class="nav-text">Partitioning</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Vertical-Partitioning"><span class="nav-number">3.4.2.2.</span> <span class="nav-text">Vertical Partitioning</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Horizontal-partitioning"><span class="nav-number">3.4.2.3.</span> <span class="nav-text">Horizontal partitioning</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="CarlosDJY"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">CarlosDJY</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CarlosDJY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CarlosDJY" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CarlosDJY</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carlosdjy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="省流Tree Indexes：树索引是一种数据结构，通过排序和层级化数据来优化访问速度。如B树和B+树，常用于数据库和文件系统。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tree Indexes">
+<meta property="og:url" content="https://carlosdjy.github.io/2023/04/15/%E6%95%B0%E6%8D%AE%E5%BA%93/Tree%20Indexes/index.html">
+<meta property="og:site_name" content="巧克力の博客">
+<meta property="og:description" content="省流Tree Indexes：树索引是一种数据结构，通过排序和层级化数据来优化访问速度。如B树和B+树，常用于数据库和文件系统。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-19T11:21:38.076Z">
+<meta property="article:author" content="CarlosDJY">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://carlosdjy.github.io/2023/04/15/%E6%95%B0%E6%8D%AE%E5%BA%93/Tree%20Indexes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Tree Indexes | 巧克力の博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">巧克力の博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一场思想与心灵之旅</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/2023/06/17/Introduction" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">21</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/04/15/%E6%95%B0%E6%8D%AE%E5%BA%93/Tree%20Indexes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="CarlosDJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="巧克力の博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Tree Indexes
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-04-15 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-15T00:00:00+08:00">2023-04-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-19 19:21:38" itemprop="dateModified" datetime="2023-06-19T19:21:38+08:00">2023-06-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="省流"><a href="#省流" class="headerlink" title="省流"></a>省流</h2><p><strong>Tree Indexes</strong>：树索引是一种数据结构，通过<strong>排序和层级化</strong>数据来优化访问速度。如B树和B+树，常用于数据库和文件系统。  </p>
+<span id="more"></span>  
+
+<h1 id="Tree-Indexes"><a href="#Tree-Indexes" class="headerlink" title="Tree Indexes"></a>Tree Indexes</h1><h4 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h4><p>let DBMS quickly find the data wanted<br>based on [[Hash Tables]]</p>
+<h5 id="Trade-off"><a href="#Trade-off" class="headerlink" title="Trade-off"></a>Trade-off</h5><ul>
+<li>storage and maintenance overhead</li>
+<li>speed</li>
+</ul>
+<h2 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B+Tree"></a>B+Tree</h2><h5 id="Example-of-B-Tree"><a href="#Example-of-B-Tree" class="headerlink" title="Example of B+Tree"></a>Example of B+Tree</h5><p>![[B+Tree.png]]</p>
+<h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><h4 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h4><p>self-balancing tree<br>M-way search tree</p>
+<ul>
+<li>perfectly balanced<ul>
+<li>all leaf node at same depth</li>
+</ul>
+</li>
+<li>at least half full<ul>
+<li>M&#x2F;2-1 ~ M-1 keys</li>
+</ul>
+</li>
+<li>any inner node with k keys have k+1 non-null children</li>
+</ul>
+<h5 id="Complexity-O-log-n"><a href="#Complexity-O-log-n" class="headerlink" title="Complexity O(log n)"></a>Complexity O(log n)</h5><p>search<br>sequential access<br>insertions<br>deletions</p>
+<h4 id="Leaf-Node-Values"><a href="#Leaf-Node-Values" class="headerlink" title="Leaf Node Values"></a>Leaf Node Values</h4><h5 id="Record-IDs"><a href="#Record-IDs" class="headerlink" title="Record IDs"></a>Record IDs</h5><p>point to location of the tuple</p>
+<h5 id="Tuple-Data"><a href="#Tuple-Data" class="headerlink" title="Tuple Data"></a>Tuple Data</h5><ul>
+<li>leaf nodes: store actual contents</li>
+<li>secondary indexes store the Record ID</li>
+</ul>
+<h4 id="Selection-Conditions"><a href="#Selection-Conditions" class="headerlink" title="Selection Conditions"></a>Selection Conditions</h4><p>view the inner nodes:</p>
+<ul>
+<li>get the interval of the children</li>
+</ul>
+<h4 id="Insertion"><a href="#Insertion" class="headerlink" title="Insertion"></a>Insertion</h4><p>find the leaf node<br>put data entry into the node</p>
+<ul>
+<li>enough space<ul>
+<li>done</li>
+</ul>
+</li>
+<li>no enough space<ul>
+<li>split into 2 nodes</li>
+<li>redistribute evenly</li>
+<li>leaf node: index entry -&gt; insert to parent</li>
+<li>inner node: middle key -&gt; insert to parent</li>
+</ul>
+</li>
+</ul>
+<h4 id="Delete"><a href="#Delete" class="headerlink" title="Delete"></a>Delete</h4><p>find leaf node entry belongs<br>remove entry</p>
+<ul>
+<li>at least half full<ul>
+<li>done</li>
+</ul>
+</li>
+<li>M&#x2F;2-1 entries left<ul>
+<li>leaf node: redistribute: borrow from sibling</li>
+<li>inner node: merge with sibling, delete entry to node and sibling</li>
+</ul>
+</li>
+</ul>
+<h4 id="Duplicate-Keys"><a href="#Duplicate-Keys" class="headerlink" title="Duplicate Keys"></a>Duplicate Keys</h4><h5 id="Append-Record-ID"><a href="#Append-Record-ID" class="headerlink" title="Append Record ID"></a>Append Record ID</h5><ul>
+<li>tuple’s unique ID</li>
+<li>instead of Key, have Key + Record ID<ul>
+<li>&lt;Key, (Page, Slot)&gt;</li>
+</ul>
+</li>
+</ul>
+<h5 id="Overflow-Leaf-Nodes"><a href="#Overflow-Leaf-Nodes" class="headerlink" title="Overflow Leaf Nodes"></a>Overflow Leaf Nodes</h5><ul>
+<li>split into overflow nodes</li>
+<li>complex to maintain and modify</li>
+</ul>
+<h3 id="Use-in-DBMSs"><a href="#Use-in-DBMSs" class="headerlink" title="Use in DBMSs"></a>Use in DBMSs</h3><h4 id="Clustered-Indexes"><a href="#Clustered-Indexes" class="headerlink" title="Clustered Indexes"></a>Clustered Indexes</h4><p>no primary key -&gt; hidden primary key<br>clustered data</p>
+<ul>
+<li>sorted tree for each sub-page</li>
+<li>sort the primary key to get sorted data</li>
+</ul>
+<h5 id="Index-Scan-Page-Sorting"><a href="#Index-Scan-Page-Sorting" class="headerlink" title="Index Scan Page Sorting"></a>Index Scan Page Sorting</h5><p>inefficient<br>get tuples it need sort by Page ID</p>
+<h3 id="Design-Choices"><a href="#Design-Choices" class="headerlink" title="Design Choices"></a>Design Choices</h3><h5 id="Modern-B-Tree-Techniques"><a href="#Modern-B-Tree-Techniques" class="headerlink" title="Modern B-Tree Techniques"></a>Modern B-Tree Techniques</h5><h4 id="Node-Size"><a href="#Node-Size" class="headerlink" title="Node Size"></a>Node Size</h4><p>slower the device, larger the node size</p>
+<ul>
+<li>HDD 1MB</li>
+<li>SSD 10KB</li>
+<li>In-Memory 512B<br>depending on workload</li>
+<li>leaf node scans</li>
+<li>root to leaf traversals</li>
+</ul>
+<h4 id="Merge-Threshold"><a href="#Merge-Threshold" class="headerlink" title="Merge Threshold"></a>Merge Threshold</h4><p>changeable merge threshold<br>delaying merge reduce reorganization</p>
+<h4 id="Variable-Length-Keys"><a href="#Variable-Length-Keys" class="headerlink" title="Variable-Length Keys"></a>Variable-Length Keys</h4><h5 id="Pointers"><a href="#Pointers" class="headerlink" title="Pointers"></a>Pointers</h5><p>point to tuple’s attribute</p>
+<h5 id="Variable-Length-Nodes"><a href="#Variable-Length-Nodes" class="headerlink" title="Variable-Length Nodes"></a>Variable-Length Nodes</h5><p>careful memory management<br>complicated</p>
+<h5 id="Padding"><a href="#Padding" class="headerlink" title="Padding"></a>Padding</h5><p>allocate max length for all keys</p>
+<h5 id="Key-Map-x2F-Indirection"><a href="#Key-Map-x2F-Indirection" class="headerlink" title="Key Map &#x2F; Indirection"></a>Key Map &#x2F; Indirection</h5><p>similar to slotted pages</p>
+<h4 id="Intra-Node-Search"><a href="#Intra-Node-Search" class="headerlink" title="Intra-Node Search"></a>Intra-Node Search</h4><p>for both leaf nodes and inner nodes</p>
+<h5 id="Linear"><a href="#Linear" class="headerlink" title="Linear"></a>Linear</h5><p>from beginning to end<br>unsorted: linear only</p>
+<h5 id="Binary"><a href="#Binary" class="headerlink" title="Binary"></a>Binary</h5><p>jump to middle, left &#x2F; right on comparison</p>
+<h5 id="Interpolation"><a href="#Interpolation" class="headerlink" title="Interpolation"></a>Interpolation</h5><p>base on known distribution, estimate location</p>
+<h3 id="Merging-B-Trees"><a href="#Merging-B-Trees" class="headerlink" title="Merging B+Trees"></a>Merging B+Trees</h3><h4 id="Off-line"><a href="#Off-line" class="headerlink" title="Off-line"></a>Off-line</h4><p>block all operations until merged</p>
+<h4 id="Eager"><a href="#Eager" class="headerlink" title="Eager"></a>Eager</h4><p>access both during merge</p>
+<h4 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h4><p>copy and merge in the background<br>apply missed updates</p>
+<h4 id="Lazy"><a href="#Lazy" class="headerlink" title="Lazy"></a>Lazy</h4><p>one main tree, one secondary tree<br>leaf in main not updated:</p>
+<ul>
+<li>search the range in secondary tree</li>
+<li>merge into first</li>
+</ul>
+<h3 id="Optimizations"><a href="#Optimizations" class="headerlink" title="Optimizations"></a>Optimizations</h3><h4 id="Prefix-Compression"><a href="#Prefix-Compression" class="headerlink" title="Prefix Compression"></a>Prefix Compression</h4><p>same leaf node -&gt; possible same prefix<br>node: prefix + each unique suffix</p>
+<h4 id="Deduplication"><a href="#Deduplication" class="headerlink" title="Deduplication"></a>Deduplication</h4><p>with duplicated data:<br>store key once, maintain a list with the key</p>
+<h4 id="Bulk-Insert"><a href="#Bulk-Insert" class="headerlink" title="Bulk Insert"></a>Bulk Insert</h4><p>build B+Tree for existing table</p>
+<ul>
+<li>sort keys</li>
+<li>build index from bottom up</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/14/%E6%95%B0%E6%8D%AE%E5%BA%93/Hash%20Tables/" rel="prev" title="Hash Tables">
+      <i class="fa fa-chevron-left"></i> Hash Tables
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/04/16/%E6%95%B0%E6%8D%AE%E5%BA%93/Index%20Concurrency%20Control/" rel="next" title="Index Concurrency Control">
+      Index Concurrency Control <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%81%E6%B5%81"><span class="nav-number">1.</span> <span class="nav-text">省流</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tree-Indexes"><span class="nav-number"></span> <span class="nav-text">Tree Indexes</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Usage"><span class="nav-number">0.0.1.</span> <span class="nav-text">Usage</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Trade-off"><span class="nav-number">0.0.1.1.</span> <span class="nav-text">Trade-off</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#B-Tree"><span class="nav-number">1.</span> <span class="nav-text">B+Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Example-of-B-Tree"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">Example of B+Tree</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-number">1.1.</span> <span class="nav-text">Overview</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Properties"><span class="nav-number">1.1.1.</span> <span class="nav-text">Properties</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Complexity-O-log-n"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Complexity O(log n)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Leaf-Node-Values"><span class="nav-number">1.1.2.</span> <span class="nav-text">Leaf Node Values</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Record-IDs"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Record IDs</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Tuple-Data"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Tuple Data</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Selection-Conditions"><span class="nav-number">1.1.3.</span> <span class="nav-text">Selection Conditions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Insertion"><span class="nav-number">1.1.4.</span> <span class="nav-text">Insertion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Delete"><span class="nav-number">1.1.5.</span> <span class="nav-text">Delete</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Duplicate-Keys"><span class="nav-number">1.1.6.</span> <span class="nav-text">Duplicate Keys</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Append-Record-ID"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">Append Record ID</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Overflow-Leaf-Nodes"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">Overflow Leaf Nodes</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Use-in-DBMSs"><span class="nav-number">1.2.</span> <span class="nav-text">Use in DBMSs</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Clustered-Indexes"><span class="nav-number">1.2.1.</span> <span class="nav-text">Clustered Indexes</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Index-Scan-Page-Sorting"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Index Scan Page Sorting</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Design-Choices"><span class="nav-number">1.3.</span> <span class="nav-text">Design Choices</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Modern-B-Tree-Techniques"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">Modern B-Tree Techniques</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-Size"><span class="nav-number">1.3.1.</span> <span class="nav-text">Node Size</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Merge-Threshold"><span class="nav-number">1.3.2.</span> <span class="nav-text">Merge Threshold</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Variable-Length-Keys"><span class="nav-number">1.3.3.</span> <span class="nav-text">Variable-Length Keys</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Pointers"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Pointers</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Variable-Length-Nodes"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">Variable-Length Nodes</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Padding"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">Padding</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Key-Map-x2F-Indirection"><span class="nav-number">1.3.3.4.</span> <span class="nav-text">Key Map &#x2F; Indirection</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Intra-Node-Search"><span class="nav-number">1.3.4.</span> <span class="nav-text">Intra-Node Search</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Linear"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">Linear</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Binary"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">Binary</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Interpolation"><span class="nav-number">1.3.4.3.</span> <span class="nav-text">Interpolation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Merging-B-Trees"><span class="nav-number">1.4.</span> <span class="nav-text">Merging B+Trees</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Off-line"><span class="nav-number">1.4.1.</span> <span class="nav-text">Off-line</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Eager"><span class="nav-number">1.4.2.</span> <span class="nav-text">Eager</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Background"><span class="nav-number">1.4.3.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Lazy"><span class="nav-number">1.4.4.</span> <span class="nav-text">Lazy</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Optimizations"><span class="nav-number">1.5.</span> <span class="nav-text">Optimizations</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Prefix-Compression"><span class="nav-number">1.5.1.</span> <span class="nav-text">Prefix Compression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Deduplication"><span class="nav-number">1.5.2.</span> <span class="nav-text">Deduplication</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bulk-Insert"><span class="nav-number">1.5.3.</span> <span class="nav-text">Bulk Insert</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="CarlosDJY"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">CarlosDJY</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CarlosDJY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CarlosDJY" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CarlosDJY</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

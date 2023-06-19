@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carlosdjy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="省流Database Storage：数据库存储是管理和组织数据的方式，通过数据库表格等结构进行。这种组织方式便于存取，支持多种操作，如查询和更新。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Database Storage">
+<meta property="og:url" content="https://carlosdjy.github.io/2023/04/12/%E6%95%B0%E6%8D%AE%E5%BA%93/Database%20Storage/index.html">
+<meta property="og:site_name" content="巧克力の博客">
+<meta property="og:description" content="省流Database Storage：数据库存储是管理和组织数据的方式，通过数据库表格等结构进行。这种组织方式便于存取，支持多种操作，如查询和更新。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-19T11:20:00.844Z">
+<meta property="article:author" content="CarlosDJY">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://carlosdjy.github.io/2023/04/12/%E6%95%B0%E6%8D%AE%E5%BA%93/Database%20Storage/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Database Storage | 巧克力の博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">巧克力の博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一场思想与心灵之旅</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/2023/06/17/Introduction" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">21</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/04/12/%E6%95%B0%E6%8D%AE%E5%BA%93/Database%20Storage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="CarlosDJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="巧克力の博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Database Storage
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-04-12 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-12T00:00:00+08:00">2023-04-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-19 19:20:00" itemprop="dateModified" datetime="2023-06-19T19:20:00+08:00">2023-06-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="省流"><a href="#省流" class="headerlink" title="省流"></a>省流</h2><p><strong>Database Storage</strong>：数据库存储是<strong>管理和组织</strong>数据的方式，通过数据库表格等结构进行。这种组织方式便于存取，支持多种操作，如查询和更新。</p>
+<span id="more"></span>
+
+<h1 id="Database-Storage"><a href="#Database-Storage" class="headerlink" title="Database Storage"></a>Database Storage</h1><h2 id="Disk-Oriented-DBMS"><a href="#Disk-Oriented-DBMS" class="headerlink" title="Disk Oriented DBMS"></a>Disk Oriented DBMS</h2><h3 id="How-it-Works"><a href="#How-it-Works" class="headerlink" title="How it Works:"></a>How it Works:</h3><p>Disk: Directory + Files<br>Memory: Get request -&gt; Directory -&gt; get files wanted<br>System: Request -&gt; get pointer to files from memory</p>
+<h3 id="“Pages”"><a href="#“Pages”" class="headerlink" title="“Pages”:"></a>“Pages”:</h3><ul>
+<li>Hardware Page 4kB</li>
+<li>OS Page 4kB</li>
+<li>Database Page 512B ~ 16kB</li>
+</ul>
+<h3 id="Heap-File-Organization"><a href="#Heap-File-Organization" class="headerlink" title="Heap File Organization"></a>Heap File Organization</h3><h4 id="Heap-File"><a href="#Heap-File" class="headerlink" title="Heap File:"></a>Heap File:</h4><ul>
+<li>unordered collection of pages</li>
+<li>create &#x2F; get &#x2F; write &#x2F; delete &#x2F; iterate through files</li>
+<li>meta data:<br> keep track of pages:<br> exist<br> have space</li>
+</ul>
+<h4 id="Data-Structure"><a href="#Data-Structure" class="headerlink" title="Data Structure:"></a>Data Structure:</h4><h5 id="Link-List"><a href="#Link-List" class="headerlink" title="Link List"></a>Link List</h5><p>header for free list + header for data list<br>doubly linked list</p>
+<h5 id="Page-Directory"><a href="#Page-Directory" class="headerlink" title="Page Directory"></a>Page Directory</h5><p>page ID -&gt; page<br>meta data: eg: free slots of page</p>
+<h4 id="Page"><a href="#Page" class="headerlink" title="Page:"></a>Page:</h4><h5 id="Header"><a href="#Header" class="headerlink" title="Header:"></a>Header:</h5><ul>
+<li>page size</li>
+<li>check sum</li>
+<li>DBMS version</li>
+<li>transaction visibility</li>
+<li>compression information</li>
+</ul>
+<h5 id="Page-Layout"><a href="#Page-Layout" class="headerlink" title="Page Layout:"></a>Page Layout:</h5><h6 id="Tuple-oriented"><a href="#Tuple-oriented" class="headerlink" title="Tuple-oriented:"></a>Tuple-oriented:</h6><p>slotted pages: header with slot array<br>slot array map to the starting point of the tuples<br>keep track of </p>
+<ul>
+<li>the # of the used slots</li>
+<li>where the last slot used<br>compaction: periodically remove the spaces</li>
+</ul>
+<h6 id="Log-structured"><a href="#Log-structured" class="headerlink" title="Log-structured:"></a>Log-structured:</h6><p>DBMS store log records<br>fast write in, good for disk I&#x2F;O<br>append log records when: </p>
+<ul>
+<li>Insert tuples</li>
+<li>delete tuples</li>
+<li>update tuples<br>read record:<br>scan the log backward<br>index for different tuples to jump through<br>compaction:</li>
+<li>level compaction: “merge compaction”<br> bottom layer: fully compacted</li>
+<li>universal compaction:<br> merge adjacent files</li>
+</ul>
+<h5 id="Tuples"><a href="#Tuples" class="headerlink" title="Tuples:"></a>Tuples:</h5><h6 id="Tuple-Header"><a href="#Tuple-Header" class="headerlink" title="Tuple Header:"></a>Tuple Header:</h6><ul>
+<li>visibility info</li>
+<li>bit map for NULL values</li>
+</ul>
+<h6 id="Tuple-Data"><a href="#Tuple-Data" class="headerlink" title="Tuple Data:"></a>Tuple Data:</h6><p>in the order created</p>
+<h6 id="Denormalize-Tuples"><a href="#Denormalize-Tuples" class="headerlink" title="Denormalize Tuples:"></a>Denormalize Tuples:</h6><p>eg: pre join<br>store related tuples in the same page<br>eg: tuple a, b + lots of tuples a, c<br>    -&gt; tuple a, b, c1, c2, …</p>
+<h6 id="Numeric-Data-Types"><a href="#Numeric-Data-Types" class="headerlink" title="Numeric Data Types:"></a>Numeric Data Types:</h6><ul>
+<li>fixed precision numbers</li>
+<li>floats<ul>
+<li>IEEE-754 standard</li>
+<li>stored as char array</li>
+</ul>
+</li>
+<li>large values:<br> pointer to overflow storage page<br> varchar data<br> external value storage<br> BLOB type: reference that point to external files</li>
+</ul>
+<h5 id="Record-IDs"><a href="#Record-IDs" class="headerlink" title="Record IDs:"></a>Record IDs:</h5><p>keep track of individual tuples<br>record identifier: </p>
+<ul>
+<li>page ID + offset &#x2F; slot</li>
+<li>(can have) file location info</li>
+</ul>
+<h4 id="System-Catalogs"><a href="#System-Catalogs" class="headerlink" title="System Catalogs:"></a>System Catalogs:</h4><p>internal catalogs:</p>
+<ul>
+<li>tables, columns, indexes, views</li>
+<li>users, permissions</li>
+<li>internal statistics<br>stores the catalog inside itself</li>
+</ul>
+<h4 id="Workloads"><a href="#Workloads" class="headerlink" title="Workloads:"></a>Workloads:</h4><h6 id="On-Line-Transaction-Processing-OLTP"><a href="#On-Line-Transaction-Processing-OLTP" class="headerlink" title="On-Line Transaction Processing (OLTP):"></a>On-Line Transaction Processing (OLTP):</h6><p>focus more on simple writes<br>read &#x2F; write small amount of data each time<br>used in online stores etc.</p>
+<h6 id="On-Line-Analytical-Processing-OLAP"><a href="#On-Line-Analytical-Processing-OLAP" class="headerlink" title="On-Line Analytical Processing (OLAP):"></a>On-Line Analytical Processing (OLAP):</h6><p>focus more on complex reads<br>complex reads to compute<br>scan a large sample<br>used in big data analysis etc.</p>
+<h6 id="Hybrid-Transaction-Analytical-Processing-HTAP"><a href="#Hybrid-Transaction-Analytical-Processing-HTAP" class="headerlink" title="Hybrid Transaction + Analytical Processing (HTAP):"></a>Hybrid Transaction + Analytical Processing (HTAP):</h6><p>OLTP + OLAP<br>OLTP: transactions<br>OLAP: analytical queries<br>distributed OLTP data silos + OLAP data ware house<br>OLTP -&gt; extract transform load -&gt; OLAP</p>
+<h4 id="Data-Storage"><a href="#Data-Storage" class="headerlink" title="Data Storage:"></a>Data Storage:</h4><h6 id="N-array-Storage-Model-NSM"><a href="#N-array-Storage-Model-NSM" class="headerlink" title="N-array Storage Model (NSM):"></a>N-array Storage Model (NSM):</h6><p>contiguous in a page<br>Row Store: header + data<br>advantages: </p>
+<ul>
+<li>fast insert, update, delete</li>
+<li>queries for entire tuples</li>
+<li>ideal for OLTP<br>disadvantages: </li>
+<li>scan large portions of the table</li>
+<li>scan for subsets</li>
+</ul>
+<h6 id="Decomposition-Storage-Model-DSM"><a href="#Decomposition-Storage-Model-DSM" class="headerlink" title="Decomposition Storage Model (DSM):"></a>Decomposition Storage Model (DSM):</h6><p>contiguous in a page<br>Column Store: </p>
+<ul>
+<li>fixed-length offsets:<br> same length for an attribute</li>
+<li>embedded tuple IDs<br> each value stored with tuple ID<br>advantages: </li>
+<li>reduce I&#x2F;O amount</li>
+<li>better query processing and compression<br>disadvantages:</li>
+<li>slow for inserts, updates, deletes</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/03/29/DGL%E7%AC%94%E8%AE%B0/PyTorch/" rel="prev" title="PyTorch">
+      <i class="fa fa-chevron-left"></i> PyTorch
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/04/13/%E6%95%B0%E6%8D%AE%E5%BA%93/Buffer%20Pools/" rel="next" title="Buffer Pools">
+      Buffer Pools <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%81%E6%B5%81"><span class="nav-number">1.</span> <span class="nav-text">省流</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Database-Storage"><span class="nav-number"></span> <span class="nav-text">Database Storage</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Disk-Oriented-DBMS"><span class="nav-number">1.</span> <span class="nav-text">Disk Oriented DBMS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-it-Works"><span class="nav-number">1.1.</span> <span class="nav-text">How it Works:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%80%9CPages%E2%80%9D"><span class="nav-number">1.2.</span> <span class="nav-text">“Pages”:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Heap-File-Organization"><span class="nav-number">1.3.</span> <span class="nav-text">Heap File Organization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Heap-File"><span class="nav-number">1.3.1.</span> <span class="nav-text">Heap File:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Data-Structure"><span class="nav-number">1.3.2.</span> <span class="nav-text">Data Structure:</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Link-List"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">Link List</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Page-Directory"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">Page Directory</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Page"><span class="nav-number">1.3.3.</span> <span class="nav-text">Page:</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Header"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Header:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Page-Layout"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">Page Layout:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Tuple-oriented"><span class="nav-number">1.3.3.2.1.</span> <span class="nav-text">Tuple-oriented:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Log-structured"><span class="nav-number">1.3.3.2.2.</span> <span class="nav-text">Log-structured:</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Tuples"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">Tuples:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Tuple-Header"><span class="nav-number">1.3.3.3.1.</span> <span class="nav-text">Tuple Header:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Tuple-Data"><span class="nav-number">1.3.3.3.2.</span> <span class="nav-text">Tuple Data:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Denormalize-Tuples"><span class="nav-number">1.3.3.3.3.</span> <span class="nav-text">Denormalize Tuples:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Numeric-Data-Types"><span class="nav-number">1.3.3.3.4.</span> <span class="nav-text">Numeric Data Types:</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Record-IDs"><span class="nav-number">1.3.3.4.</span> <span class="nav-text">Record IDs:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#System-Catalogs"><span class="nav-number">1.3.4.</span> <span class="nav-text">System Catalogs:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Workloads"><span class="nav-number">1.3.5.</span> <span class="nav-text">Workloads:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#On-Line-Transaction-Processing-OLTP"><span class="nav-number">1.3.5.0.1.</span> <span class="nav-text">On-Line Transaction Processing (OLTP):</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#On-Line-Analytical-Processing-OLAP"><span class="nav-number">1.3.5.0.2.</span> <span class="nav-text">On-Line Analytical Processing (OLAP):</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Hybrid-Transaction-Analytical-Processing-HTAP"><span class="nav-number">1.3.5.0.3.</span> <span class="nav-text">Hybrid Transaction + Analytical Processing (HTAP):</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Data-Storage"><span class="nav-number">1.3.6.</span> <span class="nav-text">Data Storage:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#N-array-Storage-Model-NSM"><span class="nav-number">1.3.6.0.1.</span> <span class="nav-text">N-array Storage Model (NSM):</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Decomposition-Storage-Model-DSM"><span class="nav-number">1.3.6.0.2.</span> <span class="nav-text">Decomposition Storage Model (DSM):</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="CarlosDJY"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">CarlosDJY</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CarlosDJY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CarlosDJY" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CarlosDJY</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

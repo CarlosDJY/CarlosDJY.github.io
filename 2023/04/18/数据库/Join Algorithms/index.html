@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carlosdjy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="省流Join Algorithms：连接算法是数据库查询中的一种操作，它根据特定条件将两个或更多的表连接在一起，产生包含所有表中列的新表。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Join Algorithms">
+<meta property="og:url" content="https://carlosdjy.github.io/2023/04/18/%E6%95%B0%E6%8D%AE%E5%BA%93/Join%20Algorithms/index.html">
+<meta property="og:site_name" content="巧克力の博客">
+<meta property="og:description" content="省流Join Algorithms：连接算法是数据库查询中的一种操作，它根据特定条件将两个或更多的表连接在一起，产生包含所有表中列的新表。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-19T11:21:02.752Z">
+<meta property="article:author" content="CarlosDJY">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://carlosdjy.github.io/2023/04/18/%E6%95%B0%E6%8D%AE%E5%BA%93/Join%20Algorithms/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Join Algorithms | 巧克力の博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">巧克力の博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一场思想与心灵之旅</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/2023/06/17/Introduction" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">21</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/04/18/%E6%95%B0%E6%8D%AE%E5%BA%93/Join%20Algorithms/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="CarlosDJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="巧克力の博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Join Algorithms
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-04-18 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-18T00:00:00+08:00">2023-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-19 19:21:02" itemprop="dateModified" datetime="2023-06-19T19:21:02+08:00">2023-06-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="省流"><a href="#省流" class="headerlink" title="省流"></a>省流</h2><p><strong>Join Algorithms</strong>：连接算法是数据库查询中的一种操作，它根据<strong>特定条件将两个或更多的表连接</strong>在一起，产生包含所有表中列的新表。  </p>
+<span id="more"></span>  
+
+<h2 id="Join-Operator"><a href="#Join-Operator" class="headerlink" title="Join Operator"></a>Join Operator</h2><p>Reconstruct original tuples without information loss<br>Binary joins with inner equijoin<br>Smaller table: outer table (less pages)  </p>
+<h3 id="Output"><a href="#Output" class="headerlink" title="Output"></a>Output</h3><p>What it will return when match<br>When match: concat together into a new tuple  </p>
+<h4 id="Vary-Depends-on"><a href="#Vary-Depends-on" class="headerlink" title="Vary Depends on"></a>Vary Depends on</h4><ul>
+<li>Processing model  </li>
+<li>Storage model  </li>
+<li>Data requirements in query</li>
+</ul>
+<h4 id="Early-Materialization"><a href="#Early-Materialization" class="headerlink" title="Early Materialization"></a>Early Materialization</h4><p>Copy into new output tuple<br>    Store in buffer pool<br>Do the query on the output tuple<br>Large expense when data is large<br>Never need to go back to base tables </p>
+<h4 id="Late-Materialization"><a href="#Late-Materialization" class="headerlink" title="Late Materialization"></a>Late Materialization</h4><p>Copy the joins with recorded tuple IDs match<br>Get matched keys<br>Look back to the data</p>
+<h4 id="Depend-on-Base-Storage-Model"><a href="#Depend-on-Base-Storage-Model" class="headerlink" title="Depend on Base Storage Model"></a>Depend on Base Storage Model</h4><p>Row-based:<br>    Perhaps Early will do better<br>Column-based:<br>    Mostly Late ones<br>    Don’t copy unneeded data</p>
+<h3 id="Cost-Analysis-Criteria"><a href="#Cost-Analysis-Criteria" class="headerlink" title="Cost Analysis Criteria"></a>Cost Analysis Criteria</h3><p>Why one is better than another</p>
+<h4 id="Assume"><a href="#Assume" class="headerlink" title="Assume"></a>Assume</h4><p>Table R: M pages, m tuples<br>Table S: N pages, n tuples</p>
+<h4 id="Cost-Metric"><a href="#Cost-Metric" class="headerlink" title="Cost Metric"></a>Cost Metric</h4><p>Number of IOs to compute join<br>Ignore output costs</p>
+<h2 id="Join-Algorithms"><a href="#Join-Algorithms" class="headerlink" title="Join Algorithms"></a>Join Algorithms</h2><h3 id="Nested-Loop-Join"><a href="#Nested-Loop-Join" class="headerlink" title="Nested Loop Join"></a>Nested Loop Join</h3><h4 id="Keys"><a href="#Keys" class="headerlink" title="Keys"></a>Keys</h4><ul>
+<li>Pick smaller table as outer table</li>
+<li>Buffer as much outer table as possible</li>
+<li>Loop over inner table or with index</li>
+</ul>
+<h4 id="Simple"><a href="#Simple" class="headerlink" title="Simple"></a>Simple</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach <span class="built_in">tuple</span> r <span class="keyword">in</span> R:</span><br><span class="line">	foreach <span class="built_in">tuple</span> s <span class="keyword">in</span> S:</span><br><span class="line">		emit, <span class="keyword">if</span> r <span class="keyword">and</span> s <span class="keyword">match</span></span><br></pre></td></tr></table></figure>
+<p>Every tuple in R scans S once<br>    Work bit faster when R is smaller<br>    Cost: M + (m · N)<br>    <em>cost is calculated based on IOs</em></p>
+<h4 id="Block"><a href="#Block" class="headerlink" title="Block"></a>Block</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">foreach block B_R <span class="keyword">in</span> R:</span><br><span class="line">	foreach block B_S <span class="keyword">in</span> S:</span><br><span class="line">		foreach <span class="built_in">tuple</span> r <span class="keyword">in</span> B_R:</span><br><span class="line">			foreach <span class="built_in">tuple</span> s <span class="keyword">in</span> B_S:</span><br><span class="line">				emit, <span class="keyword">if</span> r <span class="keyword">and</span> s <span class="keyword">match</span></span><br></pre></td></tr></table></figure>
+<p>Breakdown into disk pages<br>    Cost: M + (M · N)<br>B buffers available:<br>    Use B-2 buffers scanning outer table<br>    1 for inner, 1 for storing output</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">foreach B-<span class="number">2</span> blocks B_Rs <span class="keyword">in</span> R:</span><br><span class="line">	foreach block B_S <span class="keyword">in</span> S:</span><br><span class="line">		foreach <span class="built_in">tuple</span> r <span class="keyword">in</span> B-<span class="number">2</span> B_Rs:</span><br><span class="line">			foreach <span class="built_in">tuple</span> s <span class="keyword">in</span> B_S:</span><br><span class="line">				emit, <span class="keyword">if</span> r <span class="keyword">and</span> s <span class="keyword">match</span></span><br></pre></td></tr></table></figure>
+<p>Cost: M + (M &#x2F; (B-2) · N)</p>
+<h4 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h4><p>Use existing index for join<br>    Eg: primary key with integrity constraint</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach <span class="built_in">tuple</span> r <span class="keyword">in</span> R:</span><br><span class="line">	foreach <span class="built_in">tuple</span> s <span class="keyword">in</span> Index(r_i = s_j):</span><br><span class="line">	emit, <span class="keyword">if</span> r <span class="keyword">and</span> s <span class="keyword">match</span></span><br></pre></td></tr></table></figure>
+<p>Look up for indexes with a match<br>    Usually use pre-existing index<br>    Cost: M + (m · C)<br>    Constant C depends on the index type</p>
+<h3 id="Sort-Merge-Join"><a href="#Sort-Merge-Join" class="headerlink" title="Sort-Merge Join"></a>Sort-Merge Join</h3><h4 id="Sort"><a href="#Sort" class="headerlink" title="Sort"></a>Sort</h4><ul>
+<li>Sort both tables on the join key</li>
+<li>Use external merge sort [[Sort and Aggregation#External Merge Sort|algorithm]]</li>
+</ul>
+<h4 id="Merge"><a href="#Merge" class="headerlink" title="Merge"></a>Merge</h4><ul>
+<li>Go through sorted tables</li>
+<li>Emit matching tuples</li>
+<li>Backtrack depending on join type</li>
+</ul>
+<h4 id="Sort-Merge"><a href="#Sort-Merge" class="headerlink" title="Sort-Merge"></a>Sort-Merge</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sort R <span class="keyword">and</span> S on join keys</span><br><span class="line">R_sorted -&gt; c_R</span><br><span class="line">S_sorted -&gt; c_S</span><br><span class="line"><span class="keyword">while</span> c_R <span class="keyword">and</span> c_S:</span><br><span class="line">	<span class="keyword">if</span> c_R &gt; c_S:</span><br><span class="line">		increment c_S</span><br><span class="line">	<span class="keyword">if</span> c_R &lt; c_S:</span><br><span class="line">		increment c_R</span><br><span class="line">	<span class="keyword">elif</span> c_R <span class="keyword">and</span> c_S <span class="keyword">match</span>:</span><br><span class="line">		emit</span><br><span class="line">		increment c_S</span><br></pre></td></tr></table></figure>
+<p>Sort Cost for $R$: $2M\cdot(1+\log_{B-1}(M&#x2F;B))$<br>Sort Cost for $S$: $2N\cdot(1+\log_{B-1}(N&#x2F;B))$<br>Merge Cost: $(M+N)$</p>
+<h4 id="Worst-case"><a href="#Worst-case" class="headerlink" title="Worst case"></a>Worst case</h4><p>All tuples contains same value<br>Cost: (M · N) + sort cost</p>
+<h4 id="Useful-cases"><a href="#Useful-cases" class="headerlink" title="Useful cases"></a>Useful cases</h4><ul>
+<li>Tables already sorted</li>
+<li>Output must be sorted</li>
+</ul>
+<h3 id="Hash-Join"><a href="#Hash-Join" class="headerlink" title="Hash Join"></a>Hash Join</h3><p>If tuple pair satisfy join condition<br>    Have same value for join attributes<br>    Hash to same place<br>    Only need to compare in each partition</p>
+<h4 id="Build"><a href="#Build" class="headerlink" title="Build"></a>Build</h4><ul>
+<li>Scan outer relation</li>
+<li>Hash on join attributes</li>
+</ul>
+<h4 id="Probe"><a href="#Probe" class="headerlink" title="Probe"></a>Probe</h4><ul>
+<li>Scan inner relation</li>
+<li>Hash through each tuple</li>
+<li>Jump to location in hash table</li>
+<li>Compare to find a matching tuple</li>
+</ul>
+<h5 id="Optimization"><a href="#Optimization" class="headerlink" title="Optimization"></a>Optimization</h5><p><em>Bloom filter</em> during build phase<br>    a probabilistic data structure<br>    checks if an item is likely in a set<br>        multiple hash functions <br>        bit array<br>        No false negatives, some false positives</p>
+<h4 id="Hash-Join-1"><a href="#Hash-Join-1" class="headerlink" title="Hash Join"></a>Hash Join</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">build <span class="built_in">hash</span> table HT_R <span class="keyword">for</span> R</span><br><span class="line">foreach <span class="built_in">tuple</span> s <span class="keyword">in</span> S:</span><br><span class="line">	output, <span class="keyword">if</span> h_1(s) <span class="keyword">in</span> HT_R</span><br></pre></td></tr></table></figure>
+<p>B-1 partitions each no more than B blocks<br>N page table: about sqrt (N) buffers<br>Cost: B · (B - 1)</p>
+<h4 id="Storage-Tradeoff"><a href="#Storage-Tradeoff" class="headerlink" title="Storage Tradeoff"></a>Storage Tradeoff</h4><h5 id="Full-Tuple"><a href="#Full-Tuple" class="headerlink" title="Full Tuple"></a>Full Tuple</h5><ul>
+<li>Avoid retrieving outer relation’s tuple contents</li>
+<li>More space in memory</li>
+</ul>
+<h5 id="Tuple-Identifier"><a href="#Tuple-Identifier" class="headerlink" title="Tuple Identifier"></a>Tuple Identifier</h5><ul>
+<li>Ideal for column stores</li>
+<li>Better when join selectivity is low</li>
+</ul>
+<h4 id="Grace-Hash-Join"><a href="#Grace-Hash-Join" class="headerlink" title="Grace Hash Join"></a>Grace Hash Join</h4><p>Tables don’t fit in memory<br>Cost: 3 · (M + N)</p>
+<h5 id="Build-Phase"><a href="#Build-Phase" class="headerlink" title="Build Phase"></a>Build Phase</h5><p>Hash tables on join attribute into partitions</p>
+<h5 id="Probe-Phase"><a href="#Probe-Phase" class="headerlink" title="Probe Phase"></a>Probe Phase</h5><p>Compare tuples in partitions for each table</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach <span class="built_in">tuple</span> r <span class="keyword">in</span> bucket_R,<span class="number">0</span></span><br><span class="line">	foreach <span class="built_in">tuple</span> s <span class="keyword">in</span> bucket_S,<span class="number">0</span></span><br><span class="line">		emit, <span class="keyword">if</span> <span class="keyword">match</span>(r,s)</span><br></pre></td></tr></table></figure>
+<p>If not fit in memory:<br>Recursive partitioning</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/17/%E6%95%B0%E6%8D%AE%E5%BA%93/Sort%20and%20Aggregation/" rel="prev" title="Sort and Aggregation">
+      <i class="fa fa-chevron-left"></i> Sort and Aggregation
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/04/19/%E6%95%B0%E6%8D%AE%E5%BA%93/Query%20Execution/" rel="next" title="Query Execution">
+      Query Execution <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%81%E6%B5%81"><span class="nav-number">1.</span> <span class="nav-text">省流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Join-Operator"><span class="nav-number">2.</span> <span class="nav-text">Join Operator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Output"><span class="nav-number">2.1.</span> <span class="nav-text">Output</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Vary-Depends-on"><span class="nav-number">2.1.1.</span> <span class="nav-text">Vary Depends on</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Early-Materialization"><span class="nav-number">2.1.2.</span> <span class="nav-text">Early Materialization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Late-Materialization"><span class="nav-number">2.1.3.</span> <span class="nav-text">Late Materialization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Depend-on-Base-Storage-Model"><span class="nav-number">2.1.4.</span> <span class="nav-text">Depend on Base Storage Model</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cost-Analysis-Criteria"><span class="nav-number">2.2.</span> <span class="nav-text">Cost Analysis Criteria</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Assume"><span class="nav-number">2.2.1.</span> <span class="nav-text">Assume</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cost-Metric"><span class="nav-number">2.2.2.</span> <span class="nav-text">Cost Metric</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Join-Algorithms"><span class="nav-number">3.</span> <span class="nav-text">Join Algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Nested-Loop-Join"><span class="nav-number">3.1.</span> <span class="nav-text">Nested Loop Join</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Keys"><span class="nav-number">3.1.1.</span> <span class="nav-text">Keys</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Simple"><span class="nav-number">3.1.2.</span> <span class="nav-text">Simple</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Block"><span class="nav-number">3.1.3.</span> <span class="nav-text">Block</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Index"><span class="nav-number">3.1.4.</span> <span class="nav-text">Index</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sort-Merge-Join"><span class="nav-number">3.2.</span> <span class="nav-text">Sort-Merge Join</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Sort"><span class="nav-number">3.2.1.</span> <span class="nav-text">Sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Merge"><span class="nav-number">3.2.2.</span> <span class="nav-text">Merge</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Sort-Merge"><span class="nav-number">3.2.3.</span> <span class="nav-text">Sort-Merge</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Worst-case"><span class="nav-number">3.2.4.</span> <span class="nav-text">Worst case</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Useful-cases"><span class="nav-number">3.2.5.</span> <span class="nav-text">Useful cases</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hash-Join"><span class="nav-number">3.3.</span> <span class="nav-text">Hash Join</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Build"><span class="nav-number">3.3.1.</span> <span class="nav-text">Build</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Probe"><span class="nav-number">3.3.2.</span> <span class="nav-text">Probe</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Optimization"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">Optimization</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hash-Join-1"><span class="nav-number">3.3.3.</span> <span class="nav-text">Hash Join</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Storage-Tradeoff"><span class="nav-number">3.3.4.</span> <span class="nav-text">Storage Tradeoff</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Full-Tuple"><span class="nav-number">3.3.4.1.</span> <span class="nav-text">Full Tuple</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Tuple-Identifier"><span class="nav-number">3.3.4.2.</span> <span class="nav-text">Tuple Identifier</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Grace-Hash-Join"><span class="nav-number">3.3.5.</span> <span class="nav-text">Grace Hash Join</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Build-Phase"><span class="nav-number">3.3.5.1.</span> <span class="nav-text">Build Phase</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Probe-Phase"><span class="nav-number">3.3.5.2.</span> <span class="nav-text">Probe Phase</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="CarlosDJY"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">CarlosDJY</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CarlosDJY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CarlosDJY" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CarlosDJY</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
