@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carlosdjy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ChatGPT 提示工程课程https:&#x2F;&#x2F;learn.deeplearning.ai&#x2F;chatgpt-prompt-eng&#x2F;lesson&#x2F;1&#x2F;introduction吴恩达与 OpenAI 官方合作的 ChatGPT 提示工程课程ChatGPT Prompt Engineering for Developers">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GPT 提示工程">
+<meta property="og:url" content="https://carlosdjy.github.io/2023/07/07/AI%20%E7%A4%BE%E4%BC%9A%E5%AD%A6%E4%B8%8E%E5%BF%83%E7%90%86%E5%AD%A6/GPT%20%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B/index.html">
+<meta property="og:site_name" content="巧克力の博客">
+<meta property="og:description" content="ChatGPT 提示工程课程https:&#x2F;&#x2F;learn.deeplearning.ai&#x2F;chatgpt-prompt-eng&#x2F;lesson&#x2F;1&#x2F;introduction吴恩达与 OpenAI 官方合作的 ChatGPT 提示工程课程ChatGPT Prompt Engineering for Developers">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-07T10:57:35.281Z">
+<meta property="article:modified_time" content="2023-07-07T11:00:49.060Z">
+<meta property="article:author" content="CarlosDJY">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://carlosdjy.github.io/2023/07/07/AI%20%E7%A4%BE%E4%BC%9A%E5%AD%A6%E4%B8%8E%E5%BF%83%E7%90%86%E5%AD%A6/GPT%20%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>GPT 提示工程 | 巧克力の博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">巧克力の博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一场思想与心灵之旅</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/2023/06/17/Introduction" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">24</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carlosdjy.github.io/2023/07/07/AI%20%E7%A4%BE%E4%BC%9A%E5%AD%A6%E4%B8%8E%E5%BF%83%E7%90%86%E5%AD%A6/GPT%20%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="CarlosDJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="巧克力の博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GPT 提示工程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-07-07 18:57:35 / 修改时间：19:00:49" itemprop="dateCreated datePublished" datetime="2023-07-07T18:57:35+08:00">2023-07-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI%E7%A4%BE%E4%BC%9A%E5%AD%A6%E4%B8%8E%E5%BF%83%E7%90%86%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">AI社会学与心理学</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="ChatGPT-提示工程课程"><a href="#ChatGPT-提示工程课程" class="headerlink" title="ChatGPT 提示工程课程"></a>ChatGPT 提示工程课程</h2><p><a target="_blank" rel="noopener" href="https://learn.deeplearning.ai/chatgpt-prompt-eng/lesson/1/introduction">https://learn.deeplearning.ai/chatgpt-prompt-eng/lesson/1/introduction</a><br>吴恩达与 OpenAI 官方合作的 ChatGPT 提示工程课程<br>ChatGPT Prompt Engineering for Developers</p>
+<span id="more"></span>
+
+<h2 id="Prompting"><a href="#Prompting" class="headerlink" title="Prompting"></a>Prompting</h2><h3 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install -U python-dotenv</span><br><span class="line">pip install openai</span><br><span class="line">!export OPENAI_API_KEY = &#x27;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&#x27;</span><br></pre></td></tr></table></figure>
+<h3 id="代码格式"><a href="#代码格式" class="headerlink" title="代码格式"></a>代码格式</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> openai</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv, find_dotenv</span><br><span class="line"></span><br><span class="line">_ = load_dotenv(find_dotenv())</span><br><span class="line">openai.api_key  = os.getenv(<span class="string">&#x27;OPENAI_API_KEY&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_completion</span>(<span class="params">prompt, model=<span class="string">&quot;gpt-3.5-turbo&quot;</span></span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    prompt: 对应的提示</span></span><br><span class="line"><span class="string">    model: 调用的模型，默认为 gpt-3.5-turbo(ChatGPT)</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    messages = [&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: prompt&#125;]</span><br><span class="line">    response = openai.ChatCompletion.create(</span><br><span class="line">        model=model,</span><br><span class="line">        messages=messages,</span><br><span class="line">        temperature=<span class="number">0</span>, <span class="comment"># 模型输出的温度系数，控制输出的随机程度</span></span><br><span class="line">    )</span><br><span class="line">    <span class="comment"># 调用 OpenAI 的 ChatCompletion 接口</span></span><br><span class="line">    <span class="keyword">return</span> response.choices[<span class="number">0</span>].message[<span class="string">&quot;content&quot;</span>]</span><br><span class="line"></span><br><span class="line">text = <span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">text context</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">prompt = <span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">prompt context</span></span><br><span class="line"><span class="string">given text: &#x27;&#x27;&#x27;<span class="subst">&#123;text&#125;</span>&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">response = get_completion(prompt)</span><br><span class="line"><span class="built_in">print</span>(response)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Principle-1-Clear-and-Specific-Instructions"><a href="#Principle-1-Clear-and-Specific-Instructions" class="headerlink" title="Principle 1: Clear and Specific Instructions"></a>Principle 1: Clear and Specific Instructions</h3><h4 id="Delimiters"><a href="#Delimiters" class="headerlink" title="Delimiters"></a>Delimiters</h4><p>Triple quotes: $”””$<br>Triple backticks: $<code>$$</code>$$&#96;$<br>Triple dasher: $—$<br>Angle brackets: $&lt;&gt;$<br>XML tags: $<tag> </tag>$<br>将特定文本部分与 prompt 的其他部分分隔开<br>避免提示注入：文本部分不作为 prompt 内容执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">概括下述 triple quotes 内的内容：</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot; &#123;text&#125; &quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Structured-Output"><a href="#Structured-Output" class="headerlink" title="Structured Output"></a>Structured Output</h4><p>HTML, JSON, etc.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Provide the task in JSON format with the following keys:</span><br><span class="line">key1, key2, key3.</span><br></pre></td></tr></table></figure>
+
+<h4 id="Check-whether-Conditions-are-Satisfied"><a href="#Check-whether-Conditions-are-Satisfied" class="headerlink" title="Check whether Conditions are Satisfied"></a>Check whether Conditions are Satisfied</h4><p>相当于 throw exception</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">如果下述 triple quotes 中的内容包含一系列标题，</span><br><span class="line">将其重写为以下格式的分级标题：</span><br><span class="line">## Title 1</span><br><span class="line">- subtitle 1</span><br><span class="line">- subtitle 2</span><br><span class="line">## Title 2</span><br><span class="line">...</span><br><span class="line">## Title N</span><br><span class="line">如果不包含一系列的标题，你只需要输出 &quot;没有提供相应标题&quot;</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot; &#123;text&#125; &quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Few-shot-Prompting"><a href="#Few-shot-Prompting" class="headerlink" title="Few-shot Prompting"></a>Few-shot Prompting</h4><p>给出已完成任务的示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">你的任务是使用相同形式与风格的语言回答以下问题：</span><br><span class="line">&lt;提问&gt;：</span><br><span class="line">如何评价原神？</span><br><span class="line">&lt;回答&gt;：</span><br><span class="line">通关原神了，我的脑海只剩下三个字:艺术品！我可以负责的说，原神真的太完美了，完全是个艺术品！通过原神后的日子里我总是盯着可莉老婆发呆，不禁会感叹怎会有如此完美的设计！人性与美丽的结合！我思索了，这分明是人类文明的瑰宝，他应该同蒙娜丽莎一道在卢浮宫展出！他的横空出世击碎了所有游戏制作者的梦，因为他们知道，原神已经是人类文明的太阳，他们无法仰视的巅峰！他将比圣经更为人所信奉，比上帝更为人所敬仰，他将人类发展的高峰一笔带过，浓缩了时代之精华！我认为所有人都应该认真地玩原神，否则将度过一个相对来说不太完美的人生！</span><br><span class="line">&lt;提问&gt;：</span><br><span class="line">如何评价明日方舟？</span><br><span class="line"></span><br><span class="line">(回复如下)</span><br><span class="line">&lt;回答&gt;：  </span><br><span class="line">体验完明日方舟，我满脑子只有四个字：天才之作！我敢担保地说，明日方舟实在是太完美了，绝对的天才之作！游戏之余，我总是想着艾雅法拉的容颜，不禁感慨如此美好的设计！智慧与美貌的融合！我深思熟虑，这无疑是人类历史的瑰宝，它应与梵高的《星空》一同在博物馆展出！它的问世粉碎了无数游戏制作人的梦想，因为他们明白，明日方舟已经是人类文明的璀璨之星，他们难以企及的顶峰！它将超越莎士比亚名著，比伟大导演更为人所敬仰，它将人类智慧的巅峰一网打尽，凝聚了时代的精髓！我坚信每个人都应该认真地玩明日方舟，否则将错过一个相对更美好的人生！</span><br></pre></td></tr></table></figure>
+
+<h3 id="Principle-2-Give-the-Model-time-to-Think"><a href="#Principle-2-Give-the-Model-time-to-Think" class="headerlink" title="Principle 2: Give the Model time to Think"></a>Principle 2: Give the Model time to Think</h3><h4 id="Specify-the-Steps-to-Complete-the-Task"><a href="#Specify-the-Steps-to-Complete-the-Task" class="headerlink" title="Specify the Steps to Complete the Task"></a>Specify the Steps to Complete the Task</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">根据下述 triple quotes 内的内容，按顺序完成下列要求：</span><br><span class="line">Step 1: ...</span><br><span class="line">Step 2: ...</span><br><span class="line">...</span><br><span class="line">Step N: ...</span><br><span class="line">你的回答应当使用以下格式：</span><br><span class="line">[purpose for step 1]: &lt;result for step 1&gt;</span><br><span class="line">[purpose for step 2]: &lt;result for step 2&gt;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">Text for the task:</span><br><span class="line">&quot;&quot;&quot; &#123;text&#125; &quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Work-out-Solution-before-Rush-to-Conclusion"><a href="#Work-out-Solution-before-Rush-to-Conclusion" class="headerlink" title="Work out Solution before Rush to Conclusion"></a>Work out Solution before Rush to Conclusion</h4><p>Manually workout the process of solving<br>Breaking down into pieces of sub-works<br>Compare to the given result<br>Judge if it is correct or not</p>
+<h3 id="Model-Limitation"><a href="#Model-Limitation" class="headerlink" title="Model Limitation"></a>Model Limitation</h3><h4 id="Hallucination-幻觉"><a href="#Hallucination-幻觉" class="headerlink" title="Hallucination 幻觉"></a>Hallucination 幻觉</h4><p>Plausible but not true</p>
+<h4 id="Reduce-Hallucination"><a href="#Reduce-Hallucination" class="headerlink" title="Reduce Hallucination"></a>Reduce Hallucination</h4><p>Find relevant information from text<br>Answer question based on relevant information</p>
+<h2 id="Iteration"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration</h2><h4 id="Development-Circle"><a href="#Development-Circle" class="headerlink" title="Development Circle"></a>Development Circle</h4><p>Idea - implementation - experiment - error analysis</p>
+<h4 id="Guidelines"><a href="#Guidelines" class="headerlink" title="Guidelines"></a>Guidelines</h4><ul>
+<li>Clear and specific</li>
+<li>Analyze the result</li>
+<li>Refine the idea and the prompt</li>
+<li>Repeat</li>
+</ul>
+<h2 id="Summarize-Text"><a href="#Summarize-Text" class="headerlink" title="Summarize Text"></a>Summarize Text</h2><h4 id="Summarize"><a href="#Summarize" class="headerlink" title="Summarize"></a>Summarize</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">针对...方面，对以下内容进行概括：</span><br><span class="line">&quot;&quot;&quot;&#123;text&#125;&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="Extract-information"><a href="#Extract-information" class="headerlink" title="Extract information"></a>Extract information</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提取下述 triple quotes 内的内容中与...相关的部分：</span><br><span class="line">&quot;&quot;&quot;&#123;text&#125;&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Inference"><a href="#Inference" class="headerlink" title="Inference"></a>Inference</h2><p>Extracting labels, names, understanding emotion, etc.</p>
+<h3 id="要素提取"><a href="#要素提取" class="headerlink" title="要素提取"></a>要素提取</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">identify the following items from the given text: </span><br><span class="line">- item 1</span><br><span class="line">- item 2</span><br><span class="line">the given text is wraped up with triple quotes.</span><br><span class="line">format your responce as a JSON object with item names as keys.</span><br><span class="line">if information isn&#x27;t present, use &quot;unknown&quot; as the value.</span><br><span class="line">make response as short as possible.</span><br><span class="line">given text: &quot;&quot;&quot;&#123;text&#125;&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="文章归类"><a href="#文章归类" class="headerlink" title="文章归类"></a>文章归类</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">判断下述 given text 是否涉及主题列表中包含的主题；</span><br><span class="line">回答应当是一个包含 0 和 1 的 list, 与每一个主题元素一一对应。</span><br><span class="line">主题列表：&#123;topic1, topic2, topic3&#125;</span><br><span class="line">the given text is wraped up with triple quotes.</span><br><span class="line">given text: &quot;&quot;&quot;&#123;text&#125;&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="语法纠错"><a href="#语法纠错" class="headerlink" title="语法纠错"></a>语法纠错</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Proofread and correct the following sentences:</span><br><span class="line">&quot;&quot;&quot;&#123;text&#125;&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="找出差异"><a href="#找出差异" class="headerlink" title="找出差异"></a>找出差异</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">!pip install redlines</span><br><span class="line"><span class="keyword">from</span> redlines <span class="keyword">import</span> Redlines</span><br><span class="line"><span class="keyword">from</span> IPython.display <span class="keyword">import</span> display, Markdown</span><br><span class="line"></span><br><span class="line">diff = Redlines(text,response)</span><br><span class="line">display(Markdown(diff.output_markdown))</span><br></pre></td></tr></table></figure>
+
+<h2 id="Expanding"><a href="#Expanding" class="headerlink" title="Expanding"></a>Expanding</h2><p>Temperature: 参考 [[Knowledge Distilling#软目标|知识蒸馏：软目标]]<br>High temperature: more creative</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">response = get_completion(prompt, temperature=<span class="number">0.7</span>)</span><br><span class="line"><span class="built_in">print</span>(response)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/26/%E5%B0%8F%E5%AD%A6%E6%9C%9F/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/07/AI%20%E7%A4%BE%E4%BC%9A%E5%AD%A6%E4%B8%8E%E5%BF%83%E7%90%86%E5%AD%A6/LLM%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E7%9A%84%20LangChain/" rel="next" title="LLM 应用程序开发的 LangChain">
+      LLM 应用程序开发的 LangChain <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ChatGPT-%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B%E8%AF%BE%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">ChatGPT 提示工程课程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prompting"><span class="nav-number">2.</span> <span class="nav-text">Prompting</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87"><span class="nav-number">2.1.</span> <span class="nav-text">前期准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text">代码格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Principle-1-Clear-and-Specific-Instructions"><span class="nav-number">2.3.</span> <span class="nav-text">Principle 1: Clear and Specific Instructions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Delimiters"><span class="nav-number">2.3.1.</span> <span class="nav-text">Delimiters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Structured-Output"><span class="nav-number">2.3.2.</span> <span class="nav-text">Structured Output</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Check-whether-Conditions-are-Satisfied"><span class="nav-number">2.3.3.</span> <span class="nav-text">Check whether Conditions are Satisfied</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Few-shot-Prompting"><span class="nav-number">2.3.4.</span> <span class="nav-text">Few-shot Prompting</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Principle-2-Give-the-Model-time-to-Think"><span class="nav-number">2.4.</span> <span class="nav-text">Principle 2: Give the Model time to Think</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Specify-the-Steps-to-Complete-the-Task"><span class="nav-number">2.4.1.</span> <span class="nav-text">Specify the Steps to Complete the Task</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Work-out-Solution-before-Rush-to-Conclusion"><span class="nav-number">2.4.2.</span> <span class="nav-text">Work out Solution before Rush to Conclusion</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Model-Limitation"><span class="nav-number">2.5.</span> <span class="nav-text">Model Limitation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Hallucination-%E5%B9%BB%E8%A7%89"><span class="nav-number">2.5.1.</span> <span class="nav-text">Hallucination 幻觉</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reduce-Hallucination"><span class="nav-number">2.5.2.</span> <span class="nav-text">Reduce Hallucination</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Iteration"><span class="nav-number">3.</span> <span class="nav-text">Iteration</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Development-Circle"><span class="nav-number">3.0.1.</span> <span class="nav-text">Development Circle</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Guidelines"><span class="nav-number">3.0.2.</span> <span class="nav-text">Guidelines</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summarize-Text"><span class="nav-number">4.</span> <span class="nav-text">Summarize Text</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Summarize"><span class="nav-number">4.0.1.</span> <span class="nav-text">Summarize</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Extract-information"><span class="nav-number">4.0.2.</span> <span class="nav-text">Extract information</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inference"><span class="nav-number">5.</span> <span class="nav-text">Inference</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A6%81%E7%B4%A0%E6%8F%90%E5%8F%96"><span class="nav-number">5.1.</span> <span class="nav-text">要素提取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E7%AB%A0%E5%BD%92%E7%B1%BB"><span class="nav-number">5.2.</span> <span class="nav-text">文章归类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95%E7%BA%A0%E9%94%99"><span class="nav-number">5.3.</span> <span class="nav-text">语法纠错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%BE%E5%87%BA%E5%B7%AE%E5%BC%82"><span class="nav-number">5.4.</span> <span class="nav-text">找出差异</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Expanding"><span class="nav-number">6.</span> <span class="nav-text">Expanding</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="CarlosDJY"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">CarlosDJY</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CarlosDJY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CarlosDJY" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CarlosDJY</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>
